@@ -1,0 +1,341 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* TorShell — Dark Web Brutalist Theme */
+  --background: #030303;
+  --foreground: #d0d0d0;
+  --card: #070707;
+  --card-foreground: #d0d0d0;
+  --popover: #0a0a0a;
+  --popover-foreground: #d0d0d0;
+  --primary: #00FF41;
+  --primary-foreground: #030303;
+  --secondary: #0e0e0e;
+  --secondary-foreground: #666666;
+  --muted: #0e0e0e;
+  --muted-foreground: #444444;
+  --accent: #00FF41;
+  --accent-foreground: #030303;
+  --destructive: #ff1a1a;
+  --destructive-foreground: #030303;
+  --border: #181818;
+  --input: #0e0e0e;
+  --ring: #00FF41;
+  --radius: 0rem;
+
+  /* TorShell site accent colors */
+  --site-red-room: #FF0033;
+  --site-mirrors: #00BFFF;
+  --site-leaks: #FFD700;
+  --site-events: #FF6B00;
+  --site-cult: #CC44FF;
+  --site-forum: #00FF9F;
+  --site-finance: #FF3366;
+  --site-trace: #00FF41;
+
+  --panel-bg: #060606;
+  --panel-border: #181818;
+  --scanline-opacity: 0.04;
+}
+
+@theme inline {
+  --font-sans: var(--font-space-grotesk);
+  --font-mono: var(--font-space-mono);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: 0rem;
+  --radius-md: 0rem;
+  --radius-lg: 0rem;
+  --radius-xl: 0rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-mono), 'Courier New', monospace;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  ::-webkit-scrollbar {
+    width: 3px;
+    background: #030303;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #181818;
+    border: none;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #00FF41;
+  }
+
+  ::selection {
+    background: #00FF41;
+    color: #030303;
+  }
+}
+
+/* ============================================
+   SCANLINE OVERLAY
+   ============================================ */
+@layer utilities {
+  .scanlines::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.1) 2px,
+      rgba(0, 0, 0, 0.1) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+    animation: flicker 10s infinite;
+  }
+
+  .noise::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0.03;
+  }
+}
+
+/* ============================================
+   GLITCH ANIMATIONS
+   ============================================ */
+@keyframes glitch {
+  0%, 100% { clip-path: inset(0 0 100% 0); transform: translate(0); }
+  5%  { clip-path: inset(30% 0 40% 0); transform: translate(-4px, 1px); color: #ff0033; }
+  10% { clip-path: inset(60% 0 20% 0); transform: translate(4px, -1px); color: #00BFFF; }
+  15% { clip-path: inset(0 0 80% 0); transform: translate(-2px, 2px); }
+  20% { clip-path: inset(80% 0 0 0); transform: translate(2px, -2px); color: #00FF41; }
+  25% { clip-path: inset(0 0 100% 0); transform: translate(0); }
+}
+
+@keyframes glitch-main {
+  0%, 88%, 100% { transform: translate(0); filter: none; }
+  90% { transform: translate(-3px, 0); filter: blur(0.5px); }
+  92% { transform: translate(3px, 1px); filter: blur(0); color: #FF0033; }
+  94% { transform: translate(-2px, -1px); filter: none; }
+  96% { transform: translate(2px, 0); color: #00BFFF; }
+  98% { transform: translate(0); filter: none; }
+}
+
+@keyframes glitch-brutal {
+  0%, 94%, 100% { transform: translate(0) skewX(0); }
+  95% { transform: translate(-5px, 2px) skewX(-2deg); clip-path: polygon(0 20%, 100% 20%, 100% 45%, 0 45%); color: #FF0033; }
+  96% { transform: translate(5px, -2px) skewX(2deg); clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%); color: #00BFFF; }
+  97% { transform: translate(-2px, 0) skewX(0); clip-path: none; }
+  98% { transform: translate(2px, 1px); }
+}
+
+@keyframes flicker {
+  0%, 92%, 100% { opacity: 1; }
+  93% { opacity: 0.88; }
+  95% { opacity: 0.95; }
+  97% { opacity: 0.85; }
+}
+
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes scan-down {
+  0% { top: -5%; opacity: 0.8; }
+  100% { top: 105%; opacity: 0; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 3px currentColor; opacity: 1; }
+  50% { box-shadow: 0 0 14px currentColor, 0 0 28px currentColor; opacity: 0.85; }
+}
+
+@keyframes slide-in-left {
+  from { transform: translateX(-16px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slide-in-right {
+  from { transform: translateX(16px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fade-up {
+  from { transform: translateY(8px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes stamp-in {
+  0% { transform: scale(1.3) rotate(-3deg); opacity: 0; }
+  60% { transform: scale(0.97) rotate(0.5deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0); }
+}
+
+@keyframes corrupt-text {
+  0%, 100% { letter-spacing: 0.1em; }
+  50% { letter-spacing: 0.35em; opacity: 0.7; }
+}
+
+@keyframes data-stream {
+  0% { transform: translateY(0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-100%); opacity: 0; }
+}
+
+@keyframes border-trace {
+  0% { clip-path: polygon(0 0, 0 0, 0 100%, 0 100%); }
+  25% { clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); }
+  50% { clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%); }
+  75% { clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%); }
+  100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+}
+
+/* ============================================
+   GLITCH TEXT
+   ============================================ */
+.glitch-text {
+  position: relative;
+  animation: glitch-main 7s infinite;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  opacity: 0.85;
+}
+
+.glitch-text::before {
+  animation: glitch 7s infinite;
+  color: #ff0033;
+  clip-path: inset(0 0 100% 0);
+}
+
+.glitch-text::after {
+  animation: glitch 7s infinite reverse;
+  color: #00BFFF;
+  clip-path: inset(0 0 100% 0);
+  animation-delay: 0.12s;
+}
+
+/* ============================================
+   BRUTALIST UI ELEMENTS
+   ============================================ */
+.tor-border {
+  border: 1px solid var(--panel-border);
+}
+
+.tor-border-accent {
+  border: 1px solid var(--primary);
+}
+
+.tor-panel {
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+}
+
+.cursor-blink::after {
+  content: '_';
+  animation: blink-cursor 1s step-end infinite;
+  color: var(--primary);
+}
+
+.terminal-line {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--muted-foreground);
+}
+
+.terminal-line::before {
+  content: '> ';
+  color: var(--primary);
+}
+
+.nav-item-locked {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.nav-item-locked::after {
+  content: '[LOCKED]';
+  font-size: 8px;
+  color: var(--destructive);
+  margin-left: 6px;
+  letter-spacing: 0.1em;
+}
+
+.evidence-tag-confirmed {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.evidence-tag-unverified {
+  color: var(--muted-foreground);
+  border-color: var(--muted-foreground);
+}
+
+.evidence-tag-suspicious {
+  color: var(--destructive);
+  border-color: var(--destructive);
+}
+
+/* ============================================
+   BRUTAL DIVIDERS
+   ============================================ */
+.brutal-divider {
+  height: 1px;
+  background: var(--panel-border);
+  position: relative;
+}
+
+.brutal-divider::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 1px;
+  width: 40%;
+  background: var(--primary);
+  opacity: 0.3;
+}
+
+/* Page transition wrapper */
+.page-enter {
+  animation: fade-up 0.35s ease forwards;
+}
