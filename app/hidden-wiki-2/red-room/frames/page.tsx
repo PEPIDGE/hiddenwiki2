@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef } from "react"
 import Link from "next/link"
 import { GlitchText } from "@/components/tor/glitch-text"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
@@ -23,10 +23,9 @@ const FRAMES = [
   { id: 12, time: "00:01:34", anomaly: false },
 ]
 
-// PIXEL GRID PUZZLE — 16×10 grid, one "dead pixel" is a hidden link at position (11,6)
 const GRID_W = 16
 const GRID_H = 10
-const DEAD_PIXEL = { x: 11, y: 6 } // 0-indexed
+const DEAD_PIXEL = { x: 11, y: 6 }
 
 export default function FramesPage() {
   const [selected, setSelected] = useState<number[]>([])
@@ -35,12 +34,11 @@ export default function FramesPage() {
   const [pixelClicked, setPixelClicked] = useState(false)
   const [pixelSaved, setPixelSaved] = useState(false)
 
-  // Generate stable "noise" pattern for the pixel grid
   const pixelGrid = useRef<number[][]>(
     Array.from({ length: GRID_H }, (_, y) =>
       Array.from({ length: GRID_W }, (_, x) => {
-        if (x === DEAD_PIXEL.x && y === DEAD_PIXEL.y) return -1 // dead pixel marker
-        return Math.sin(x * 7.3 + y * 13.7) * 0.5 + 0.5 // deterministic noise
+        if (x === DEAD_PIXEL.x && y === DEAD_PIXEL.y) return -1
+        return Math.sin(x * 7.3 + y * 13.7) * 0.5 + 0.5
       })
     )
   ).current
@@ -59,7 +57,7 @@ export default function FramesPage() {
     const updated = addClue(gs, {
       id: "rr1-frame-markers",
       title: "Маркери от кадри: [A3]+[13B]+[calm_voice]",
-      text: "Три аномални кадъра разкриват: черен Audi A3, секция 13B, и спокоен глас зад шума. Свързват се с котва #2 (Audi A3) и вероятно с котва #3 (22:17).",
+      text: "Три аномални кадъра: черен Audi A3, секция 13B, спокоен глас зад шума.",
       sourceRoute: "/red-room/frames",
       confidence: 3,
       status: "unverified",
@@ -75,7 +73,7 @@ export default function FramesPage() {
       const updated = addClue(gs, {
         id: "rr-dead-pixel",
         title: "[RED ROOM] Dead Pixel — координати 11×6",
-        text: "Скрит мъртъв пиксел в broadcast grid на позиция (11,6). Координатите съответстват на ред 11, колона 6 в шифъра. Добави към матрицата.",
+        text: "Скрит мъртъв пиксел на позиция (11,6) в broadcast матрицата.",
         sourceRoute: "/red-room/frames",
         confidence: 2,
         status: "unverified",
@@ -88,51 +86,42 @@ export default function FramesPage() {
   return (
     <div style={{ maxWidth: 860, margin: "0 auto" }}>
       <div style={{ marginBottom: 24 }}>
-        <Link href="/hidden-wiki-2/red-room" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333333", textDecoration: "none", letterSpacing: "0.1em" }}>
+        <Link href="/hidden-wiki-2/red-room" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333", textDecoration: "none", letterSpacing: "0.1em" }}>
           ← RED ROOM
         </Link>
-        <div style={{ height: "1px", background: "#111111", margin: "10px 0" }} />
+        <div style={{ height: 1, background: "#111", margin: "10px 0" }} />
         <GlitchText text="BROADCAST FRAMES" as="h2" intensity="low" className="text-xl font-bold tracking-widest" color={ACCENT} />
-        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "var(--muted-foreground)", marginTop: 6, letterSpacing: "0.1em" }}>
+        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", marginTop: 6, letterSpacing: "0.1em" }}>
           PUZZLE RR1 — 12 кадъра. Открий 3-те аномални и избери всички.
         </div>
       </div>
 
-      {/* PIXEL GRID PUZZLE */}
-      <div style={{ marginBottom: 28, border: "1px solid #181818", background: "#030303", padding: "14px" }}>
+      {/* PIXEL GRID */}
+      <div style={{ marginBottom: 28, border: "1px solid #181818", background: "#030303", padding: 14 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
           <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#2a1a1a", letterSpacing: "0.2em" }}>
             BROADCAST MATRIX — PIXEL ANOMALY SCAN
           </div>
-          <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#1a1a1a" }}>
-            {GRID_W}×{GRID_H}
-          </div>
+          <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#1a1a1a" }}>{GRID_W}×{GRID_H}</div>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: `repeat(${GRID_W}, 1fr)`, gap: 1 }}>
           {pixelGrid.map((row, y) =>
             row.map((val, x) => {
               const isDead = val === -1
-              const isHovered = hoveredPixel?.x === x && hoveredPixel?.y === y
-              const brightness = isDead ? 0 : Math.floor(val * 14) + 4
+              const isHov = hoveredPixel?.x === x && hoveredPixel?.y === y
+              const b = isDead ? 0 : Math.floor(val * 14) + 4
               return (
                 <div
                   key={`${x}-${y}`}
                   onClick={isDead ? handleDeadPixel : undefined}
                   onMouseEnter={() => setHoveredPixel({ x, y })}
                   onMouseLeave={() => setHoveredPixel(null)}
-                  title={isDead && isHovered ? `(${x},${y})` : undefined}
                   style={{
-                    width: "100%",
-                    aspectRatio: "1",
-                    background: isDead
-                      ? (isHovered ? "#330000" : "#000000")
-                      : isHovered
-                      ? `rgba(${brightness + 40},${brightness + 20},${brightness + 20},1)`
-                      : `rgb(${brightness},${brightness},${brightness})`,
+                    width: "100%", aspectRatio: "1",
+                    background: isDead ? (isHov ? "#330000" : "#000") : isHov ? `rgba(${b + 40},${b + 20},${b + 20},1)` : `rgb(${b},${b},${b})`,
                     cursor: isDead ? "pointer" : "default",
-                    boxShadow: isDead && isHovered ? `0 0 6px ${ACCENT}60` : "none",
+                    boxShadow: isDead && isHov ? `0 0 6px ${ACCENT}60` : "none",
                     transition: "background 0.05s",
-                    flexShrink: 0,
                   }}
                 />
               )
@@ -140,18 +129,13 @@ export default function FramesPage() {
           )}
         </div>
         <div style={{ marginTop: 8, fontSize: 8, fontFamily: "var(--font-mono)", color: "#1a1a1a" }}>
-          {hoveredPixel
-            ? `PIXEL (${hoveredPixel.x},${hoveredPixel.y}) — ${hoveredPixel.x === DEAD_PIXEL.x && hoveredPixel.y === DEAD_PIXEL.y ? "ANOMALY DETECTED" : "NORMAL"}`
-            : "Рипни мишката върху матрицата."}
+          {hoveredPixel ? `PIXEL (${hoveredPixel.x},${hoveredPixel.y}) — ${hoveredPixel.x === DEAD_PIXEL.x && hoveredPixel.y === DEAD_PIXEL.y ? "⚠ ANOMALY" : "NORMAL"}` : "Движи мишката върху матрицата."}
         </div>
         <AnimatePresence>
           {pixelClicked && (
-            <motion.div
-              initial={{ opacity: 0, y: 4 }}
-              animate={{ opacity: 1, y: 0 }}
-              style={{ marginTop: 10, padding: "9px 12px", border: `1px solid ${ACCENT}30`, background: "#0a0102", fontSize: 9, fontFamily: "var(--font-mono)", color: ACCENT }}
-            >
-              DEAD PIXEL @ (11,6) — {pixelSaved ? "КООРДИНАТИТЕ СА ЗАПИСАНИ" : "ЗАПАЗЕНО В ДОСИЕ"}
+            <motion.div initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }}
+              style={{ marginTop: 10, padding: "9px 12px", border: `1px solid ${ACCENT}30`, background: "#0a0102", fontSize: 9, fontFamily: "var(--font-mono)", color: ACCENT }}>
+              DEAD PIXEL @ (11,6) — КООРДИНАТИТЕ СА ЗАПИСАНИ В ДОСИЕ
             </motion.div>
           )}
         </AnimatePresence>
@@ -162,101 +146,72 @@ export default function FramesPage() {
         {FRAMES.map((frame) => {
           const isSelected = selected.includes(frame.id)
           return (
-            <div key={frame.id}
-              onClick={() => toggle(frame.id)}
-              style={{
-                background: isSelected ? "#200008" : frame.anomaly ? "#120005" : "#0a0a0a",
-                border: `1px solid ${isSelected ? ACCENT : frame.anomaly ? `${ACCENT}25` : "#0f0f0f"}`,
-                padding: "14px 12px",
-                cursor: frame.anomaly ? "pointer" : "default",
-                transition: "all 0.15s",
-                boxShadow: isSelected ? `0 0 12px ${ACCENT}30` : "none",
-                position: "relative",
-              }}
-            >
+            <div key={frame.id} onClick={() => toggle(frame.id)} style={{
+              background: isSelected ? "#200008" : frame.anomaly ? "#120005" : "#0a0a0a",
+              border: `1px solid ${isSelected ? ACCENT : frame.anomaly ? `${ACCENT}25` : "#0f0f0f"}`,
+              padding: "14px 12px", cursor: frame.anomaly ? "pointer" : "default",
+              transition: "all 0.15s", boxShadow: isSelected ? `0 0 12px ${ACCENT}30` : "none",
+              position: "relative",
+            }}>
               <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#1a1a1a", marginBottom: 8 }}>
                 FRAME #{String(frame.id).padStart(3, "0")}
               </div>
               <div style={{
                 height: 60, marginBottom: 8, position: "relative", overflow: "hidden",
-                background: frame.anomaly
-                  ? "repeating-linear-gradient(135deg, #280008, #280008 2px, #180005 2px, #180005 10px)"
-                  : "#060606",
+                background: frame.anomaly ? "repeating-linear-gradient(135deg,#280008 2px,#180005 10px)" : "#060606",
               }}>
                 {frame.anomaly && (
                   <div style={{
-                    position: "absolute", inset: 0,
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    fontSize: 11, fontFamily: "var(--font-mono)", color: ACCENT,
-                    fontWeight: 700, letterSpacing: "0.1em",
-                    animation: isSelected ? undefined : "flicker 3s infinite",
+                    position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: 11, fontFamily: "var(--font-mono)", color: ACCENT, fontWeight: 700,
                     opacity: isSelected ? 1 : 0.6,
                   }}>
                     {frame.marker}
                   </div>
                 )}
-                <div style={{
-                  position: "absolute", inset: 0, pointerEvents: "none",
-                  backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.2) 3px, rgba(0,0,0,0.2) 4px)",
-                }} />
+                <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: "repeating-linear-gradient(0deg,transparent 3px,rgba(0,0,0,0.2) 4px)" }} />
               </div>
               <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#1a1a1a" }}>{frame.time}</div>
-              {isSelected && (
-                <div style={{
-                  position: "absolute", top: 6, right: 6, width: 8, height: 8,
-                  background: ACCENT, boxShadow: `0 0 6px ${ACCENT}`,
-                }} />
-              )}
+              {isSelected && <div style={{ position: "absolute", top: 6, right: 6, width: 8, height: 8, background: ACCENT, boxShadow: `0 0 6px ${ACCENT}` }} />}
             </div>
           )
         })}
       </div>
 
-      {/* Selection status */}
-      <div style={{ padding: "12px 16px", border: `1px solid ${allPicked ? `${ACCENT}50` : "#1a1a1a"}`, background: "#080303", marginBottom: 16, transition: "border-color 0.3s" }}>
-        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: allPicked ? ACCENT : "#333333", letterSpacing: "0.1em", marginBottom: 6 }}>
+      <div style={{ padding: "12px 16px", border: `1px solid ${allPicked ? `${ACCENT}50` : "#1a1a1a"}`, background: "#080303", marginBottom: 16 }}>
+        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: allPicked ? ACCENT : "#333", letterSpacing: "0.1em", marginBottom: 6 }}>
           ИЗБРАНИ АНОМАЛИИ: {selected.length} / 3
         </div>
         <div style={{ display: "flex", gap: 4 }}>
           {[...Array(3)].map((_, i) => (
-            <div key={i} style={{ width: 24, height: 3, background: i < selected.length ? ACCENT : "#1a1a1a", transition: "background 0.2s", boxShadow: i < selected.length ? `0 0 6px ${ACCENT}` : "none" }} />
+            <div key={i} style={{ width: 24, height: 3, background: i < selected.length ? ACCENT : "#1a1a1a", boxShadow: i < selected.length ? `0 0 6px ${ACCENT}` : "none" }} />
           ))}
         </div>
       </div>
 
       {allPicked && !revealed && (
-        <button
-          onClick={handleConfirm}
-          style={{
-            background: "transparent", border: `1px solid ${ACCENT}60`,
-            color: ACCENT, fontFamily: "var(--font-mono)", fontSize: 11,
-            letterSpacing: "0.15em", padding: "10px 24px",
-            cursor: "pointer", transition: "all 0.2s", marginBottom: 16,
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.background = `${ACCENT}15`; e.currentTarget.style.boxShadow = `0 0 12px ${ACCENT}40` }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.boxShadow = "none" }}
-        >
+        <button onClick={handleConfirm} style={{
+          background: "transparent", border: `1px solid ${ACCENT}60`, color: ACCENT,
+          fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.15em",
+          padding: "10px 24px", cursor: "pointer", marginBottom: 16,
+        }}>
           ПОТВЪРДИ ИЗБОРА
         </button>
       )}
 
       {revealed && (
-        <div style={{ padding: "16px", border: `1px solid ${ACCENT}40`, background: "#0d0305", animation: "fade-up 0.3s ease" }}>
+        <div style={{ padding: 16, border: `1px solid ${ACCENT}40`, background: "#0d0305" }}>
           <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.15em", marginBottom: 10 }}>
             [RR1 SOLVED] — МАРКЕРИ ЗАПИСАНИ В EVIDENCE BOARD
           </div>
           {FRAMES.filter((f) => f.anomaly).map((f) => (
-            <div key={f.id} style={{ display: "flex", gap: 10, marginBottom: 6, alignItems: "flex-start" }}>
-              <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: ACCENT, minWidth: 100 }}>{f.marker}</span>
-              <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#555555", lineHeight: 1.5 }}>{f.detail}</span>
+            <div key={f.id} style={{ display: "flex", gap: 10, marginBottom: 6 }}>
+              <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: ACCENT, minWidth: 110 }}>{f.marker}</span>
+              <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#555", lineHeight: 1.5 }}>{f.detail}</span>
             </div>
           ))}
-          <div style={{ marginTop: 12, fontSize: 9, fontFamily: "var(--font-mono)", color: "#333333" }}>
-            Следващ пъзел: CHAT REPLAY →
-          </div>
         </div>
       )}
     </div>
   )
 }
-     

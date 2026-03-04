@@ -17,38 +17,38 @@ const STATUS_COLORS: Record<string, string> = {
 export function TorNav() {
   const pathname = usePathname()
   const [gameState, setGameState] = useState<GameState | null>(null)
-  const [expandedRoute, setExpandedRoute] = useState<string | null>(null)
+  const [expandedRoute, setExpandedRoute] = useState<string | null>("red-room")
   const [sessionId, setSessionId] = useState("--------")
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    // Generate session ID only on client to avoid SSR mismatch
-    setSessionId(btoa(Date.now().toString()).slice(0, 8).toUpperCase())
+    setMounted(true)
+    setSessionId(btoa(String(Date.now())).slice(0, 8).toUpperCase())
     setGameState(getGameState())
     const interval = setInterval(() => setGameState(getGameState()), 1500)
     return () => clearInterval(interval)
   }, [])
 
-  // Auto-expand active route only
+  // Auto-expand the section matching current URL
   useEffect(() => {
-    const active = ROUTES_CONFIG.find((r) => pathname?.startsWith(r.path))
-    if (active) setExpandedRoute(active.id)
+    const match = ROUTES_CONFIG.find((r) => pathname?.startsWith(r.path))
+    if (match) setExpandedRoute(match.id)
   }, [pathname])
 
   const isUnlocked = (routeId: string) => {
-    if (!gameState) return false
+    if (!gameState) return true // optimistic — show everything before state loads
     const config = ROUTES_CONFIG.find((r) => r.id === routeId)
     if (!config) return false
     if (!config.locked) return true
     return gameState.unlockedRoutes.includes(config.path)
   }
 
-  // Sublinks only shown if user has visited this route before
-  const hasVisited = (routePath: string) => {
-    if (!gameState) return false
-    return gameState.visitedRoutes.some((v) => v.startsWith(routePath))
+  // Render a minimal skeleton on server to avoid hydration mismatch
+  if (!mounted) {
+    return (
+      <nav style={{ width: 210, minWidth: 210, background: "var(--panel-bg)", borderRight: "1px solid var(--panel-border)", height: "100%", flexShrink: 0 }} />
+    )
   }
-
-  const isActive = (path: string) => pathname?.startsWith(path)
 
   return (
     <nav
@@ -61,32 +61,19 @@ export function TorNav() {
         flexDirection: "column",
         height: "100%",
         overflowY: "auto",
+        overflowX: "hidden",
         flexShrink: 0,
+        position: "relative",
+        zIndex: 10,
       }}
     >
       {/* Header */}
-      <div
-        style={{
-          padding: "10px 14px",
-          borderBottom: "1px solid var(--panel-border)",
-          display: "flex",
-          flexDirection: "column",
-          gap: 6,
-        }}
-      >
-        <div style={{ fontSize: 8, color: "#282828", letterSpacing: "0.25em" }}>
+      <div style={{ padding: "10px 14px", borderBottom: "1px solid var(--panel-border)", display: "flex", flexDirection: "column", gap: 6 }}>
+        <div style={{ fontSize: 8, color: "#383838", letterSpacing: "0.25em", fontFamily: "var(--font-mono)" }}>
           NODE INDEX
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
-          <div
-            style={{
-              width: 6,
-              height: 6,
-              background: "#00FF41",
-              animation: "flicker 3s infinite",
-              boxShadow: "0 0 5px #00FF41",
-            }}
-          />
+          <div style={{ width: 5, height: 5, background: "#00FF41", boxShadow: "0 0 5px #00FF41", animation: "flicker 3s infinite" }} />
           <span style={{ fontSize: 9, color: "#00FF41", fontFamily: "var(--font-mono)", letterSpacing: "0.1em" }}>
             {ROUTES_CONFIG.filter((r) => !r.locked).length}/{ROUTES_CONFIG.length} ACTIVE
           </span>
@@ -94,157 +81,132 @@ export function TorNav() {
       </div>
 
       {/* Route list */}
-      <div style={{ flex: 1, padding: "4px 0" }}>
+      <div style={{ flex: 1, paddingTop: 4, paddingBottom: 4 }}>
         {ROUTES_CONFIG.map((route, idx) => {
           const unlocked = isUnlocked(route.id)
-          const active = isActive(route.path)
+          const active = pathname?.startsWith(route.path) ?? false
           const expanded = expandedRoute === route.id
 
           return (
             <div key={route.id}>
+              {/* Row: navigate on label click, toggle on arrow click */}
               <div
-                role="button"
-                tabIndex={unlocked ? 0 : -1}
-                aria-label={`${route.label} - ${route.status}`}
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  padding: "7px 14px",
-                  cursor: unlocked ? "pointer" : "not-allowed",
-                  background: active ? `${route.accentColor}0d` : "transparent",
-                  borderLeft: active
-                    ? `2px solid ${route.accentColor}`
-                    : "2px solid transparent",
-                  transition: "background 0.12s, border-color 0.12s",
-                  gap: 9,
-                  position: "relative",
-                }}
-                onClick={() => {
-                  if (unlocked) setExpandedRoute(expanded ? null : route.id)
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && unlocked) setExpandedRoute(expanded ? null : route.id)
-                }}
-                onMouseEnter={(e) => {
-                  if (unlocked && !active) e.currentTarget.style.background = `${route.accentColor}07`
-                }}
-                onMouseLeave={(e) => {
-                  if (!active) e.currentTarget.style.background = "transparent"
+                  background: active ? `${route.accentColor}12` : "transparent",
+                  borderLeft: active ? `2px solid ${route.accentColor}` : "2px solid transparent",
+                  transition: "background 0.12s",
                 }}
               >
                 {/* Index */}
-                <span
-                  style={{
-                    fontSize: 8,
-                    color: "#1e1e1e",
-                    fontFamily: "var(--font-mono)",
-                    minWidth: 14,
-                  }}
-                >
+                <span style={{ fontSize: 8, color: "#282828", fontFamily: "var(--font-mono)", paddingLeft: 10, minWidth: 26, flexShrink: 0 }}>
                   {String(idx + 1).padStart(2, "0")}
                 </span>
 
-                {/* Status dot */}
-                <span
-                  style={{
-                    width: 5,
-                    height: 5,
-                    background: unlocked ? route.accentColor : "#181818",
-                    flexShrink: 0,
-                    boxShadow: unlocked && active ? `0 0 7px ${route.accentColor}` : "none",
-                    transition: "box-shadow 0.3s",
-                  }}
-                />
+                {/* Color dot */}
+                <span style={{
+                  width: 5, height: 5, flexShrink: 0, marginRight: 8,
+                  background: unlocked ? route.accentColor : "#222",
+                  boxShadow: active && unlocked ? `0 0 8px ${route.accentColor}` : "none",
+                }} />
 
-                {/* Label */}
-                <span
+                {/* Label — clicking navigates */}
+                <Link
+                  href={unlocked ? route.path : "#"}
                   style={{
+                    flex: 1,
                     fontSize: 10,
                     fontFamily: "var(--font-mono)",
-                    letterSpacing: "0.1em",
-                    color: unlocked
-                      ? active ? route.accentColor : "#888888"
-                      : "#282828",
-                    flex: 1,
+                    letterSpacing: "0.08em",
+                    color: unlocked ? (active ? route.accentColor : "#b0b0b0") : "#333333",
                     fontWeight: active ? 700 : 400,
+                    textDecoration: "none",
+                    padding: "7px 0",
+                    display: "block",
+                    pointerEvents: unlocked ? "auto" : "none",
+                  }}
+                  onClick={(e) => {
+                    if (!unlocked) { e.preventDefault(); return }
+                    // If clicking active route, just toggle dropdown
+                    if (active) { e.preventDefault(); setExpandedRoute(expanded ? null : route.id) }
+                    else setExpandedRoute(route.id)
                   }}
                 >
                   {active ? (
                     <GlitchText text={route.label} intensity="low" color={route.accentColor} />
-                  ) : (
-                    route.label
-                  )}
-                </span>
+                  ) : route.label}
+                </Link>
+
+                {/* Toggle arrow — always clickable if unlocked */}
+                {unlocked && route.sublinks.length > 0 && (
+                  <button
+                    onClick={() => setExpandedRoute(expanded ? null : route.id)}
+                    style={{
+                      background: "none", border: "none", padding: "7px 10px",
+                      color: expanded ? route.accentColor : "#383838",
+                      fontSize: 8, fontFamily: "var(--font-mono)",
+                      transition: "color 0.12s",
+                    }}
+                    aria-label={expanded ? "Collapse" : "Expand"}
+                  >
+                    {expanded ? "▲" : "▼"}
+                  </button>
+                )}
 
                 {/* Status badge */}
-                <span
-                  style={{
-                    fontSize: 7,
-                    fontFamily: "var(--font-mono)",
+                {!route.sublinks.length && (
+                  <span style={{
+                    fontSize: 7, fontFamily: "var(--font-mono)",
                     color: STATUS_COLORS[route.status] || "#282828",
-                    letterSpacing: "0.08em",
-                    opacity: unlocked ? 0.8 : 0.3,
-                  }}
-                >
-                  {route.status}
-                </span>
+                    letterSpacing: "0.06em", paddingRight: 10, opacity: unlocked ? 0.7 : 0.25,
+                  }}>
+                    {route.status}
+                  </span>
+                )}
               </div>
 
-              {/* Sublinks — only visible after visiting the route */}
+              {/* Sub-links — show when expanded + unlocked */}
               <AnimatePresence initial={false}>
-                {expanded && unlocked && hasVisited(route.path) && (
+                {expanded && unlocked && (
                   <motion.div
-                    key="sublinks"
+                    key="sub"
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.18, ease: "easeInOut" }}
-                    style={{
-                      overflow: "hidden",
-                      borderLeft: `1px solid ${route.accentColor}20`,
-                      marginLeft: 27,
-                    }}
+                    transition={{ duration: 0.16 }}
+                    style={{ overflow: "hidden" }}
                   >
-                    <div style={{ paddingLeft: 14, paddingBottom: 4, paddingTop: 2 }}>
-                      <Link
-                        href={route.path}
-                        style={{
-                          display: "block",
-                          padding: "3px 6px",
-                          fontSize: 9,
-                          fontFamily: "var(--font-mono)",
-                          color: pathname === route.path ? route.accentColor : "#444444",
-                          letterSpacing: "0.05em",
-                          textDecoration: "none",
-                          borderLeft: pathname === route.path ? `1px solid ${route.accentColor}` : "1px solid transparent",
-                        }}
-                        onMouseEnter={(e) => (e.currentTarget.style.color = route.accentColor)}
-                        onMouseLeave={(e) => { if (pathname !== route.path) e.currentTarget.style.color = "#444444" }}
-                      >
+                    <div style={{
+                      marginLeft: 36,
+                      borderLeft: `1px solid ${route.accentColor}25`,
+                      paddingLeft: 10,
+                      paddingTop: 2,
+                      paddingBottom: 6,
+                    }}>
+                      {/* Index sub-link */}
+                      <Link href={route.path} style={{
+                        display: "block", padding: "3px 6px",
+                        fontSize: 9, fontFamily: "var(--font-mono)",
+                        color: pathname === route.path ? route.accentColor : "#777777",
+                        textDecoration: "none",
+                        letterSpacing: "0.06em",
+                      }}>
                         /index
                       </Link>
                       {route.sublinks.map((sub) => {
                         const fullPath = `${route.path}${sub}`
-                        const isCurrent = pathname === fullPath
+                        const subActive = pathname === fullPath
                         return (
-                          <Link
-                            key={sub}
-                            href={fullPath}
-                            style={{
-                              display: "block",
-                              padding: "3px 6px",
-                              fontSize: 9,
-                              fontFamily: "var(--font-mono)",
-                              color: isCurrent ? route.accentColor : "#444444",
-                              letterSpacing: "0.05em",
-                              textDecoration: "none",
-                              borderLeft: isCurrent ? `1px solid ${route.accentColor}` : "1px solid transparent",
-                              transition: "color 0.1s",
-                            }}
-                            onMouseEnter={(e) => (e.currentTarget.style.color = route.accentColor)}
-                            onMouseLeave={(e) => { if (!isCurrent) e.currentTarget.style.color = "#444444" }}
-                          >
-                            {sub.replace("/", "/")}
+                          <Link key={sub} href={fullPath} style={{
+                            display: "block", padding: "3px 6px",
+                            fontSize: 9, fontFamily: "var(--font-mono)",
+                            color: subActive ? route.accentColor : "#777777",
+                            textDecoration: "none",
+                            letterSpacing: "0.06em",
+                            fontWeight: subActive ? 700 : 400,
+                          }}>
+                            {sub}
                           </Link>
                         )
                       })}
@@ -258,16 +220,11 @@ export function TorNav() {
       </div>
 
       {/* Footer */}
-      <div
-        style={{
-          padding: "9px 14px",
-          borderTop: "1px solid var(--panel-border)",
-        }}
-      >
-        <div style={{ fontSize: 8, color: "#1e1e1e", fontFamily: "var(--font-mono)", letterSpacing: "0.1em" }}>
-          v2.4.1-ALPHA
+      <div style={{ padding: "9px 14px", borderTop: "1px solid var(--panel-border)" }}>
+        <div style={{ fontSize: 8, color: "#2a2a2a", fontFamily: "var(--font-mono)", letterSpacing: "0.1em" }}>
+          HW2 v2.4.1
         </div>
-        <div style={{ fontSize: 8, color: "#161616", fontFamily: "var(--font-mono)" }}>
+        <div style={{ fontSize: 8, color: "#222", fontFamily: "var(--font-mono)" }} suppressHydrationWarning>
           SID: {sessionId}
         </div>
       </div>

@@ -2,20 +2,23 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { GlitchText, TypewriterText } from "@/components/tor/glitch-text"
+import { GlitchText } from "@/components/tor/glitch-text"
 import { ROUTES_CONFIG, getGameState, type GameState } from "@/lib/game-state"
 import { motion, AnimatePresence } from "framer-motion"
 
-const BOOT_LINES = [
-  "Инициализиране на TorShell v2.4.1-ALPHA...",
-  "Установяване на криптирана сесия — HOPS:3 / TZ:+0200",
-  "SIGNAL: 97% | NODE_MAP: loaded | ENTROPY: high",
-  "Декриптиране на индекс...",
-  "[ГОТОВО] — Добре дошъл в HIDDEN WIKI 2.",
+const BOOT_LINES: { text: string; delay: number; color?: string }[] = [
+  { text: "$ ./boot_hidden_wiki2.sh --session=new --hops=3", delay: 0, color: "#00FF41" },
+  { text: "  [OK] Establishing encrypted relay...", delay: 320 },
+  { text: "  [OK] Loading node map: 7 nodes found", delay: 560 },
+  { text: "  [OK] Entropy pool: HIGH (512bit)", delay: 760 },
+  { text: "  [OK] Session token: " + Math.random().toString(36).slice(2, 10).toUpperCase(), delay: 940 },
+  { text: "  [!!] 2 anomalous transactions in ledger", delay: 1180, color: "#FF0033" },
+  { text: "  [OK] Evidence index decrypted", delay: 1380 },
+  { text: "$ HIDDEN WIKI 2 — ready. 8 portals online.", delay: 1600, color: "#00FF41" },
 ]
 
 export default function HiddenWiki2Page() {
-  const [bootLine, setBootLine] = useState(0)
+  const [visibleLines, setVisibleLines] = useState<number>(0)
   const [bootDone, setBootDone] = useState(false)
   const [gameState, setGameState] = useState<GameState | null>(null)
   const [hoveredRoute, setHoveredRoute] = useState<string | null>(null)
@@ -25,10 +28,14 @@ export default function HiddenWiki2Page() {
   }, [])
 
   useEffect(() => {
-    if (bootLine >= BOOT_LINES.length) {
-      setTimeout(() => setBootDone(true), 400)
+    if (visibleLines >= BOOT_LINES.length) {
+      const t = setTimeout(() => setBootDone(true), 500)
+      return () => clearTimeout(t)
     }
-  }, [bootLine])
+    const line = BOOT_LINES[visibleLines]
+    const t = setTimeout(() => setVisibleLines((n) => n + 1), visibleLines === 0 ? 80 : 220 + Math.random() * 80)
+    return () => clearTimeout(t)
+  }, [visibleLines])
 
   return (
     <div style={{ maxWidth: 920, margin: "0 auto" }}>
@@ -36,34 +43,44 @@ export default function HiddenWiki2Page() {
       <AnimatePresence>
         {!bootDone && (
           <motion.div
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
-            style={{ marginBottom: 36 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.25 }}
+            style={{
+              marginBottom: 36,
+              padding: "18px 20px",
+              background: "#020202",
+              border: "1px solid #151515",
+              borderTop: "2px solid #00FF4120",
+            }}
           >
-            {BOOT_LINES.slice(0, bootLine + 1).map((line, i) => (
-              <div key={i} style={{ marginBottom: 3 }}>
-                {i === bootLine ? (
-                  <TypewriterText
-                    text={`> ${line}`}
-                    speed={18}
-                    className="text-xs"
-                    onComplete={() => {
-                      if (i === bootLine) setTimeout(() => setBootLine((l) => l + 1), 160)
-                    }}
-                  />
-                ) : (
-                  <div
-                    style={{
-                      fontSize: 10,
-                      fontFamily: "var(--font-mono)",
-                      color: i === 0 ? "#00FF41" : i === 5 ? "#FF0033" : "var(--muted-foreground)",
-                    }}
-                  >
-                    {">"} {line}
-                  </div>
-                )}
-              </div>
+            <div style={{
+              fontSize: 8, fontFamily: "var(--font-mono)", color: "#1a2a1a",
+              letterSpacing: "0.25em", marginBottom: 14,
+            }}>
+              TERMINAL — BOOT SEQUENCE
+            </div>
+            {BOOT_LINES.slice(0, visibleLines).map((line, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -4 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.12 }}
+                style={{
+                  fontSize: 11, fontFamily: "var(--font-mono)",
+                  color: line.color ?? "#2e2e2e",
+                  lineHeight: 1.9, letterSpacing: "0.04em",
+                }}
+              >
+                {line.text}
+              </motion.div>
             ))}
+            {visibleLines < BOOT_LINES.length && (
+              <motion.span
+                animate={{ opacity: [1, 0] }}
+                transition={{ duration: 0.6, repeat: Infinity, repeatType: "reverse" }}
+                style={{ color: "#00FF41", fontFamily: "var(--font-mono)", fontSize: 13 }}
+              >█</motion.span>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
