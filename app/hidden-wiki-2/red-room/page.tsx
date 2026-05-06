@@ -1,17 +1,66 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
+import { useState, useEffect, useRef } from "react"
 import { usePathname } from "next/navigation"
+import Link from "next/link"
 import { GlitchText } from "@/components/tor/glitch-text"
 import { motion, AnimatePresence } from "framer-motion"
-import {
-  getGameState,
-  saveGameState,
-  addClue,
-} from "@/lib/game-state"
+import { getGameState, saveGameState, addClue } from "@/lib/game-state"
 
 const ACCENT = "#FF0033"
+
+const STREAM_CLUES = [
+  {
+    id: "rr-grid",
+    frameTime: "00:14",
+    label: "Решетка — метална конструкция",
+    detail: "Дебели прозоречни решетки. Индустриален тип. Не е стандартен апартамент.",
+    clueText: "Червена стая: решетка — индустриален обект, не жилищна сграда",
+  },
+  {
+    id: "rr-line",
+    frameTime: "00:31",
+    label: "Жълто-черна лента на пода",
+    detail: "Предупредителна лента — стандартна за складове и производствени помещения.",
+    clueText: "Червена стая: жълто-черна лента — склад или производствено помещение",
+  },
+  {
+    id: "rr-sign",
+    frameTime: "00:47",
+    label: "Индустриален надпис — частичен",
+    detail: "Видима е само задна част: ...ARNA FABR... — вероятно Захарна Фабрика.",
+    clueText: "Червена стая: надпис '...ARNA FABR...' — вероятно Захарна Фабрика, София",
+  },
+  {
+    id: "rr-anomaly",
+    frameTime: "01:03",
+    label: "Системна аномалия — статус ред",
+    detail: "Кратко прекъсване. В статус реда се появява: NODE-7 / LIVE / 03:17",
+    clueText: "Червена стая: NODE-7 / LIVE / 03:17 — системна аномалия в stream-а",
+  },
+  {
+    id: "rr-laura",
+    frameTime: "01:22",
+    label: "Freeze frame — лице/позиция на Лора",
+    detail: "Видима е дясна ръка върху стол. Бяла риза. Тъмна коса. Спряла е да се движи.",
+    clueText: "Червена стая: Лора — бяла риза, тъмна коса, неподвижна позиция",
+  },
+  {
+    id: "rr-phone",
+    frameTime: "02:11",
+    label: "Телефон — в края на stream-а",
+    detail: "Лора се добира до телефон. Набира номер. Stream приключва след 8 секунди.",
+    clueText: "Червена стая: Лора набира телефон в края — кому се обажда?",
+  },
+]
+
+const SYSTEM_STATUS = [
+  { key: "STREAM", value: "LIVE", color: ACCENT },
+  { key: "NODE", value: "NODE-7", color: "#aaa" },
+  { key: "HOPS", value: "3", color: "#00FF41" },
+  { key: "ENTROPY", value: "HIGH", color: "#00FF41" },
+  { key: "SIGNAL", value: "UNSTABLE", color: "#FF8800" },
+]
 
 const FRAMES_DEMO = [
   { id: 1, time: "00:00:03", anomaly: false },
@@ -152,9 +201,9 @@ export default function RedRoomPage() {
           </div>
           <div
             style={{
-              fontSize: 8,
+              fontSize: 11,
               fontFamily: "var(--font-mono)",
-              color: "#2a2a2a",
+              color: "#888",
               letterSpacing: "0.18em",
             }}
           >
@@ -172,10 +221,10 @@ export default function RedRoomPage() {
           }}
         >
           <motion.div
-            animate={{ color: signalNoise ? ACCENT : "#2a2a2a" }}
+            animate={{ color: signalNoise ? ACCENT : "#777" }}
             transition={{ duration: 0.1 }}
             style={{
-              fontSize: 8,
+              fontSize: 10,
               fontFamily: "var(--font-mono)",
               letterSpacing: "0.15em",
             }}
@@ -234,32 +283,102 @@ export default function RedRoomPage() {
               key={link.label}
               href={isLocked ? "#" : link.href}
               style={{
-                padding: "7px 14px",
-                fontSize: 9,
+                padding: "8px 16px",
+                fontSize: 11,
                 fontFamily: "var(--font-mono)",
-                color: isCurrent ? ACCENT : isLocked ? "#202020" : "#3a3a3a",
+                color: isCurrent ? ACCENT : isLocked ? "#444" : "#aaa",
                 letterSpacing: "0.12em",
                 textDecoration: "none",
                 background: isCurrent ? `${ACCENT}12` : "#070707",
-                border: `1px solid ${isCurrent ? `${ACCENT}40` : "#181818"}`,
+                border: `1px solid ${isCurrent ? `${ACCENT}40` : "#282828"}`,
                 cursor: isLocked ? "not-allowed" : "pointer",
                 transition: "all 0.12s",
-                borderBottom: isCurrent ? `2px solid ${ACCENT}` : "1px solid #181818",
+                borderBottom: isCurrent ? `2px solid ${ACCENT}` : "1px solid #282828",
               }}
               onMouseEnter={(e) => {
                 if (!isLocked && !isCurrent) e.currentTarget.style.color = ACCENT
               }}
               onMouseLeave={(e) => {
-                if (!isCurrent) e.currentTarget.style.color = isLocked ? "#202020" : "#3a3a3a"
+                if (!isCurrent) e.currentTarget.style.color = isLocked ? "#444" : "#aaa"
               }}
             >
               {link.label}
               {isLocked && (
-                <span style={{ fontSize: 7, color: "#FF003325", marginLeft: 5 }}>[LOCKED]</span>
+                <span style={{ fontSize: 9, color: "#FF003355", marginLeft: 5 }}>[LOCKED]</span>
               )}
             </Link>
           )
         })}
+      </div>
+
+      {/* LIVE STREAM — YouTube embed styled as surveillance livestream */}
+      <div style={{ marginBottom: 28, border: `2px solid ${ACCENT}50`, background: "#000", position: "relative" }}>
+        {/* Top bar */}
+        <div style={{
+          display: "flex", alignItems: "center", gap: 10,
+          padding: "8px 14px", background: "#0a0000", borderBottom: `1px solid ${ACCENT}30`,
+        }}>
+          <div style={{
+            background: ACCENT, padding: "2px 10px",
+            fontSize: 10, fontFamily: "var(--font-mono)", color: "#000", fontWeight: 900, letterSpacing: "0.15em",
+          }}>
+            {recBlink ? "● LIVE" : "○ LIVE"}
+          </div>
+          <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#ccc", letterSpacing: "0.1em" }}>NODE-7 // RED ROOM // FEED-01</div>
+          <div style={{ marginLeft: "auto", fontSize: 10, fontFamily: "var(--font-mono)", color: "#888" }}>1,247 зрители</div>
+        </div>
+
+        {/* YouTube iframe container */}
+        <div style={{ position: "relative", aspectRatio: "16/9" }}>
+          <iframe
+            src="https://www.youtube.com/embed/jNQXAC9IVRw?autoplay=0&mute=1&controls=1&rel=0&modestbranding=1"
+            style={{ width: "100%", height: "100%", border: "none", display: "block", filter: "brightness(0.85) contrast(1.1) saturate(0.7)" }}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            title="RED ROOM LIVE FEED"
+          />
+          {/* Scanlines overlay */}
+          <div style={{
+            position: "absolute", inset: 0, pointerEvents: "none", zIndex: 2,
+            background: "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.18) 3px, rgba(0,0,0,0.18) 4px)",
+          }} />
+          {/* Signal noise overlay */}
+          {signalNoise && (
+            <div style={{
+              position: "absolute", inset: 0, pointerEvents: "none", zIndex: 3,
+              background: "repeating-linear-gradient(0deg, rgba(255,0,51,0.10) 0px, transparent 2px)",
+            }} />
+          )}
+          {/* Watermark */}
+          <div style={{
+            position: "absolute", top: 8, left: 8, zIndex: 4,
+            fontSize: 9, fontFamily: "var(--font-mono)", color: "#FF003355", letterSpacing: "0.1em",
+            pointerEvents: "none",
+          }}>NODE-7 // ENCRYPTED</div>
+          <div style={{
+            position: "absolute", bottom: 8, right: 8, zIndex: 4,
+            fontSize: 9, fontFamily: "var(--font-mono)", color: "#FF003355",
+            pointerEvents: "none",
+          }}>15.10.2025 • 03:17</div>
+        </div>
+
+        {/* Bottom bar */}
+        <div style={{
+          display: "flex", alignItems: "center", gap: 12,
+          padding: "8px 14px", borderTop: `1px solid #1a1a1a`, background: "#080000",
+        }}>
+          <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.08em" }}>
+            <span style={{ opacity: recBlink ? 1 : 0.2, transition: "opacity 0.08s" }}>●</span> REC
+          </div>
+          <div style={{ flex: 1, height: 2, background: "#1a1a1a", position: "relative" }}>
+            <div style={{ position: "absolute", left: 0, top: 0, height: "100%", width: "62%", background: `linear-gradient(90deg, ${ACCENT}, ${ACCENT}80)` }} />
+          </div>
+          <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#888" }}>01:22 / 02:20</div>
+          <div style={{
+            fontSize: 9, fontFamily: "var(--font-mono)", color: signalNoise ? "#FF8800" : "#555",
+            letterSpacing: "0.1em", transition: "color 0.1s",
+          }}>{signalNoise ? "SIGNAL UNSTABLE" : "SIGNAL OK"}</div>
+        </div>
       </div>
 
       {/* RR1 — Frame Hunt */}
@@ -277,14 +396,14 @@ export default function RedRoomPage() {
             marginBottom: 10,
           }}
         >
-          <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.2em" }}>
+          <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#888", letterSpacing: "0.2em" }}>
             PUZZLE RR1 — FRAME HUNT
           </div>
           <div
             style={{
-              fontSize: 9,
+              fontSize: 11,
               fontFamily: "var(--font-mono)",
-              color: allAnomaliesSelected ? "#00FF41" : "#2a2a2a",
+              color: allAnomaliesSelected ? "#00FF41" : "#888",
               letterSpacing: "0.1em",
             }}
           >
@@ -311,7 +430,7 @@ export default function RedRoomPage() {
                   transition: "box-shadow 0.2s",
                 }}
               >
-                <div style={{ fontSize: 7, fontFamily: "var(--font-mono)", color: isSelected ? ACCENT : "#1e1e1e", marginBottom: 5 }}>
+                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: isSelected ? ACCENT : "#666", marginBottom: 5 }}>
                   #{String(frame.id).padStart(3, "0")}
                 </div>
                 <div
@@ -345,7 +464,7 @@ export default function RedRoomPage() {
                     </div>
                   )}
                 </div>
-                <div style={{ fontSize: 7, fontFamily: "var(--font-mono)", color: "#1e1e1e" }}>{frame.time}</div>
+                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#666" }}>{frame.time}</div>
               </motion.div>
             )
           })}
@@ -393,7 +512,7 @@ export default function RedRoomPage() {
         <div style={{ position: "absolute", top: 4, left: 4, width: 10, height: 10, borderTop: `1px solid ${ACCENT}30`, borderLeft: `1px solid ${ACCENT}30` }} />
         <div style={{ position: "absolute", bottom: 4, right: 4, width: 10, height: 10, borderBottom: `1px solid ${ACCENT}30`, borderRight: `1px solid ${ACCENT}30` }} />
 
-        <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.2em", marginBottom: 12 }}>
+        <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#888", letterSpacing: "0.2em", marginBottom: 12 }}>
           PUZZLE RR2 — BROADCAST WATERMARK
         </div>
 
@@ -501,7 +620,7 @@ export default function RedRoomPage() {
           </div>
         </div>
 
-        <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#1e1e1e", marginTop: 7 }}>
+        <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#888", marginTop: 7 }}>
           {watermarkUnlocked
             ? "[WATERMARK АКТИВИРАН — достъп открит]"
             : "[Задръж курсора върху watermark 4 секунди]"

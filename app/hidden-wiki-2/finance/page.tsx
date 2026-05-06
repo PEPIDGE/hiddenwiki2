@@ -10,54 +10,74 @@ const ACCENT = "#FF3366"
 
 const TRANSACTIONS = [
   {
-    id: "TX-0019",
-    amount: "€38.400",
-    from: "[REDACTED]",
-    to: "Виена 1891 // V-1831",
-    timestamp: "2024-12-01 03:17",
-    method: "CRYPTO",
+    id: "TX-2501",
+    amount: "€250",
+    from: "Р. Алексиев (DSK **** 2291)",
+    to: "Аптека Витал",
+    timestamp: "2025-09-05 14:30",
+    method: "CARD",
     anomaly: true,
-    clue: "TX-0019: €38.400 към Виена 1891 в 03:17 — свързан с V-1831",
+    clue: "TX-2501: Р. Алексиев купи тетрабеназин от Аптека Витал — без рецепта (05.09.2025)",
   },
   {
-    id: "TX-0020",
-    amount: "€2.100",
-    from: "NS-0",
-    to: "[INTERNAL]",
-    timestamp: "2024-11-28 09:00",
+    id: "TX-2502",
+    amount: "€180",
+    from: "Р. Алексиев (DSK **** 2291)",
+    to: "Аптека Витал",
+    timestamp: "2025-10-10 11:15",
+    method: "CARD",
+    anomaly: true,
+    clue: "TX-2502: Р. Алексиев — втора покупка на тетрабеназин (10.10.2025 — 5 дни преди изчезването)",
+  },
+  {
+    id: "TX-2503",
+    amount: "€3.200",
+    from: "Братство // анонимна сметка",
+    to: "NightKiller // Д. Михайлов",
+    timestamp: "2025-10-14 20:00",
+    method: "CRYPTO",
+    anomaly: true,
+    clue: "TX-2503: Братство плати €3.200 на NightKiller за 'транспорт' — деня преди операцията",
+  },
+  {
+    id: "TX-2504",
+    amount: "€85",
+    from: "Р. Алексиев (DSK **** 2291)",
+    to: "Shell, ул. Бенковски",
+    timestamp: "2025-10-15 22:07",
+    method: "CARD",
+    anomaly: true,
+    clue: "TX-2504: Shell зареждане от Р. Алексиев 22:07 на 15.10 — 800м от дома на Лора",
+  },
+  {
+    id: "TX-2505",
+    amount: "€12.000",
+    from: "Братство // анонимна сметка",
+    to: "Захарна фабрика — собственик",
+    timestamp: "2025-10-01 09:00",
     method: "WIRE",
-    anomaly: false,
-    clue: null,
-  },
-  {
-    id: "TX-0021",
-    amount: "€14.750",
-    from: "B.ORC Handler",
-    to: "CIRCUIT-3",
-    timestamp: "2024-11-30 18:30",
-    method: "CRYPTO",
     anomaly: true,
-    clue: "TX-0021: €14.750 от B.ORC към CIRCUIT-3 в 18:30",
+    clue: "TX-2505: Братство наело Захарна фабрика за €12.000 — начало октомври",
   },
   {
-    id: "TX-0022",
+    id: "TX-2506",
     amount: "€500",
     from: "[DECOY]",
     to: "[DECOY]",
-    timestamp: "2024-12-02 12:00",
+    timestamp: "2025-10-12 12:00",
     method: "CASH",
     anomaly: false,
     clue: null,
   },
   {
-    id: "TX-0023",
-    amount: "€9.900",
-    from: "ARS-REFLECT-01",
-    to: "calm_voice",
-    timestamp: "2024-12-01 22:17",
-    method: "CRYPTO",
-    anomaly: true,
-    clue: "TX-0023: €9.900 от ARS към calm_voice в 22:17",
+    id: "TX-2507",
+    amount: "€700",
+    from: "[INTERNAL]",
+    to: "[INTERNAL]",
+    timestamp: "2025-10-08 08:45",
+    method: "WIRE",
+    anomaly: false,
+    clue: null,
   },
 ]
 
@@ -73,11 +93,11 @@ export default function FinancePage() {
   }, [])
 
   const handleAccess = () => {
-    if (code.trim().toUpperCase() === "CIRCUIT-3") {
+    if (code.trim().toUpperCase() === "BRATSTVO" || code.trim() === "БРАТСТВО") {
       setAccessGranted(true)
       setError("")
     } else {
-      setError("КОД НЕВАЛИДЕН — опитай с токен от MIRRORS")
+      setError("КОД НЕВАЛИДЕН — въведи: BRATSTVO")
       setTimeout(() => setError(""), 3000)
     }
   }

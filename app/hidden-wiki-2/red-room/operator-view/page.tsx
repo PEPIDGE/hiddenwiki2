@@ -9,19 +9,19 @@ import { PuzzleGate } from "@/components/tor/puzzle-gate"
 const ACCENT = "#FF0033"
 
 const DECOY_TRACE = {
-  source: "NullSyndicate",
+  source: "NullSyn",
   hops: 2,
   timezone: "+0100",
-  note: "CIRCUIT-TRACE // HOPS:2 — Несъответствие с котва (очакваме 3 хоп). Timezone +0100 ≠ +0200.",
+  note: "NULLSYN TRACE // HOPS:2 — Компрометиран оператор (очакваме 1 хоп). Timezone +0100 ≠ +0200. Не следвай.",
 }
 
 const OPERATOR_DATA = {
-  callsign: "OP::RED_X",
+  callsign: "OP::REDFOX",
   active: true,
-  lastSeen: "22:17:01",
-  route: "Огледален преход — потвърден",
-  tokens_required: ["RF-GATE", "КРЪГЪТ"],
-  note: "Operatorite не се идентифицират по лице. Само по гласов подпис и routing.",
+  lastSeen: "22:15:01",
+  route: "Захарна фабрика — западно крило, стая 9",
+  tokens_required: ["BRATSTVO", "ZAHARNA::STAYA::9"],
+  note: "Оператор RedFox е инициаторът. Координира NightKiller (транспорт) и Black-Voyvoda (охрана). Lokacija: Zaharna fabrika, staya 9.",
 }
 
 export default function OperatorViewPage() {

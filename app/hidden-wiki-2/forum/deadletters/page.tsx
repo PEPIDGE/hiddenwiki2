@@ -12,21 +12,21 @@ const DEAD_LETTERS = [
   {
     id: "DL-001",
     to: "[НЕИЗВЕСТЕН]",
-    from: "anon_7731",
+    from: "anon_6612",
     subject: "Ако не се върна",
-    body: "Ако прочетеш това — значи нещо се е случило. Виена. 13B. 18:30. Audi. Те знаят адреса ми.",
-    date: "2024-10-14",
-    clue: "Dead letter DL-001: Виена 13B 18:30 Audi — писмо 'ако не се върна'",
+    body: "Ако прочетеш това — значи нещо се е случило. Видях Лора да се качва в черен Audi A3 пред бл. 14. Часът беше 22:12 на 15 октомври. Шофьорът беше висок мъж с черна качулка.",
+    date: "2025-10-16",
+    clue: "DL-001: Очевидец — Лора в черен Audi A3 пред бл. 14 в 22:12 на 15.10.2025",
     hasClue: true,
   },
   {
     id: "DL-002",
-    to: "TRACE-NODE",
-    from: "system_leak",
-    subject: "Координатите",
-    body: "Latitude: зашифровано в hex. Longitude: зашифровано в hex. Виж leaks/trace. Не питай имена — питай числа.",
-    date: "2024-10-16",
-    clue: "Координатите са в hex в leaks/trace — не имена, а числа",
+    to: "Разследващия",
+    from: "GothGirl_real",
+    subject: "Паролата не е от мен",
+    body: "Ако стигнеш до чат системата и опиташ с моите credentials — паролата е сменена. Не от мен. Някой е влязъл в акаунта ми. Ако искаш истинската парола — питай BruteForce в /blackmarket. Joko беше само за мен.",
+    date: "2025-10-17",
+    clue: "GothGirl: паролата сменена без нея — вижте BruteForce в /blackmarket за новата",
     hasClue: true,
   },
   {
@@ -34,8 +34,8 @@ const DEAD_LETTERS = [
     to: "[DECOY TARGET]",
     from: "decoy_writer",
     subject: "Nothing",
-    body: "This is an automated decoy letter. Discard.",
-    date: "2024-11-10",
+    body: "This is an automated decoy letter. Discard. route-17-night is a valid route. [AUTOMATED]",
+    date: "2025-10-15",
     clue: null,
     hasClue: false,
   },
@@ -43,16 +43,26 @@ const DEAD_LETTERS = [
     id: "DL-004",
     to: "Разследващия",
     from: "RF_witness",
-    subject: "A_lexiev_contract — пълното ЕГН",
-    body: "Файлът съдържа всичко. Р. Алексиев. Договорът е в LEAKS/docs. Датата е 12.09.2024. Парчетата се събират в TRACE-NODE.",
-    date: "2024-12-02",
-    clue: "DL-004: Р. Алексиев — A_lexiev_contract в LEAKS/docs, 12.09.2024",
+    subject: "Р. Алексиев — пълни данни",
+    body: "Р. Алексиев, ЕГН: 78****. DSK карта **** 2291. Два пъти е купил тетрабеназин от Аптека Витал — без рецепта. На 15.10 в 22:07 е зарядил Shell на ул. Бенковски, 800м от Лора. Документите са в /leaks/docs.",
+    date: "2025-10-17",
+    clue: "DL-004: Р. Алексиев — тетрабеназин + Shell 22:07 (800м от Лора). Документи в leaks/docs",
+    hasClue: true,
+  },
+  {
+    id: "DL-005",
+    to: "Всички",
+    from: "system_leak",
+    subject: "Захарна фабрика — координати",
+    body: "Западно крило. Стая 9. Жълто-черна лента. Вратата е залостена отвътре. Телефонът на Лора е намерен там на 17.10. CellTrace ще ти даде IP и GPS — от /blackmarket.",
+    date: "2025-10-17",
+    clue: "DL-005: Захарна фабрика, западно крило, стая 9 — CellTrace от /blackmarket ще даде GPS",
     hasClue: true,
   },
 ]
 
 // PUZZLE: Arrange 3 real letters in correct order → unlock cipher
-const CORRECT_ORDER = ["DL-001", "DL-002", "DL-004"]
+const CORRECT_ORDER = ["DL-001", "DL-004", "DL-005"]
 
 export default function ForumDeadLettersPage() {
   const [expanded, setExpanded] = useState<string | null>(null)
@@ -72,7 +82,7 @@ export default function ForumDeadLettersPage() {
         saveGameState(addClue(gs, {
           id: "deadletter-order",
           title: "[DEAD LETTERS] Правилна последователност",
-          text: "DL-001→DL-002→DL-004: Очевидец 13B → Координати в hex → Р. Алексиев = CIRCUIT-3",
+          text: "DL-001→DL-004→DL-005: Очевидец Audi → Р. Алексиев = RedFox → Захарна фабрика стая 9",
           sourceRoute: "/forum/deadletters",
           confidence: 4,
           status: "confirmed",
@@ -96,7 +106,7 @@ export default function ForumDeadLettersPage() {
         <Link href="/hidden-wiki-2/forum" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333", textDecoration: "none" }}>← FORUM</Link>
         <div style={{ height: 1, background: "#111", margin: "10px 0" }} />
         <GlitchText text="DEAD LETTERS" as="h2" intensity="low" className="text-xl font-bold tracking-widest" color={ACCENT} />
-        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", marginTop: 6 }}>4 писма намерени в изтрита папка. Подреди 3-те реални в хронологичен ред.</div>
+        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", marginTop: 6 }}>5 писма намерени в изтрита папка. Подреди 3-те реални в хронологичен ред.</div>
       </div>
 
       {/* ORDER PUZZLE */}

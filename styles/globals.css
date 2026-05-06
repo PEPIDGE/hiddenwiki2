@@ -123,3 +123,14 @@
     @apply bg-background text-foreground;
   }
 }
+[data-hover="1"]{
+  width: 10px !important;
+  height: 10px !important;
+  box-shadow: 0 0 10px rgba(0,255,65,0.55), 0 0 18px rgba(0,255,65,0.25) !important;
+  animation: cursorPulse 0.9s ease-in-out infinite;
+}
+@keyframes cursorPulse{
+  0%   { transform: translate(var(--x, 0px), var(--y, 0px)) scale(1);   opacity: 1; }
+  50%  { transform: translate(var(--x, 0px), var(--y, 0px)) scale(1.35); opacity: .85; }
+  100% { transform: translate(var(--x, 0px), var(--y, 0px)) scale(1);   opacity: 1; }
+}

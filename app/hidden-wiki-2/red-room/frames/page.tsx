@@ -11,15 +11,15 @@ const ACCENT = "#FF0033"
 const FRAMES = [
   { id: 1, time: "00:00:03", anomaly: false },
   { id: 2, time: "00:00:09", anomaly: false },
-  { id: 3, time: "00:00:14", anomaly: true, marker: "[A3]", detail: "Силует — Audi A3 в задния план" },
+  { id: 3, time: "00:00:14", anomaly: true, marker: "[AUDI]", detail: "Черен Audi A3 в задния план — рег. частично четима СА ****" },
   { id: 4, time: "00:00:22", anomaly: false },
   { id: 5, time: "00:00:31", anomaly: false },
   { id: 6, time: "00:00:38", anomaly: false },
-  { id: 7, time: "00:00:47", anomaly: true, marker: "[13B]", detail: "Надпис '13B' — Секция, зона или апартамент" },
+  { id: 7, time: "00:00:47", anomaly: true, marker: "[LORA]", detail: "Силует на Лора Костова — 22:12, пред бл. 14" },
   { id: 8, time: "00:00:52", anomaly: false },
   { id: 9, time: "00:01:01", anomaly: false },
   { id: 10, time: "00:01:13", anomaly: false },
-  { id: 11, time: "00:01:22", anomaly: true, marker: "[calm_voice]", detail: "Аудио аномалия — спокоен глас зад шума" },
+  { id: 11, time: "00:01:22", anomaly: true, marker: "[STAYA9]", detail: "Надпис '9' на вратата — Захарна фабрика, западно крило" },
   { id: 12, time: "00:01:34", anomaly: false },
 ]
 

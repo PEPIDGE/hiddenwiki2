@@ -9,26 +9,14 @@ import { getGameState, saveGameState, addClue } from "@/lib/game-state"
 const ACCENT = "#CC44FF"
 
 const OPERATORS = [
-  {
-    id: "OP-001", callsign: "CIRCUIT-3", level: "АРХИТЕКТ", status: "ACTIVE",
-    lastSeen: "2024-12-01 03:17", relay: "HOPS=3", note: "Основателят. Самоличността е защитена с ключ.",
-    anomaly: true, clue: "CIRCUIT-3 Архитект — последна активност 03:17, relay HOPS=3",
-  },
-  {
-    id: "OP-002", callsign: "OP::RED_X", level: "ОПЕРАТОР", status: "ACTIVE",
-    lastSeen: "2024-11-30 22:17", relay: "HOPS=3", note: "Отговаря за транзити и Audi logistics.",
-    anomaly: true, clue: "OP::RED_X — транзит оператор, Audi A3, активен 22:17",
-  },
-  {
-    id: "OP-003", callsign: "calm_voice", level: "ОПЕРАТОР", status: "UNKNOWN",
-    lastSeen: "2024-10-15 22:17", relay: "HOPS=3", note: "Известен само по гласов подпис. Не е синтетичен.",
-    anomaly: true, clue: "calm_voice = реален оператор, последен сигнал 22:17",
-  },
-  {
-    id: "OP-004", callsign: "NS-0", level: "ПОСВЕТЕН", status: "DECOY",
-    lastSeen: "N/A", relay: "HOPS=2", note: "NullSyndicate decoy. HOPS=2 — не е реален.",
-    anomaly: false, clue: null,
-  },
+  { id: "OP-001", callsign: "RedFox", realName: "Р.Ф.", level: "АРХИТЕКТ", cult: "Братство на третото пробуждане", status: "ACTIVE", lastSeen: "2025-10-16 03:14", relay: "HOPS=3", note: "Лидер и основател. Отговорен за ритуалите. Последна активност след изчезването.", anomaly: true, clue: "RedFox — АРХИТЕКТ на Братството. Активен в 03:14 на 16.10.2025 — след изчезването на Лора" },
+  { id: "OP-002", callsign: "NightKiller", realName: "Н.К.", level: "ОПЕРАТОР", cult: "Братство / Нощен сигнал", status: "ACTIVE", lastSeen: "2025-10-15 23:55", relay: "HOPS=3", note: "Транзит оператор. Черен Audi A3. Последно виден в кв. Бенковски.", anomaly: true, clue: "NightKiller — транзит с черен Audi A3. Последен сигнал 23:55 на 15.10.2025 — кв. Бенковски" },
+  { id: "OP-003", callsign: "GothGirl", realName: "Г.Г.", level: "ОПЕРАТОР", cult: "Братство / Нощен сигнал", status: "ACTIVE", lastSeen: "2025-10-13 18:22", relay: "HOPS=3", note: "Паролата в чат системата е сменена. Стара парола: joko1132. Нова е неизвестна.", anomaly: true, clue: "GothGirl — стара парола joko1132 (сменена). Достъп до /cult/chat-system изисква BruteForce" },
+  { id: "OP-004", callsign: "ToxicBabe", realName: "Т.Б.", level: "ОПЕРАТОР", cult: "Братство", status: "ACTIVE", lastSeen: "2025-10-15 20:10", relay: "HOPS=3", note: "Отговаря за вербовка. Организатор на Огледален преход.", anomaly: false, clue: "ToxicBabe — вербовка и организация на Огледален преход. HOPS=3" },
+  { id: "OP-005", callsign: "Black-Voyvoda", realName: "Б.В.", level: "ОПЕРАТОР", cult: "Братство", status: "ACTIVE", lastSeen: "2025-10-15 22:30", relay: "HOPS=3", note: "Охрана и логистика. Обаждане към Д. Михайлов в 22:15.", anomaly: true, clue: "Black-Voyvoda — охрана. Обажда се в 22:15 на 15.10.2025 — 3 мин след изчезването" },
+  { id: "OP-006", callsign: "DataCracker6", realName: "Д.К.", level: "АНАЛИТИК", cult: "Братство / Архивът на сенките", status: "ACTIVE", lastSeen: "2025-10-14 11:00", relay: "HOPS=3", note: "Технически оператор. Отговорен за форум дъмпа и decoy документи.", anomaly: false, clue: "DataCracker6 — технически оператор. Публикувал decoy GPS координати в /leaks/docs" },
+  { id: "OP-007", callsign: "NullSyn", realName: "Н.С.", level: "АНАЛИТИК", cult: "Кръг / Архивът на сенките", status: "ACTIVE", lastSeen: "2025-10-15 19:00", relay: "HOPS=2", note: "⚠ HOPS=2 — decoy или компрометиран. Публикувал фалшиви GPS данни.", anomaly: false, clue: "NullSyn — HOPS=2 (нереален). Decoy координатор — 3 фалшиви GPS изпращания" },
+  { id: "OP-008", callsign: "OutsiderX", realName: "О.Х.", level: "ЛИДЕР", cult: "Кръг на лунното затъмнение", status: "INACTIVE", lastSeen: "2025-09-30 09:00", relay: "N/A", note: "Неактивен от октомври. Кръгът е отделна секта — слаба връзка с случая.", anomaly: false, clue: "OutsiderX — лидер на Кръга. Неактивен от 30.09.2025" },
 ]
 
 const STATUS_COLOR: Record<string, string> = { ACTIVE: "#00FF41", UNKNOWN: ACCENT, DECOY: "#333" }

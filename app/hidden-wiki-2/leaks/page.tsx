@@ -1,15 +1,72 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { GlitchText } from "@/components/tor/glitch-text"
-import { SortableTable } from "@/components/tor/sortable-table"
-import { FileExplorer, type FSItem } from "@/components/tor/file-explorer"
-import { getGameState, saveGameState, addClue } from "@/lib/game-state"
-import Link from "next/link"
 import { usePathname } from "next/navigation"
+import Link from "next/link"
+import { GlitchText } from "@/components/tor/glitch-text"
+import { FileExplorer } from "@/components/tor/file-explorer"
+import { SortableTable } from "@/components/tor/sortable-table"
+import { getGameState, saveGameState, addClue } from "@/lib/game-state"
+import { motion, AnimatePresence } from "framer-motion"
 
 const ACCENT = "#FFD700"
+
+const SECTIONS = [
+  {
+    id: "docs",
+    href: "/hidden-wiki-2/leaks/docs",
+    label: "DOCS",
+    description: "Изтекли документи, организационни файлове, фалшиви и истински данни.",
+    count: "42 файла",
+    warning: "Съдържа подвеждащи данни",
+    color: "#FFD700",
+  },
+  {
+    id: "archive",
+    href: "/hidden-wiki-2/leaks/archive",
+    label: "ARCHIVE",
+    description: "Камерни кадри, снимки от публични места, Захарна фабрика, Лора до кола.",
+    count: "28 снимки",
+    warning: null,
+    color: "#FF6B00",
+  },
+  {
+    id: "vehicles",
+    href: "/hidden-wiki-2/leaks/vehicles",
+    label: "VEHICLES",
+    description: "Коли за продажба на черен пазар. Сравни с черния Audi A3 от случая.",
+    count: "34 записа",
+    warning: "Изисква CAPTCHA",
+    color: "#FF0033",
+  },
+  {
+    id: "cards",
+    href: "/hidden-wiki-2/leaks/cards",
+    label: "CARDS",
+    description: "100+ дебитни карти с история на покупки. Важна карта: Румен Алексиев.",
+    count: "113 карти",
+    warning: null,
+    color: "#CC44FF",
+  },
+  {
+    id: "passwords",
+    href: "/hidden-wiki-2/leaks/passwords",
+    label: "PASSWORDS",
+    description: "Изтекли username/password комбинации за форуми, чатове и скрити платформи.",
+    count: "89 записа",
+    warning: null,
+    color: "#00FF9F",
+  },
+  {
+    id: "phones",
+    href: "/hidden-wiki-2/leaks/phones",
+    label: "PHONES",
+    description: "Изтекли български телефонни номера, свързани с хора, секти и event-и.",
+    count: "61 номера",
+    warning: null,
+    color: "#00BFFF",
+  },
+]
 
 const SUBLINKS = [
   { label: "INDEX", href: "/hidden-wiki-2/leaks" },

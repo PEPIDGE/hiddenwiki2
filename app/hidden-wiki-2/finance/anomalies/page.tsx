@@ -10,30 +10,39 @@ const ACCENT = "#FF3366"
 const ANOMALIES = [
   {
     id: "anom-1",
-    code: "ANM-019",
-    type: "TIME PATTERN",
-    description: "TX-0019 и TX-0025 — и двете в 03:17. Нетипично съвпадение.",
-    evidence: "03:17 е Canon котва #3 — телефонът пада в 03:17",
+    code: "ANM-501",
+    type: "REPEATED PURCHASE",
+    description: "Р. Алексиев купи тетрабеназин два пъти от Аптека Витал — без рецепта. TX-2501 (09.05) и TX-2502 (10.10).",
+    evidence: "Тетрабеназинът е лекарство за потискане на волевото движение — без рецепта е незаконно.",
     confidence: 5,
-    clue: "Двойна транзакция в 03:17 — TX-0019 и TX-0025. Canon котва потвърдена.",
+    clue: "ANM-501: Р. Алексиев — два пъти тетрабеназин без рецепта от Аптека Витал (09.05 и 10.10)",
   },
   {
     id: "anom-2",
-    code: "ANM-021",
-    type: "ROUTE OVERLAP",
-    description: "B.ORC → CIRCUIT-3 в 18:30. CIRCUIT-3 е токен от MIRRORS.",
-    evidence: "18:30 е Canon котва #1 — час на излизане",
-    confidence: 4,
-    clue: "B.ORC изпраща към CIRCUIT-3 в 18:30 — Canon котва #1 потвърдена.",
+    code: "ANM-502",
+    type: "LOCATION + TIME OVERLAP",
+    description: "Shell зареждане от Р. Алексиев в 22:07 на 15.10 — 800м от дома на Лора. Лора изчезна в 22:12.",
+    evidence: "5 минути разлика. Черен Audi A3 засечен в 22:09 пред бл. 14.",
+    confidence: 5,
+    clue: "ANM-502: Р. Алексиев на 800м от Лора в 22:07 — Лора изчезва в 22:12. Audi засечен в 22:09",
   },
   {
     id: "anom-3",
-    code: "ANM-023",
-    type: "IDENTITY LINK",
-    description: "ARS-REFLECT-01 → calm_voice в 22:17. calm_voice е псевдоним от FORUM.",
-    evidence: "22:17 е Canon котва #4 — двойна поява на часа",
-    confidence: 5,
-    clue: "ARS → calm_voice в 22:17 — идентичност потвърдена с Forum Confession #4.",
+    code: "ANM-503",
+    type: "PAYMENT BEFORE OPERATION",
+    description: "Братство плати €3.200 на NightKiller за 'транспорт' на 14.10 — деня преди операцията (15.10).",
+    evidence: "NightKiller е регистриран собственик на черен Audi A3 с телефон +359 88 412 1221.",
+    confidence: 4,
+    clue: "ANM-503: Братство платило транспорт на NightKiller ден преди изчезването на Лора",
+  },
+  {
+    id: "anom-4",
+    code: "ANM-504",
+    type: "FACILITY RENTAL",
+    description: "Братство наело Захарна фабрика за €12.000 от 01.10 — 2 седмици преди операцията.",
+    evidence: "Западно крило, стая 9 — телефонът на Лора намерен там на 17.10.",
+    confidence: 4,
+    clue: "ANM-504: Братство наело Захарна фабрика за €12.000 от 01.10 — Лора намерена там",
   },
 ]
 
@@ -65,7 +74,7 @@ export default function FinanceAnomaliesPage() {
         <div style={{ height: 1, background: `linear-gradient(90deg, ${ACCENT}40, transparent)`, marginTop: 10 }} />
       </div>
       <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#555", lineHeight: 1.8, marginBottom: 24, borderLeft: "2px solid #2a0010", paddingLeft: 14 }}>
-        3 транзакции показват аномалии свързани с Canon котвите. Всяка потвърдена аномалия носи clue с confidence 4-5.
+        4 транзакции показват аномалии свързани с операцията по изчезването на Лора. Всяка потвърдена аномалия носи clue с confidence 4-5.
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
         {ANOMALIES.map((a, i) => {

@@ -8,11 +8,11 @@ import { getGameState, saveGameState, addClue } from "@/lib/game-state"
 const ACCENT = "#FF3366"
 
 const BENEFICIARIES = [
-  { id: "ben-1", name: "Румен Алексиев",  alias: "RedFox",     total: "€59.400",  count: 2, confirmed: true,  clue: "Румен Алексиев (RedFox) — директен бенефициер на TX-0019 и TX-0025" },
-  { id: "ben-2", name: "Виена 1891",      alias: "V-1831",     total: "€38.400",  count: 1, confirmed: false, clue: null },
-  { id: "ben-3", name: "calm_voice",      alias: "Forum alias", total: "€9.900",  count: 1, confirmed: true,  clue: "calm_voice — псевдоним на оператор, бенефициер на TX-0023 (22:17)" },
-  { id: "ben-4", name: "CIRCUIT-3",       alias: "Token",       total: "€14.750", count: 1, confirmed: false, clue: null },
-  { id: "ben-5", name: "[INTERNAL]",      alias: "NS-0",        total: "€2.800",  count: 2, confirmed: false, clue: null },
+  { id: "ben-1", name: "NightKiller (Д. Михайлов)", alias: "Транспорт",    total: "€3.200",  count: 1, confirmed: true,  clue: "NightKiller получи €3.200 за 'транспорт' на 14.10 — ден преди операцията. Телефон: +359 88 412 1221" },
+  { id: "ben-2", name: "Захарна фабрика",            alias: "Наем",         total: "€12.000", count: 1, confirmed: true,  clue: "Захарна фабрика — наета от Братство за €12.000 от 01.10.2025. Западно крило, стая 9" },
+  { id: "ben-3", name: "Аптека Витал",               alias: "Доставчик",    total: "€430",    count: 2, confirmed: true,  clue: "Аптека Витал — две продажби на тетрабеназин без рецепта към Р. Алексиев (€250 + €180)" },
+  { id: "ben-4", name: "Shell, ул. Бенковски",       alias: "Зареждане",    total: "€85",     count: 1, confirmed: false, clue: null },
+  { id: "ben-5", name: "[INTERNAL]",                 alias: "Неизвестен",   total: "€700",    count: 1, confirmed: false, clue: null },
 ]
 
 export default function FinanceBeneficiariesPage() {

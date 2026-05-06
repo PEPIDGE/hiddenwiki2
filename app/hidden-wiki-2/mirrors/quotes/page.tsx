@@ -9,12 +9,12 @@ import { getGameState, saveGameState, addClue } from "@/lib/game-state"
 const ACCENT = "#00BFFF"
 
 const QUOTES = [
-  { id: "Q1", author: "Unknown // ARS-REFLECT", text: "Огледалото не лъже — лъже онзи, който го гледа.", suspicious: false },
-  { id: "Q2", author: "Operator // NS-0", text: "Когато hops≠3, сигналът е фалшив. Не следвай.", suspicious: true, clue: "NS-0 оператор: hops=3 е критерий за реален сигнал" },
-  { id: "Q3", author: "ARS Internal // Log-33", text: "Трансакцията е одобрена в 03:17. Документирайте.", suspicious: true, clue: "03:17 — ARS трансакция / времеви маркер" },
-  { id: "Q4", author: "Анонимен // Thread #881", text: "Черният автомобил паркира пред входа в 18:30. Запомних.", suspicious: false },
-  { id: "Q5", author: "B.ORC Handler", text: "Доставката е в петък. Адресът се предава по отделен канал.", suspicious: false },
-  { id: "Q6", author: "ARS Archive // V-1831", text: "Огледалото беше последното нещо, което взех от апартамент 13B.", suspicious: true, clue: "Апартамент 13B — ARS архивна връзка" },
+  { id: "Q1", author: "Неизвестен // Братство", text: "Огледалото не показва лицето — показва намерението.", suspicious: false },
+  { id: "Q2", author: "NullSyn // leaks/operators", text: "route-17-night е потвърден от мен. Доверявайте се на координатите.", suspicious: true, clue: "NullSyn потвърждава route-17-night — но NullSyn е компрометиран (HOPS=2). Decoy!" },
+  { id: "Q3", author: "GothGirl // cult/chat-system", text: "Чат системата е затворена. Паролата е сменена. Не знам кой е влязъл.", suspicious: true, clue: "GothGirl потвърждава: паролата е сменена без нея — BruteForce в /blackmarket може да я разбие" },
+  { id: "Q4", author: "Анонимен // forum/deadletters", text: "Черният автомобил паркира пред бл. 14 в 22:09. Запомних таблото.", suspicious: false },
+  { id: "Q5", author: "RedFox // cult/operators", text: "Операцията е успешна. Лора е на сигурно място.", suspicious: true, clue: "RedFox счита Лора на 'сигурно място' — потвърждава задържането. Лора е в Захарна фабрика" },
+  { id: "Q6", author: "system_leak // forum", text: "Телефонът на Лора беше намерен в стая 9. Западно крило. Жълто-черна лента.", suspicious: false },
 ]
 
 export default function MirrorsQuotesPage() {

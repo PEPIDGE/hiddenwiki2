@@ -10,40 +10,54 @@ const ACCENT = "#00FF9F"
 
 const THREADS = [
   {
-    id: "T-001", author: "anon_7731", title: "Видях черния Audi пред 13B", replies: 3, flagged: true,
+    id: "T-001", author: "anon_6612", title: "Видях черния Audi пред бл. 14 в 22:09", replies: 5, flagged: true,
     posts: [
-      { id: "P1", author: "anon_7731", time: "22:04", text: "Паркира точно в 18:30. Шофьорът не излезе. Светлините не се изгасиха. Чакаше някой." },
-      { id: "P2", author: "anon_4421", time: "22:09", text: "Сигурен ли си за часа? 18:30 е важно." },
-      { id: "P3", author: "anon_7731", time: "22:12", text: "100%. Имам и снимка но GPS е изтрит." },
+      { id: "P1", author: "anon_6612", time: "22:14", text: "Паркира пред бл. 14 в 22:09. Шофьорът не излезе. Двигателят не се изгаси. Светлините бяха наполовина. Чакаше." },
+      { id: "P2", author: "anon_4421", time: "22:18", text: "Сигурен ли си за часа? 22:09 е точно преди изчезването." },
+      { id: "P3", author: "anon_6612", time: "22:21", text: "100%. Табелата беше СА ○○○○ — нещо 4 цифри. Черен A3 или A4." },
+      { id: "P4", author: "anon_6612", time: "22:28", text: "Лора слезе около 22:12. Отиде към колата. Повече не я видях." },
+      { id: "P5", author: "mod_01", time: "23:00", text: "[MOD] Тема маркирана за преглед." },
     ],
-    clue: "Очевидец: черен Audi пред 13B в 18:30 — шофьорът не излезе",
+    clue: "Очевидец: черен Audi пред бл. 14 в 22:09 — Лора се качи около 22:12",
   },
   {
-    id: "T-002", author: "null_user", title: "calm_voice е реален", replies: 7, flagged: true,
+    id: "T-002", author: "null_user", title: "GothGirl е компрометирана", replies: 4, flagged: true,
     posts: [
-      { id: "P1", author: "null_user", time: "01:14", text: "Чувал съм записа от 22:17. Разпознаваем глас. Не е синтетичен — има характерен breathing pattern." },
-      { id: "P2", author: "decoy_bot", time: "01:19", text: "Всичко е AI генерирано. Не вярвайте." },
-      { id: "P3", author: "null_user", time: "01:22", text: "Decoy bot потвърди подозренията ми." },
+      { id: "P1", author: "null_user", time: "01:14", text: "Паролата на GothGirl е сменена без нейно знание на 12.10. Тя не знае. Някой е влязъл в акаунта й." },
+      { id: "P2", author: "DataCracker6_real", time: "01:19", text: "Потвърждавам. Логовете показват вход от непознат IP в 03:17 на 12.10." },
+      { id: "P3", author: "null_user", time: "01:24", text: "Новата парола може да се разбие. Вижте /blackmarket — BruteForce." },
+      { id: "P4", author: "mod_01", time: "02:00", text: "[MOD] Тема маркирана." },
     ],
-    clue: "calm_voice = реален оператор — разпознаваем глас с breathing pattern",
+    clue: "GothGirl — паролата сменена без знанието й на 12.10. Нов IP в 03:17. Решение: BruteForce в /blackmarket",
   },
   {
-    id: "T-003", author: "ARS_watcher", title: "ARS и огледалата са decoy", replies: 0, flagged: false,
-    posts: [{ id: "P1", author: "ARS_watcher", time: "17:30", text: "Всичко свързано с ARS е предназначено да те отклони. Не следвай. CIRCUIT-3 е реалният артефакт." }],
+    id: "T-003", author: "NullSyn_watcher", title: "NullSyn дава фалшиви координати", replies: 0, flagged: false,
+    posts: [
+      { id: "P1", author: "NullSyn_watcher", time: "17:30", text: "NullSyn е компрометиран (HOPS=2 в /cult/operators). Документите от него са фалшиви. route-17-night = decoy. Не следвай." },
+    ],
     clue: null,
   },
   {
-    id: "T-004", author: "system_leak", title: "CIRCUIT-3 е последният архитект", replies: 12, flagged: true,
+    id: "T-004", author: "system_leak", title: "Захарна фабрика — западно крило, стая 9", replies: 9, flagged: true,
     posts: [
-      { id: "P1", author: "system_leak", time: "03:17", text: "Виена 1891. Транзакцията в 03:17 всяка нощ. Следвай числата, не имената. CIRCUIT-3 = Р.А." },
-      { id: "P2", author: "anon_7731", time: "03:19", text: "Р.А. — Румен Алексиев?" },
-      { id: "P3", author: "system_leak", time: "03:21", text: "Документирай само това: A_lexiev_contract.pdf" },
+      { id: "P1", author: "system_leak", time: "10:00", text: "Получих сигнал от охранителна камера. 01:30 на 16.10 — движение в западното крило на Захарна фабрика." },
+      { id: "P2", author: "anon_6612", time: "10:05", text: "Лора беше ли там?" },
+      { id: "P3", author: "system_leak", time: "10:09", text: "Телефонът й е намерен там на 17.10. Стая 9. Жълто-черна лента на вратата." },
+      { id: "P4", author: "RF_witness", time: "11:00", text: "Потвърждавам — 3 превозни средства излязоха от западния вход в 02:15." },
     ],
-    clue: "CIRCUIT-3 = Р.А. — Румен Алексиев. Транзакция 03:17. Файл: A_lexiev_contract.pdf",
+    clue: "Захарна фабрика — западно крило, стая 9. Телефонът на Лора намерен 17.10. Три коли излязоха в 02:15",
   },
   {
-    id: "T-005", author: "decoy_bot", title: "TRACE-NODE е мит", replies: 0, flagged: false,
-    posts: [{ id: "P1", author: "decoy_bot", time: "09:00", text: "Няма краен нод. Целта е процесът, не финалът. [AUTOMATED]" }],
+    id: "T-005", author: "RF_witness", title: "RedFox = Р. Алексиев — тетрабеназин", replies: 2, flagged: true,
+    posts: [
+      { id: "P1", author: "RF_witness", time: "14:00", text: "Видях разписката. Р. Алексиев е купил тетрабеназин (наркотик, потиска движението) два пъти от Аптека Витал — без рецепта. Последно: 10.10.2025." },
+      { id: "P2", author: "anon_4421", time: "14:10", text: "Тетрабеназин... това е лекарство за потискане на волевото движение. Може да се използва за... задържане?" },
+    ],
+    clue: "RF_witness: Р. Алексиев купи тетрабеназин (наркотик) без рецепта от Аптека Витал — 10.10.2025",
+  },
+  {
+    id: "T-006", author: "decoy_bot", title: "Всичко е измислено — спрете", replies: 0, flagged: false,
+    posts: [{ id: "P1", author: "decoy_bot", time: "09:00", text: "Спрете да търсите. Няма случай. [AUTOMATED MESSAGE — IGNORE]" }],
     clue: null,
   },
 ]

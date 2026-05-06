@@ -13,7 +13,7 @@ const BOOT_LINES: { text: string; delay: number; color?: string }[] = [
   { text: "  [OK] Entropy pool: HIGH (512bit)", delay: 760 },
   { text: "  [OK] Session token: " + Math.random().toString(36).slice(2, 10).toUpperCase(), delay: 940 },
   { text: "  [!!] 2 anomalous transactions in ledger", delay: 1180, color: "#FF0033" },
-  { text: "  [OK] Evidence index decrypted", delay: 1380 },
+  { text: "  [OK] Evidence index decrypted — Лора Костова / 15.10.2025", delay: 1380 },
   { text: "$ HIDDEN WIKI 2 — ready. 8 portals online.", delay: 1600, color: "#00FF41" },
 ]
 

@@ -25,16 +25,18 @@ export interface GameState {
   attempts: Record<string, number>
   cooldownUntil: Record<string, number>
   progress: number
+  hiddenCoins: number
 }
 
 export const INITIAL_STATE: GameState = {
   unlockedRoutes: [
     "/hidden-wiki-2/red-room",
-    "/hidden-wiki-2/mirrors",
     "/hidden-wiki-2/leaks",
-    "/hidden-wiki-2/events",
     "/hidden-wiki-2/cult",
+    "/hidden-wiki-2/events",
     "/hidden-wiki-2/forum",
+    "/hidden-wiki-2/finance",
+    "/hidden-wiki-2/getrich",
   ],
   visitedRoutes: [],
   solvedPuzzles: [],
@@ -43,6 +45,7 @@ export const INITIAL_STATE: GameState = {
   attempts: {},
   cooldownUntil: {},
   progress: 0,
+  hiddenCoins: 1000000,
 }
 
 export const ROUTES_CONFIG = [
@@ -53,16 +56,7 @@ export const ROUTES_CONFIG = [
     accentColor: "#FF0033",
     status: "ENTRY",
     locked: false,
-    sublinks: ["/frames", "/chat-replay", "/operator-view"],
-  },
-  {
-    id: "mirrors",
-    path: "/hidden-wiki-2/mirrors",
-    label: "MIRRORS",
-    accentColor: "#00BFFF",
-    status: "ACTIVE",
-    locked: false,
-    sublinks: ["/gallery", "/quotes", "/cache"],
+    sublinks: ["/full-truth", "/donors", "/chat-replay", "/signal-log"],
   },
   {
     id: "leaks",
@@ -71,16 +65,7 @@ export const ROUTES_CONFIG = [
     accentColor: "#FFD700",
     status: "ACTIVE",
     locked: false,
-    sublinks: ["/vault", "/docs", "/hash-lab", "/members"],
-  },
-  {
-    id: "events",
-    path: "/hidden-wiki-2/events",
-    label: "EVENTS",
-    accentColor: "#FF6B00",
-    status: "ACTIVE",
-    locked: false,
-    sublinks: ["/calendar", "/albums", "/tickets", "/venues"],
+    sublinks: ["/docs", "/archive", "/vehicles", "/cards", "/passwords", "/phones"],
   },
   {
     id: "cult",
@@ -89,7 +74,16 @@ export const ROUTES_CONFIG = [
     accentColor: "#CC44FF",
     status: "ACTIVE",
     locked: false,
-    sublinks: ["/doctrine", "/ritual", "/status", "/operators", "/forum"],
+    sublinks: ["/operators", "/chat-system"],
+  },
+  {
+    id: "events",
+    path: "/hidden-wiki-2/events",
+    label: "EVENTS",
+    accentColor: "#FF6B00",
+    status: "ACTIVE",
+    locked: false,
+    sublinks: ["/calendar", "/albums", "/guestbook"],
   },
   {
     id: "forum",
@@ -105,9 +99,27 @@ export const ROUTES_CONFIG = [
     path: "/hidden-wiki-2/finance",
     label: "FINANCE",
     accentColor: "#FF3366",
+    status: "ACTIVE",
+    locked: false,
+    sublinks: ["/transactions", "/anomalies", "/beneficiaries"],
+  },
+  {
+    id: "getrich",
+    path: "/hidden-wiki-2/getrich",
+    label: "GETRICH",
+    accentColor: "#00FF41",
+    status: "ACTIVE",
+    locked: false,
+    sublinks: [],
+  },
+  {
+    id: "mirrors",
+    path: "/hidden-wiki-2/mirrors",
+    label: "MIRRORS",
+    accentColor: "#00BFFF",
     status: "LOCKED",
     locked: true,
-    sublinks: ["/transactions", "/anomalies", "/beneficiaries"],
+    sublinks: ["/gallery", "/quotes", "/cache"],
   },
   {
     id: "trace-node",
@@ -121,11 +133,11 @@ export const ROUTES_CONFIG = [
 ]
 
 export const CANON_ANCHORS = [
-  { id: "anchor-1", label: "18:30", description: "Час на излизане" },
-  { id: "anchor-2", label: "Черен Audi A3", description: "Превозно средство" },
-  { id: "anchor-3", label: "22:17", description: "Телефонът пада" },
-  { id: "anchor-4", label: "03:17", description: "Повтарящ се мотив" },
-  { id: "anchor-5", label: "Огледален преход", description: "Покана — без локация" },
+  { id: "anchor-1", label: "22:09", description: "Черен Audi A3 пред бл. 14" },
+  { id: "anchor-2", label: "22:12", description: "Последен сигнал на Лора" },
+  { id: "anchor-3", label: "+359 88 412 1221", description: "Телефон на NightKiller / Братство" },
+  { id: "anchor-4", label: "Захарна фабрика — стая 9", description: "Местоположение на Лора" },
+  { id: "anchor-5", label: "Р. Алексиев / RedFox", description: "Организаторът — тетрабеназин" },
 ]
 
 export function getGameState(): GameState {
@@ -172,6 +184,23 @@ export function addClue(state: GameState, clue: Clue): GameState {
   }
   newState.progress = calculateProgress(newState)
   return newState
+}
+
+export function addCoins(state: GameState, amount: number): GameState {
+  const newState = { ...state, hiddenCoins: (state.hiddenCoins ?? 0) + amount }
+  saveGameState(newState)
+  return newState
+}
+
+export function spendCoins(state: GameState, amount: number): GameState | null {
+  if ((state.hiddenCoins ?? 0) < amount) return null
+  const newState = { ...state, hiddenCoins: (state.hiddenCoins ?? 0) - amount }
+  saveGameState(newState)
+  return newState
+}
+
+export function getCoins(state: GameState): number {
+  return state.hiddenCoins ?? 0
 }
 
 export function calculateProgress(state: GameState): number {

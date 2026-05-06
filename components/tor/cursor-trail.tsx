@@ -1,164 +1,150 @@
 "use client"
 
-import { useEffect, useRef, useCallback } from "react"
+import React, { useEffect, useMemo, useRef } from "react"
 
-export function CursorTrail() {
+type Point = { x: number; y: number; a: number }
+
+export function CursorTrail({
+  color = "#00FF41",
+  maxPoints = 14,
+  fade = 0.9,
+}: {
+  color?: string
+  maxPoints?: number
+  fade?: number
+}) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const trailRef = useRef<{ x: number; y: number; alpha: number }[]>([])
-  const mouseRef = useRef({ x: -100, y: -100 })
-  const rafRef = useRef<number>(0)
   const dotRef = useRef<HTMLDivElement>(null)
-  const ringRef = useRef<HTMLDivElement>(null)
-  const isHoverRef = useRef(false)
 
-  const draw = useCallback(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext("2d")
-    if (!ctx) return
+  const rafRef = useRef<number | null>(null)
+  const trailRef = useRef<Point[]>([])
+  const mouseRef = useRef({ x: -1000, y: -1000 })
+  const lastRef = useRef({ x: -1000, y: -1000 })
+  const hoveringRef = useRef(false)
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
+  const movingRef = useRef(false)
+  const stopTimerRef = useRef<number | null>(null)
 
-    trailRef.current.push({ x: mouseRef.current.x, y: mouseRef.current.y, alpha: 0.5 })
-    if (trailRef.current.length > 20) trailRef.current.shift()
-
-    trailRef.current.forEach((pt, i) => {
-      const ratio = i / trailRef.current.length
-      ctx.beginPath()
-      ctx.rect(pt.x - 1, pt.y - 1, 2, 2)
-      ctx.fillStyle = `rgba(0,255,65,${pt.alpha * ratio * 0.5})`
-      ctx.fill()
-      pt.alpha *= 0.9
-    })
-
-    rafRef.current = requestAnimationFrame(draw)
+  const isTouchLike = useMemo(() => {
+    if (typeof window === "undefined") return false
+    return matchMedia("(pointer: coarse)").matches
   }, [])
 
   useEffect(() => {
+    if (isTouchLike) return
+
     const canvas = canvasRef.current
-    if (!canvas) return
+    const dot = dotRef.current
+    if (!canvas || !dot) return
 
-    const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight }
-    resize()
-    window.addEventListener("resize", resize)
-
-    const onMove = (e: MouseEvent) => {
-      mouseRef.current = { x: e.clientX, y: e.clientY }
-      if (dotRef.current) {
-        dotRef.current.style.transform = `translate(${e.clientX - 3}px, ${e.clientY - 3}px)`
-      }
-      if (ringRef.current) {
-        ringRef.current.style.transform = `translate(${e.clientX - 14}px, ${e.clientY - 14}px)`
-      }
-      // Check if hovering a link or button
-      const el = document.elementFromPoint(e.clientX, e.clientY)
-      const isInteractive = el?.closest("a, button, [role='button'], [tabindex], input, textarea") !== null
-      if (isInteractive !== isHoverRef.current) {
-        isHoverRef.current = isInteractive
-        if (dotRef.current) {
-          dotRef.current.style.background = isInteractive ? "#ffffff" : "#00FF41"
-          dotRef.current.style.boxShadow = isInteractive
-            ? "0 0 6px #ffffff, 0 0 12px rgba(255,255,255,0.3)"
-            : "0 0 6px #00FF41, 0 0 12px rgba(0,255,65,0.3)"
-        }
-        if (ringRef.current) {
-          ringRef.current.style.opacity = isInteractive ? "0.6" : "0.2"
-          ringRef.current.style.transform = `translate(${e.clientX - 14}px, ${e.clientY - 14}px) scale(${isInteractive ? 1.5 : 1})`
-        }
-      }
-    }
-
-    window.addEventListener("mousemove", onMove)
-    rafRef.current = requestAnimationFrame(draw)
-
-    return () => {
-      window.removeEventListener("resize", resize)
-      window.removeEventListener("mousemove", onMove)
-      cancelAnimationFrame(rafRef.current)
-    }
-  }, [draw])
-
-  return (
-    <>
-      <canvas ref={canvasRef} style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 9990 }} />
-      {/* Square dot */}
-      <div ref={dotRef} style={{
-        position: "fixed", top: 0, left: 0, width: 6, height: 6,
-        background: "#00FF41", pointerEvents: "none", zIndex: 9993,
-        boxShadow: "0 0 6px #00FF41, 0 0 12px rgba(0,255,65,0.3)",
-        transition: "background 0.1s, box-shadow 0.1s, transform 0.04s linear",
-      }} />
-      {/* Outer ring */}
-      <div ref={ringRef} style={{
-        position: "fixed", top: 0, left: 0, width: 28, height: 28,
-        border: "1px solid rgba(0,255,65,0.4)", pointerEvents: "none", zIndex: 9992,
-        transition: "opacity 0.15s, transform 0.12s linear, scale 0.15s",
-        opacity: 0.2,
-      }} />
-    </>
-  )
-}
-
-
-  const draw = useCallback(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
     const ctx = canvas.getContext("2d")
     if (!ctx) return
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-    // Add new point
-    trailRef.current.push({
-      x: mouseRef.current.x,
-      y: mouseRef.current.y,
-      alpha: 0.7,
-      size: 3,
-    })
-
-    // Keep only last 28 points
-    if (trailRef.current.length > 28) trailRef.current.shift()
-
-    // Draw trail
-    trailRef.current.forEach((point, i) => {
-      const ratio = i / trailRef.current.length
-      ctx.beginPath()
-      ctx.arc(point.x, point.y, point.size * ratio, 0, Math.PI * 2)
-      ctx.fillStyle = `rgba(0, 255, 65, ${point.alpha * ratio * 0.6})`
-      ctx.fill()
-      point.alpha *= 0.95
-    })
-
-    rafRef.current = requestAnimationFrame(draw)
-  }, [])
-
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
 
     const resize = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
+      const dpr = Math.max(1, window.devicePixelRatio || 1)
+      canvas.width = Math.floor(window.innerWidth * dpr)
+      canvas.height = Math.floor(window.innerHeight * dpr)
+      canvas.style.width = `${window.innerWidth}px`
+      canvas.style.height = `${window.innerHeight}px`
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
     }
+
     resize()
     window.addEventListener("resize", resize)
 
-    const onMove = (e: MouseEvent) => {
-      mouseRef.current = { x: e.clientX, y: e.clientY }
-      if (dotRef.current) {
-        dotRef.current.style.transform = `translate(${e.clientX - 4}px, ${e.clientY - 4}px)`
-      }
+    const findInteractive = (x: number, y: number) => {
+      const el = document.elementFromPoint(x, y) as HTMLElement | null
+      if (!el) return false
+      return (
+        el.closest(
+          "a,button,[role='button'],[tabindex]:not([tabindex='-1']),input,textarea,select"
+        ) !== null
+      )
     }
-    window.addEventListener("mousemove", onMove)
 
-    rafRef.current = requestAnimationFrame(draw)
+    const startLoopIfNeeded = () => {
+      if (movingRef.current) return
+      movingRef.current = true
+
+      const loop = () => {
+        // ако вече не се движи – спираме да рендваме
+        if (!movingRef.current) return
+
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight)
+
+        const { x, y } = mouseRef.current
+        const { x: lx, y: ly } = lastRef.current
+        const moved = Math.abs(x - lx) + Math.abs(y - ly) > 0.5
+
+        if (moved) {
+          lastRef.current = { x, y }
+          trailRef.current.push({ x, y, a: 0.5 })
+          if (trailRef.current.length > maxPoints) trailRef.current.shift()
+        }
+
+        const pts = trailRef.current
+        for (let i = 0; i < pts.length; i++) {
+          const p = pts[i]
+          const t = (i + 1) / pts.length
+          ctx.fillStyle = `rgba(0,255,65,${p.a * t * 0.45})`
+          ctx.fillRect(p.x - 1, p.y - 1, 2, 2)
+          p.a *= fade
+        }
+
+        // плавно угасване след като спрем движението
+        if (!moved && pts.length) {
+          // оставяме още малко да доизгасне
+          const allFaded = pts.every((p) => p.a < 0.02)
+          if (allFaded) {
+            trailRef.current = []
+            ctx.clearRect(0, 0, window.innerWidth, window.innerHeight)
+            movingRef.current = false
+            rafRef.current = null
+            return
+          }
+        }
+
+        rafRef.current = requestAnimationFrame(loop)
+      }
+
+      rafRef.current = requestAnimationFrame(loop)
+    }
+
+    const onMove = (e: MouseEvent) => {
+      const x = e.clientX
+      const y = e.clientY
+      mouseRef.current = { x, y }
+
+      // dot follow
+      dot.style.transform = `translate(${x - 4}px, ${y - 4}px)`
+
+      // hover pulse
+      const isInteractive = findInteractive(x, y)
+      if (isInteractive !== hoveringRef.current) {
+        hoveringRef.current = isInteractive
+        dot.dataset.hover = isInteractive ? "1" : "0"
+      }
+
+      // start draw loop on movement + stop after short idle
+      startLoopIfNeeded()
+      if (stopTimerRef.current) window.clearTimeout(stopTimerRef.current)
+      stopTimerRef.current = window.setTimeout(() => {
+        // не го спирам веднага — loop сам ще приключи като изгасне trail
+        // просто не добавяме нови точки ако няма движение
+      }, 120)
+    }
+
+    window.addEventListener("mousemove", onMove, { passive: true })
 
     return () => {
       window.removeEventListener("resize", resize)
       window.removeEventListener("mousemove", onMove)
-      cancelAnimationFrame(rafRef.current)
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+      if (stopTimerRef.current) window.clearTimeout(stopTimerRef.current)
     }
-  }, [draw])
+  }, [color, fade, isTouchLike, maxPoints])
+
+  if (isTouchLike) return null
 
   return (
     <>
@@ -171,21 +157,40 @@ export function CursorTrail() {
           zIndex: 9990,
         }}
       />
+
       <div
         ref={dotRef}
+        data-hover="0"
         style={{
           position: "fixed",
           top: 0,
           left: 0,
           width: 8,
           height: 8,
-          background: "#00FF41",
+          background: color,
           pointerEvents: "none",
-          zIndex: 9991,
-          boxShadow: "0 0 8px #00FF41, 0 0 16px rgba(0,255,65,0.4)",
-          transition: "transform 0.05s linear",
+          zIndex: 9993,
+          boxShadow: `0 0 8px rgba(0,255,65,0.35)`,
+          transition: "transform 0.03s linear",
+          // hover pulse via CSS vars-ish
+          animation: "none",
         }}
       />
+
+      {/* local CSS (можеш да го сложиш в globals.css вместо това) */}
+      <style>{`
+        [data-hover="1"]{
+          width: 10px !important;
+          height: 10px !important;
+          box-shadow: 0 0 10px rgba(0,255,65,0.55), 0 0 18px rgba(0,255,65,0.25) !important;
+          animation: cursorPulse 0.9s ease-in-out infinite;
+        }
+        @keyframes cursorPulse{
+          0%   { transform: translate(var(--x, 0px), var(--y, 0px)) scale(1);   opacity: 1; }
+          50%  { transform: translate(var(--x, 0px), var(--y, 0px)) scale(1.35); opacity: .85; }
+          100% { transform: translate(var(--x, 0px), var(--y, 0px)) scale(1);   opacity: 1; }
+        }
+      `}</style>
     </>
   )
 }

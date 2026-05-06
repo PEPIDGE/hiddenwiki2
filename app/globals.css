@@ -5,24 +5,24 @@
 
 :root {
   /* TorShell — Dark Web Brutalist Theme */
-  --background: #030303;
-  --foreground: #d0d0d0;
-  --card: #070707;
-  --card-foreground: #d0d0d0;
-  --popover: #0a0a0a;
-  --popover-foreground: #d0d0d0;
+  --background: #050505;
+  --foreground: #e8e8e8;
+  --card: #0a0a0a;
+  --card-foreground: #e8e8e8;
+  --popover: #0d0d0d;
+  --popover-foreground: #e8e8e8;
   --primary: #00FF41;
   --primary-foreground: #030303;
-  --secondary: #0e0e0e;
-  --secondary-foreground: #666666;
-  --muted: #0e0e0e;
-  --muted-foreground: #666666;
+  --secondary: #111111;
+  --secondary-foreground: #d0d0d0;
+  --muted: #111111;
+  --muted-foreground: #c0c0c0;
   --accent: #00FF41;
   --accent-foreground: #030303;
   --destructive: #ff1a1a;
   --destructive-foreground: #030303;
-  --border: #181818;
-  --input: #0e0e0e;
+  --border: #222222;
+  --input: #111111;
   --ring: #00FF41;
   --radius: 0rem;
 
@@ -36,8 +36,8 @@
   --site-finance: #FF3366;
   --site-trace: #00FF41;
 
-  --panel-bg: #060606;
-  --panel-border: #181818;
+  --panel-bg: #080808;
+  --panel-border: #222222;
   --scanline-opacity: 0.04;
 }
 
@@ -92,6 +92,22 @@
   p, li, div, span, td, th {
     color: inherit;
   }
+
+  /* Ensure page text is always readable */
+  p { color: var(--foreground); font-size: 0.95rem; line-height: 1.7; }
+  h1, h2, h3, h4, h5 { color: var(--foreground); }
+
+  /* Better label contrast globally */
+  label { color: var(--foreground); }
+  
+  /* Table defaults */
+  table { border-collapse: collapse; }
+  th { color: #cccccc; font-size: 0.7rem; letter-spacing: 0.12em; font-weight: 700; }
+  td { color: var(--foreground); font-size: 0.85rem; }
+
+  /* Minimum contrast for tiny mono labels — the dark #444/#555/#2a2a2a used throughout */
+  .text-dim { color: #888 !important; }
+  .label-dim { color: #999 !important; font-size: 0.7rem; }
 
   ::-webkit-scrollbar {
     width: 3px;

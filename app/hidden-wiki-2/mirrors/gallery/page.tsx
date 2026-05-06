@@ -9,12 +9,12 @@ import { getGameState, saveGameState, addClue } from "@/lib/game-state"
 const ACCENT = "#00BFFF"
 
 const ARTIFACTS = [
-  { id: "ARS-001", label: "Огледало I", desc: "Рефлектор — позлатена рамка. Инвентарен №: V-1831.", anomaly: false, tags: ["ARS", "catalog"] },
-  { id: "ARS-002", label: "Огледало II", desc: "Двойно отражение — предмет с нечетна симетрия.", anomaly: true, reveal: "18:30 в метаданните", tags: ["ARS", "time-ref"] },
-  { id: "ARS-003", label: "Огледало III", desc: "Фрагментиран панел — произход: Виена, 1891.", anomaly: false, tags: ["ARS", "origin"] },
-  { id: "ARS-004", label: "Фотограф-документ", desc: "Черно-бяла снимка. GPS координати премахнати.", anomaly: false, tags: ["doc", "redacted"] },
-  { id: "ARS-005", label: "Транзакционен запис", desc: "Плащане — €3.400 / дата: **обфускирана**.", anomaly: true, reveal: "Audi A3 фигурира в описанието", tags: ["finance", "vehicle"] },
-  { id: "ARS-006", label: "Инвентарен лист", desc: "17 позиции — позиция 7 е заличена.", anomaly: false, tags: ["catalog", "redacted"] },
+  { id: "OGL-001", label: "Лого на Огледален преход", desc: "Официален флаер от NDK събитие. Датиран 21.09.2025.", anomaly: false, tags: ["events", "ogledalen"] },
+  { id: "OGL-002", label: "Снимка — Лора и NightKiller", desc: "Силует с черна качулка до Лора. Снимка #14 от ALB-01.", anomaly: true, reveal: "Силует на NightKiller до Лора на Огледален преход 21.09 — 3 седмици преди изчезването", tags: ["people", "key"] },
+  { id: "OGL-003", label: "Покана за 15.10", desc: "Ръкописна покана. Без адрес. Намерена в телефона на Лора.", anomaly: true, reveal: "Ръкописна покана до Лора за Огледален преход 15.10 — без подател, без адрес", tags: ["doc", "key"] },
+  { id: "OGL-004", label: "Символ на Братството", desc: "Гравиран на стена в Захарна фабрика. Съвпада с фенерчето от стая 7.", anomaly: false, tags: ["cult", "bratstvo"] },
+  { id: "OGL-005", label: "Снимка — Черен Audi пред NDK", desc: "Снимка #18 от ALB-01. Рег. частично четима: СА ○○○○.", anomaly: true, reveal: "Черен Audi A3 пред NDK на 21.09.2025 — регистрация СА ****. Съвпада с MATCH в /leaks/vehicles", tags: ["vehicle", "key"] },
+  { id: "OGL-006", label: "Стая 9 — Захарна фабрика", desc: "Документален снимков запис. Жълто-черна лента. Залостена отвътре.", anomaly: false, tags: ["location", "zaharna"] },
 ]
 
 export default function MirrorsGalleryPage() {

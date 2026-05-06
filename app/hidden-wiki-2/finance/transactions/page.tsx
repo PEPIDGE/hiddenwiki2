@@ -8,13 +8,13 @@ import { SortableTable } from "@/components/tor/sortable-table"
 const ACCENT = "#FF3366"
 
 const TRANSACTIONS = [
-  { id: "TX-0019", amount: "€38.400", from: "[REDACTED]", to: "Виена 1891 // V-1831", time: "03:17", method: "CRYPTO", flag: "HIGH" },
-  { id: "TX-0020", amount: "€2.100",  from: "NS-0",        to: "[INTERNAL]",           time: "09:00", method: "WIRE",   flag: null },
-  { id: "TX-0021", amount: "€14.750", from: "B.ORC",       to: "CIRCUIT-3",            time: "18:30", method: "CRYPTO", flag: "HIGH" },
-  { id: "TX-0022", amount: "€500",    from: "[DECOY]",     to: "[DECOY]",              time: "12:00", method: "CASH",  flag: null },
-  { id: "TX-0023", amount: "€9.900",  from: "ARS-REFLECT", to: "calm_voice",           time: "22:17", method: "CRYPTO", flag: "HIGH" },
-  { id: "TX-0024", amount: "€700",    from: "NS-0",        to: "[INTERNAL]",           time: "08:45", method: "WIRE",  flag: null },
-  { id: "TX-0025", amount: "€21.000", from: "R.ALEXIEV",   to: "V-1831",              time: "03:17", method: "CRYPTO", flag: "HIGH" },
+  { id: "TX-2501", amount: "€250",    from: "Р. Алексиев",              to: "Аптека Витал",           time: "05.09 14:30", method: "CARD",   flag: "HIGH" },
+  { id: "TX-2502", amount: "€180",    from: "Р. Алексиев",              to: "Аптека Витал",           time: "10.10 11:15", method: "CARD",   flag: "HIGH" },
+  { id: "TX-2503", amount: "€3.200",  from: "Братство (анон.)",         to: "NightKiller",            time: "14.10 20:00", method: "CRYPTO", flag: "HIGH" },
+  { id: "TX-2504", amount: "€85",     from: "Р. Алексиев",              to: "Shell, ул. Бенковски",   time: "15.10 22:07", method: "CARD",   flag: "HIGH" },
+  { id: "TX-2505", amount: "€12.000", from: "Братство (анон.)",         to: "Захарна фабрика",        time: "01.10 09:00", method: "WIRE",   flag: "HIGH" },
+  { id: "TX-2506", amount: "€500",    from: "[DECOY]",                  to: "[DECOY]",                time: "12.10 12:00", method: "CASH",   flag: null },
+  { id: "TX-2507", amount: "€700",    from: "[INTERNAL]",               to: "[INTERNAL]",             time: "08.10 08:45", method: "WIRE",   flag: null },
 ]
 
 export default function FinanceTransactionsPage() {

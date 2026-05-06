@@ -22,16 +22,16 @@ const SUBLINKS = [
 const MIRROR_CELLS = [
   { id: 1, row: 0, col: 0, mirror: false, label: "α-01" },
   { id: 2, row: 0, col: 1, mirror: false, label: "α-02" },
-  { id: 3, row: 0, col: 2, mirror: true, label: "α-03", fragment: "CIRCUIT-3" },
+  { id: 3, row: 0, col: 2, mirror: true, label: "α-03", fragment: "ZAHARNA" },
   { id: 4, row: 0, col: 3, mirror: false, label: "α-04" },
   { id: 5, row: 1, col: 0, mirror: false, label: "β-01" },
-  { id: 6, row: 1, col: 1, mirror: true, label: "β-02", fragment: "::ARS" },
+  { id: 6, row: 1, col: 1, mirror: true, label: "β-02", fragment: "::STAYA" },
   { id: 7, row: 1, col: 2, mirror: false, label: "β-03" },
   { id: 8, row: 1, col: 3, mirror: false, label: "β-04" },
   { id: 9, row: 2, col: 0, mirror: false, label: "γ-01" },
   { id: 10, row: 2, col: 1, mirror: false, label: "γ-02" },
   { id: 11, row: 2, col: 2, mirror: false, label: "γ-03" },
-  { id: 12, row: 2, col: 3, mirror: true, label: "γ-04", fragment: "::VOID" },
+  { id: 12, row: 2, col: 3, mirror: true, label: "γ-04", fragment: "::9" },
 ]
 
 const MIRROR_COUNT = MIRROR_CELLS.filter((c) => c.mirror).length
@@ -90,12 +90,12 @@ export default function MirrorsPage() {
     if (saved) return
     const gs = getGameState()
     const updated = addClue(gs, {
-      id: "mirrors-circuit3",
-      title: `Token CIRCUIT-3 (от MIRRORS) — ${token}`,
-      text: "Три огледални клетки в рефлекторната мрежа съдържат разпределен токен. Фрагменти: CIRCUIT-3 + ::ARS + ::VOID. Пълен токен: CIRCUIT-3::ARS::VOID. Необходим за OPERATOR VIEW.",
+      id: "mirrors-location-token",
+      title: `Локация от огледалната мрежа — ${token}`,
+      text: "Три огледални клетки съдържат скрита локация: ZAHARNA::STAYA::9 = Захарна фабрика, западно крило, стая 9. Потвърдено от независим source.",
       sourceRoute: "/mirrors",
-      confidence: 4,
-      status: "unverified",
+      confidence: 5,
+      status: "confirmed",
     })
     saveGameState(updated)
     setSaved(true)
@@ -107,7 +107,7 @@ export default function MirrorsPage() {
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
         <div>
           <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.35em", marginBottom: 8 }}>
-            MIRRORS — AURUM RELIC SOCIETY // NODE: ARS-REFLECT
+            MIRRORS — ОГЛЕДАЛЕН ПРЕХОД // CULT-MIRROR-NET
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <div style={{

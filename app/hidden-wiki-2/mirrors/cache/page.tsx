@@ -9,11 +9,11 @@ import { getGameState, saveGameState, addClue } from "@/lib/game-state"
 const ACCENT = "#00BFFF"
 
 const CACHE_ENTRIES = [
-  { id: "CACHE-001", path: "/ars/internal/v1831.log", size: "2.4 KB", modified: "2024-11-12 22:17", content: "Транзакционен лог. Поле [VEHICLE]: █████ A3. Поле [TIME]: 22:17.", anomaly: true },
-  { id: "CACHE-002", path: "/ars/public/catalog.json", size: "14.1 KB", modified: "2024-10-05 09:30", content: "[Стандартен каталог. Без аномалии.]", anomaly: false },
-  { id: "CACHE-003", path: "/ars/relay/hop3-config.txt", size: "0.9 KB", modified: "2024-11-30 03:17", content: "HOP_COUNT=3 | RELAY_KEY=CIRCUIT-3 | EXPIRES=0", anomaly: true },
-  { id: "CACHE-004", path: "/ars/archive/photos/", size: "88.3 KB", modified: "2024-09-18 14:00", content: "[Архив снимки. 17 файла. Файл #7 е 0 байта.]", anomaly: false },
-  { id: "CACHE-005", path: "/ns0/decoy/inject.dat", size: "0.1 KB", modified: "2024-12-01 18:30", content: "INJECT_TIMESTAMP=18:30 | SOURCE=NS-0 | TARGET=RED_ROOM", anomaly: true },
+  { id: "CACHE-001", path: "/cult/chat-system/logs/session_1015.log", size: "3.2 KB", modified: "2025-10-15 21:30", content: "CHAT SESSION 15.10.2025 — M-01: 'Операцията е потвърдена за 22:00'. M-06: 'route-17-night е примамка — реалното е Захарна фабрика'. M-09: 'Ритуалът е завършен. Изтрийте следите.'", anomaly: true },
+  { id: "CACHE-002", path: "/events/calendar/2025-10-15.json", size: "1.1 KB", modified: "2025-10-14 20:00", content: "[Календарен запис. Събитие: 'Огледален преход 15.10'. Локация: неизвестна. Гост: Лора Костова. Статус: ПОТВЪРДЕН]", anomaly: false },
+  { id: "CACHE-003", path: "/leaks/vehicles/audi_match.txt", size: "0.8 KB", modified: "2025-10-16 09:00", content: "VEHICLE MATCH: Черен Audi A3 2005 | Тел: +359 88 412 1221 | Д. Михайлов (NightKiller) | V-001, V-003, V-009 — 3 СЪВПАДЕНИЯ", anomaly: true },
+  { id: "CACHE-004", path: "/leaks/passwords/gothgirl_changed.log", size: "0.3 KB", modified: "2025-10-12 03:14", content: "PASSWORD CHANGE: GothGirl | Стара: joko1132 | Нова: [ENCRYPTED] | IP: неизвестен | Дата: 12.10.2025 03:14", anomaly: true },
+  { id: "CACHE-005", path: "/cult/operators/nullsyn_decoy.dat", size: "0.1 KB", modified: "2025-10-13 18:30", content: "NULLSYN | HOPS=2 | STATUS=COMPROMISED | route-17-night = DECOY COORDINATES | Не следвай", anomaly: false },
 ]
 
 export default function MirrorsCachePage() {
