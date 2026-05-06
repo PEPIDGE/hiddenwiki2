@@ -14,6 +14,7 @@ export function CursorTrail({
   fade?: number
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const dotWrapRef = useRef<HTMLDivElement>(null)
   const dotRef = useRef<HTMLDivElement>(null)
 
   const rafRef = useRef<number | null>(null)
@@ -34,8 +35,9 @@ export function CursorTrail({
     if (isTouchLike) return
 
     const canvas = canvasRef.current
+    const dotWrap = dotWrapRef.current
     const dot = dotRef.current
-    if (!canvas || !dot) return
+    if (!canvas || !dotWrap || !dot) return
 
     const ctx = canvas.getContext("2d")
     if (!ctx) return
@@ -86,10 +88,12 @@ export function CursorTrail({
         for (let i = 0; i < pts.length; i++) {
           const p = pts[i]
           const t = (i + 1) / pts.length
-          ctx.fillStyle = `rgba(0,255,65,${p.a * t * 0.45})`
+          ctx.globalAlpha = p.a * t * 0.45
+          ctx.fillStyle = color
           ctx.fillRect(p.x - 1, p.y - 1, 2, 2)
           p.a *= fade
         }
+        ctx.globalAlpha = 1
 
         // плавно угасване след като спрем движението
         if (!moved && pts.length) {
@@ -116,7 +120,7 @@ export function CursorTrail({
       mouseRef.current = { x, y }
 
       // dot follow
-      dot.style.transform = `translate(${x - 4}px, ${y - 4}px)`
+      dotWrap.style.transform = `translate(${x - 4}px, ${y - 4}px)`
 
       // hover pulse
       const isInteractive = findInteractive(x, y)
@@ -159,36 +163,39 @@ export function CursorTrail({
       />
 
       <div
-        ref={dotRef}
-        data-hover="0"
+        ref={dotWrapRef}
         style={{
           position: "fixed",
           top: 0,
           left: 0,
-          width: 8,
-          height: 8,
-          background: color,
           pointerEvents: "none",
           zIndex: 9993,
-          boxShadow: `0 0 8px rgba(0,255,65,0.35)`,
           transition: "transform 0.03s linear",
-          // hover pulse via CSS vars-ish
-          animation: "none",
         }}
-      />
+      >
+        <div
+          ref={dotRef}
+          data-hover="0"
+          style={{
+            width: 8,
+            height: 8,
+            background: color,
+            boxShadow: `0 0 8px ${color}59`,
+          }}
+        />
+      </div>
 
       {/* local CSS (можеш да го сложиш в globals.css вместо това) */}
       <style>{`
         [data-hover="1"]{
           width: 10px !important;
           height: 10px !important;
-          box-shadow: 0 0 10px rgba(0,255,65,0.55), 0 0 18px rgba(0,255,65,0.25) !important;
           animation: cursorPulse 0.9s ease-in-out infinite;
         }
         @keyframes cursorPulse{
-          0%   { transform: translate(var(--x, 0px), var(--y, 0px)) scale(1);   opacity: 1; }
-          50%  { transform: translate(var(--x, 0px), var(--y, 0px)) scale(1.35); opacity: .85; }
-          100% { transform: translate(var(--x, 0px), var(--y, 0px)) scale(1);   opacity: 1; }
+          0%   { transform: scale(1);    opacity: 1; }
+          50%  { transform: scale(1.35); opacity: .85; }
+          100% { transform: scale(1);    opacity: 1; }
         }
       `}</style>
     </>
