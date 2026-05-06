@@ -30,29 +30,82 @@ const STATUS_COLORS: Record<string, string> = {
 
 export default function LeaksVehiclesPage() {
   const [captchaPassed, setCaptchaPassed] = useState(false)
-  const [captchaInput, setCaptchaInput] = useState("")
-  const [captchaError, setCaptchaError] = useState("")
   const [savedClues, setSavedClues] = useState<string[]>([])
   const [filterMatch, setFilterMatch] = useState(false)
   const [selected, setSelected] = useState<string | null>(null)
-  const [captchaCode] = useState(() => {
-    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
-    return Array.from({ length: 5 }, () => chars[Math.floor(Math.random() * chars.length)]).join("")
-  })
+  const [puzzleStep, setPuzzleStep] = useState(0)
+  const [puzzleError, setPuzzleError] = useState("")
+  const [puzzleAttempts, setPuzzleAttempts] = useState(0)
+  const [shake, setShake] = useState(false)
+
+  const PUZZLE_QUESTIONS = [
+    {
+      q: "Виждаш изоставен куфарче без надзор. Какво правиш?",
+      options: [
+        { label: "A", text: "Обаждаш се на 112 незабавно", cop: true },
+        { label: "B", text: "Докладваш на най-близкия служител", cop: true },
+        { label: "C", text: "Продължаваш напред — не е твой проблем", cop: false },
+        { label: "D", text: "Чакаш полицията да пристигне", cop: true },
+      ],
+    },
+    {
+      q: "Приятел ти предлага добре платена работа без детайли. Ти...",
+      options: [
+        { label: "A", text: "Изискваш официален договор и данъчен номер", cop: true },
+        { label: "B", text: "Питаш работодателя за лиценз", cop: true },
+        { label: "C", text: "Казваш \"кога и колко\" — без излишни въпроси", cop: false },
+        { label: "D", text: "Докладваш на властите за подозрителна оферта", cop: true },
+      ],
+    },
+    {
+      q: "Разплащане за услуга. Твоят избор?",
+      options: [
+        { label: "A", text: "Банков превод с пълна документация", cop: true },
+        { label: "B", text: "Официален касов бон + фактура", cop: true },
+        { label: "C", text: "Плащане с дебитна карта", cop: true },
+        { label: "D", text: "Crypto — без следи, без история", cop: false },
+      ],
+    },
+    {
+      q: "Намираш незаключен лаптоп с достъп до чужди данни. Ти...",
+      options: [
+        { label: "A", text: "Търсиш собственика и предаваш устройството", cop: true },
+        { label: "B", text: "Докладваш инцидента на IT отдела", cop: true },
+        { label: "C", text: "Копираш нужното и затваряш — никой не е видял", cop: false },
+        { label: "D", text: "Звъниш на киберполицията", cop: true },
+      ],
+    },
+  ]
+
+  const handlePuzzleChoice = (isCop: boolean) => {
+    if (isCop) {
+      const newAttempts = puzzleAttempts + 1
+      setPuzzleAttempts(newAttempts)
+      setShake(true)
+      setTimeout(() => setShake(false), 500)
+      const msgs = [
+        "ГРЕШЕН ОТГОВОР. Засечен е cop pattern.",
+        "ВНИМАНИЕ: поведението ти прилича на ченге.",
+        "ПОДОЗРИТЕЛНО. Опитай пак.",
+        "СИСТЕМАТА НЕ ВИ ВЯРВА. Продължи...",
+      ]
+      setPuzzleError(msgs[Math.min(newAttempts - 1, msgs.length - 1)])
+      setTimeout(() => setPuzzleError(""), 2200)
+    } else {
+      setPuzzleError("")
+      if (puzzleStep + 1 >= PUZZLE_QUESTIONS.length) {
+        setCaptchaPassed(true)
+      } else {
+        setPuzzleStep((s) => s + 1)
+      }
+    }
+  }
 
   useEffect(() => {
     setSavedClues(getGameState().clues.map((c) => c.id))
   }, [])
 
-  const handleCaptcha = () => {
-    if (captchaInput.toUpperCase() === captchaCode) {
-      setCaptchaPassed(true)
-    } else {
-      setCaptchaError("Невалиден код. Опитай отново.")
-      setCaptchaInput("")
-      setTimeout(() => setCaptchaError(""), 2500)
-    }
-  }
+
 
   const handleSave = (v: typeof VEHICLES[number], field: string, text: string) => {
     const id = `vehicles-${v.id}-${field}`
@@ -71,8 +124,11 @@ export default function LeaksVehiclesPage() {
   const selectedV = selected ? VEHICLES.find((v) => v.id === selected) : null
 
   if (!captchaPassed) {
+    const q = PUZZLE_QUESTIONS[puzzleStep]
+    const progress = (puzzleStep / PUZZLE_QUESTIONS.length) * 100
+
     return (
-      <div style={{ maxWidth: 480, margin: "60px auto" }}>
+      <div style={{ maxWidth: 520, margin: "60px auto" }}>
         <div style={{ marginBottom: 20 }}>
           <Link href="/hidden-wiki-2/leaks" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.15em", textDecoration: "none" }}>← LEAKS</Link>
           <div style={{ marginTop: 10 }}>
@@ -80,32 +136,112 @@ export default function LeaksVehiclesPage() {
           </div>
           <div style={{ height: 1, background: `linear-gradient(90deg, ${ACCENT}, transparent)`, marginTop: 8 }} />
         </div>
-        <div style={{ padding: "28px 24px", background: "#080808", border: `1px solid ${ACCENT}20` }}>
-          <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.2em", marginBottom: 14 }}>
-            ANTI-BOT VERIFICATION
-          </div>
-          <p style={{ fontSize: 11, color: "#cccccc", margin: "0 0 20px", fontFamily: "var(--font-mono)", lineHeight: 1.7 }}>
-            Въведи кода по-долу за да получиш достъп до базата данни с превозни средства.
-          </p>
-          <div style={{ padding: "12px 16px", background: "#0d0d0d", border: `1px solid #2a2a2a`, marginBottom: 16, textAlign: "center" }}>
-            <div style={{ fontSize: 22, fontFamily: "var(--font-mono)", color: "#e0e0e0", letterSpacing: "0.4em", fontWeight: 700,
-              textDecoration: "line-through", textDecorationColor: "#333", userSelect: "none",
-              background: "repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(255,0,51,0.05) 2px, rgba(255,0,51,0.05) 4px)",
-            }}>
-              {captchaCode.split("").join(" ")}
+
+        <motion.div
+          animate={shake ? { x: [-8, 8, -6, 6, -3, 3, 0] } : { x: 0 }}
+          transition={{ duration: 0.4 }}
+          style={{ background: "#080808", border: `1px solid ${ACCENT}25`, padding: "28px 24px" }}
+        >
+          {/* Header */}
+          <div style={{ marginBottom: 20 }}>
+            <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#555", letterSpacing: "0.2em", marginBottom: 6 }}>
+              CAPTCHA PUZZLE
+            </div>
+            <div style={{ fontSize: 14, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.12em", fontWeight: 700, marginBottom: 4 }}>
+              PROVE THAT YOU ARE NOT A COP
+            </div>
+            <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#666", letterSpacing: "0.08em" }}>
+              Отговори правилно на всички въпроси за да получиш достъп.
             </div>
           </div>
-          <input value={captchaInput} onChange={(e) => setCaptchaInput(e.target.value.toUpperCase())}
-            onKeyDown={(e) => e.key === "Enter" && handleCaptcha()}
-            placeholder="Въведи кода..."
-            maxLength={5}
-            style={{ width: "100%", padding: "8px 12px", background: "#111", border: `1px solid #2a2a2a`, color: "#e0e0e0", fontSize: 12, fontFamily: "var(--font-mono)", letterSpacing: "0.3em", marginBottom: 10, outline: "none" }} />
-          {captchaError && <div style={{ fontSize: 10, color: ACCENT, fontFamily: "var(--font-mono)", marginBottom: 8 }}>{captchaError}</div>}
-          <button onClick={handleCaptcha}
-            style={{ width: "100%", padding: "8px 0", background: `${ACCENT}22`, border: `1px solid ${ACCENT}50`, color: ACCENT, fontSize: 10, fontFamily: "var(--font-mono)", letterSpacing: "0.15em", cursor: "pointer" }}>
-            VERIFY →
-          </button>
-        </div>
+
+          {/* Progress bar */}
+          <div style={{ marginBottom: 20 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 5 }}>
+              <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#555" }}>ВЪПРОС {puzzleStep + 1} / {PUZZLE_QUESTIONS.length}</span>
+              <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: puzzleAttempts > 2 ? ACCENT : "#555" }}>
+                {puzzleAttempts > 0 ? `ЗАСЕЧЕН COP PATTERN: ${puzzleAttempts}x` : "CLEAN"}
+              </span>
+            </div>
+            <div style={{ height: 2, background: "#151515", width: "100%" }}>
+              <motion.div
+                animate={{ width: `${progress}%` }}
+                transition={{ duration: 0.4 }}
+                style={{ height: "100%", background: ACCENT }}
+              />
+            </div>
+            <div style={{ display: "flex", gap: 4, marginTop: 6 }}>
+              {PUZZLE_QUESTIONS.map((_, i) => (
+                <div key={i} style={{ flex: 1, height: 3, background: i < puzzleStep ? ACCENT : i === puzzleStep ? `${ACCENT}60` : "#1a1a1a" }} />
+              ))}
+            </div>
+          </div>
+
+          {/* Question */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={puzzleStep}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div style={{ padding: "14px 16px", background: "#0d0000", border: `1px solid ${ACCENT}15`, marginBottom: 16 }}>
+                <p style={{ fontSize: 12, color: "#e0e0e0", margin: 0, fontFamily: "var(--font-mono)", lineHeight: 1.75 }}>
+                  {q.q}
+                </p>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                {q.options.map((opt) => (
+                  <button
+                    key={opt.label}
+                    onClick={() => handlePuzzleChoice(opt.cop)}
+                    style={{
+                      display: "flex", alignItems: "flex-start", gap: 12,
+                      padding: "10px 14px", background: "#0d0d0d",
+                      border: "1px solid #1e1e1e", cursor: "pointer",
+                      textAlign: "left", transition: "all 0.15s",
+                    }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.borderColor = `${ACCENT}40`; (e.currentTarget as HTMLButtonElement).style.background = `${ACCENT}08` }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.borderColor = "#1e1e1e"; (e.currentTarget as HTMLButtonElement).style.background = "#0d0d0d" }}
+                  >
+                    <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: ACCENT, flexShrink: 0, minWidth: 18, letterSpacing: "0.1em" }}>
+                      [{opt.label}]
+                    </span>
+                    <span style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#c0c0c0", lineHeight: 1.6 }}>
+                      {opt.text}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Error */}
+          <AnimatePresence>
+            {puzzleError && (
+              <motion.div
+                initial={{ opacity: 0, y: -4 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                style={{ marginTop: 14, padding: "8px 12px", background: `${ACCENT}10`, border: `1px solid ${ACCENT}30`, fontSize: 10, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.08em" }}
+              >
+                ⚠ {puzzleError}
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Footer */}
+          <div style={{ marginTop: 20, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#333", letterSpacing: "0.1em" }}>
+              SYS::CAPTCHA_v4.2 — HUMAN_VERIFY
+            </span>
+            <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#2a2a2a" }}>
+              NOT_A_COP_CHECK
+            </span>
+          </div>
+        </motion.div>
       </div>
     )
   }

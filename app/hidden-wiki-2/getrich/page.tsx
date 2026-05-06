@@ -20,7 +20,7 @@ const MISSIONS = [
   {
     id: "gr-002",
     title: "Проследи изчезналия",
-    description: "Проследи човек по снимки, покупки и телефонен номер. Използвай /leaks/archive, /leaks/cards и /leaks/phones.",
+    description: "Проследи човек по снимки, покупки и телефонен номер. Използвай /leaks/archive и /leaks/cards.",
     reward: 70,
     difficulty: "HARD",
     link: "/hidden-wiki-2/leaks",
@@ -64,15 +64,6 @@ const MISSIONS = [
   },
   {
     id: "gr-007",
-    title: "Телефон и времева линия",
-    description: "Сравни call logs, chat дати и event timeline. Намери кой номер съвпада най-много с нужния човек.",
-    reward: 25,
-    difficulty: "MEDIUM",
-    link: "/hidden-wiki-2/leaks/phones",
-    status: "ACTIVE",
-  },
-  {
-    id: "gr-008",
     title: "Hidden Wiki 2 Page Code",
     description: "Открий личния page code скрит някъде в сайта. Може да е нужен за Blackmarket restore услуга.",
     reward: 20,
@@ -81,7 +72,7 @@ const MISSIONS = [
     status: "ACTIVE",
   },
   {
-    id: "gr-009",
+    id: "gr-008",
     title: "Грешният fragment",
     description: "Разпознай кой GPS fragment дава координати на грешен човек и кой е напълно фалшив.",
     reward: 30,
@@ -90,7 +81,7 @@ const MISSIONS = [
     status: "ACTIVE",
   },
   {
-    id: "gr-010",
+    id: "gr-009",
     title: "Кой cult е front",
     description: "Свържи front event名 с реалната секта зад него. Провери /events и /cult.",
     reward: 20,

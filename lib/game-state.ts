@@ -65,7 +65,7 @@ export const ROUTES_CONFIG = [
     accentColor: "#FFD700",
     status: "ACTIVE",
     locked: false,
-    sublinks: ["/docs", "/archive", "/vehicles", "/cards", "/passwords", "/phones"],
+    sublinks: ["/docs", "/archive", "/vehicles", "/cards", "/passwords"],
   },
   {
     id: "cult",

@@ -10,17 +10,17 @@ const ACCENT = "#FF6B00"
 
 // GothGirl / joko1132 is the key entry — password recently changed
 const PASSWORDS = [
-  { id: "PW-001", username: "RedFox", email: "r.f@secnode.net", password: "r3dfox!2025", role: "ADMIN", lastLogin: "2025-10-16 03:14", changed: false },
+  { id: "PW-001", username: "RedFox", email: "r.f@secnode.net", password: "r3dfox!2025", role: "ADMIN", lastLogin: "2025-10-16 03:14", changed: true, note: "⚠ Паролата е сменена преди 1 ден — вероятна компрометация" },
   { id: "PW-002", username: "NightKiller", email: "nk@darkweb.onion", password: "n1ght_k1ll", role: "OPERATOR", lastLogin: "2025-10-15 23:55", changed: false },
   { id: "PW-003", username: "GothGirl", email: "g.girl@secnode.net", password: "joko1132", role: "OPERATOR", lastLogin: "2025-10-13 18:22", changed: true, note: "⚠ Паролата е сменена преди 3 дни — старата е тук, новата е неизвестна" },
   { id: "PW-004", username: "ToxicBabe", email: "txb@darkpool.net", password: "t0x1c_b@be", role: "OPERATOR", lastLogin: "2025-10-15 20:10", changed: false },
-  { id: "PW-005", username: "Black-Voyvoda", email: "bv@secnode.net", password: "Bl@ck_V0jv0da", role: "OPERATOR", lastLogin: "2025-10-15 22:30", changed: false },
+  { id: "PW-005", username: "Black-Voyvoda", email: "bv@secnode.net", password: "Bl@ck_V0jv0da", role: "OPERATOR", lastLogin: "2025-10-15 22:30", changed: true, note: "⚠ Паролата е сменена преди 5 дни" },
   { id: "PW-006", username: "DataCracker6", email: "dc6@nullsyn.net", password: "d4t@cr4ck6r", role: "ANALYST", lastLogin: "2025-10-14 11:00", changed: false },
   { id: "PW-007", username: "OutsiderX", email: "ox@anon.onion", password: "0uts1der_x", role: "GUEST", lastLogin: "2025-09-30 09:00", changed: false },
-  { id: "PW-008", username: "NullSyn", email: "null@nullsyn.net", password: "n0llsyn!core", role: "ANALYST", lastLogin: "2025-10-10 14:00", changed: false },
+  { id: "PW-008", username: "NullSyn", email: "null@nullsyn.net", password: "n0llsyn!core", role: "ANALYST", lastLogin: "2025-10-10 14:00", changed: true, note: "⚠ Паролата е сменена преди 6 дни — повтаряща се активност" },
   { id: "PW-009", username: "PageGhost", email: "pg@pageghost.onion", password: "p@geGh0st2024", role: "SERVICE", lastLogin: "2025-10-12 16:45", changed: false },
   { id: "PW-010", username: "CellTrace", email: "ct@celltrace.onion", password: "c3lltr@ce_9", role: "SERVICE", lastLogin: "2025-10-15 19:00", changed: false },
-  { id: "PW-011", username: "CardForge", email: "cf@cardforge.onion", password: "c4rdF0rg3!", role: "SERVICE", lastLogin: "2025-10-08 08:00", changed: false },
+  { id: "PW-011", username: "CardForge", email: "cf@cardforge.onion", password: "c4rdF0rg3!", role: "SERVICE", lastLogin: "2025-10-08 08:00", changed: true, note: "⚠ Паролата е сменена — акаунтът е маркиран за одит" },
   { id: "PW-012", username: "BruteForce", email: "bf@secnode.net", password: "Br0t3f0rc3!", role: "SERVICE", lastLogin: "2025-10-15 22:01", changed: false },
 ]
 

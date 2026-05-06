@@ -13,7 +13,6 @@ const PAGES = [
   { label: "VEHICLES",  href: "/hidden-wiki-2/leaks/vehicles",  desc: "Регистрирани превозни средства" },
   { label: "CARDS",     href: "/hidden-wiki-2/leaks/cards",     desc: "Изтекли дебитни карти и транзакции" },
   { label: "PASSWORDS", href: "/hidden-wiki-2/leaks/passwords", desc: "Хеширани и обикновени пароли" },
-  { label: "PHONES",    href: "/hidden-wiki-2/leaks/phones",    desc: "Телефонни номера и разговори" },
 ]
 
 export default function LeaksPage() {
