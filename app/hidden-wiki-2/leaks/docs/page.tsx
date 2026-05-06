@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -27,7 +27,7 @@ const CLASS_COLORS: Record<string, string> = {
   CLASSIFIED: "#FF0033",
   CONFIDENTIAL: "#FF6B00",
   RESTRICTED: ACCENT,
-  INTERNAL: "#666",
+  INTERNAL: "#999999",
 }
 
 export default function LeaksDocsPage() {
@@ -58,7 +58,7 @@ export default function LeaksDocsPage() {
   return (
     <div style={{ maxWidth: 920, margin: "0 auto" }}>
       <div style={{ marginBottom: 20 }}>
-        <Link href="/hidden-wiki-2/leaks" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#555", letterSpacing: "0.15em", textDecoration: "none" }}>← LEAKS</Link>
+        <Link href="/hidden-wiki-2/leaks" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.15em", textDecoration: "none" }}>← LEAKS</Link>
         <div style={{ marginTop: 10 }}>
           <GlitchText text="DOCS" as="h1" intensity="low" className="text-3xl font-bold tracking-widest" color={ACCENT} />
         </div>
@@ -74,12 +74,12 @@ export default function LeaksDocsPage() {
       {/* Tag filters */}
       <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 16 }}>
         <button onClick={() => setTagFilter(null)}
-          style={{ padding: "3px 10px", fontSize: 8, fontFamily: "var(--font-mono)", background: !tagFilter ? `${ACCENT}22` : "#0a0a0a", color: !tagFilter ? ACCENT : "#555", border: `1px solid ${!tagFilter ? ACCENT + "50" : "#1a1a1a"}`, cursor: "pointer", letterSpacing: "0.1em" }}>
+          style={{ padding: "3px 10px", fontSize: 9, fontFamily: "var(--font-mono)", background: !tagFilter ? `${ACCENT}22` : "#0a0a0a", color: !tagFilter ? ACCENT : "#909090", border: `1px solid ${!tagFilter ? ACCENT + "50" : "#1a1a1a"}`, cursor: "pointer", letterSpacing: "0.1em" }}>
           ALL
         </button>
         {allTags.map((tag) => (
           <button key={tag} onClick={() => setTagFilter(tagFilter === tag ? null : tag)}
-            style={{ padding: "3px 8px", fontSize: 8, fontFamily: "var(--font-mono)", background: tagFilter === tag ? `${ACCENT}15` : "#090909", color: tagFilter === tag ? ACCENT : "#666", border: `1px solid ${tagFilter === tag ? ACCENT + "30" : "#161616"}`, cursor: "pointer" }}>
+            style={{ padding: "3px 8px", fontSize: 9, fontFamily: "var(--font-mono)", background: tagFilter === tag ? `${ACCENT}15` : "#090909", color: tagFilter === tag ? ACCENT : "#999999", border: `1px solid ${tagFilter === tag ? ACCENT + "30" : "#161616"}`, cursor: "pointer" }}>
             {tag}
           </button>
         ))}
@@ -100,17 +100,17 @@ export default function LeaksDocsPage() {
                 onClick={() => setExpanded(isExpanded ? null : doc.id)}>
                 <div style={{ flex: 1 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
-                    <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: CLASS_COLORS[doc.classification], letterSpacing: "0.12em" }}>
+                    <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: CLASS_COLORS[doc.classification], letterSpacing: "0.12em" }}>
                       [{doc.classification}]
                     </span>
-                    <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#444" }}>{doc.date} · {doc.size}</span>
+                    <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444" }}>{doc.date} · {doc.size}</span>
                   </div>
                   <div style={{ fontSize: 12, fontFamily: "var(--font-mono)", color: "#d0d0d0", letterSpacing: "0.04em", marginBottom: 4 }}>
                     {doc.name}
                   </div>
-                  <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#666" }}>
-                    operator: <span style={{ color: "#888" }}>{doc.operator}</span>
-                    {doc.tags.map((t) => <span key={t} style={{ marginLeft: 6, color: "#444", fontSize: 8 }}>#{t}</span>)}
+                  <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#999999" }}>
+                    operator: <span style={{ color: "#bbbbbb" }}>{doc.operator}</span>
+                    {doc.tags.map((t) => <span key={t} style={{ marginLeft: 6, color: "#444", fontSize: 9 }}>#{t}</span>)}
                   </div>
                 </div>
                 <span style={{ fontSize: 9, color: "#444", fontFamily: "var(--font-mono)", flexShrink: 0 }}>{isExpanded ? "▲" : "▼"}</span>
@@ -126,80 +126,11 @@ export default function LeaksDocsPage() {
                     </p>
                   )}
                   <button onClick={() => handleSave(doc)}
-                    style={{ padding: "4px 12px", fontSize: 8, fontFamily: "var(--font-mono)", letterSpacing: "0.1em", background: isSaved ? `${ACCENT}18` : "#111", color: isSaved ? ACCENT : "#777", border: `1px solid ${isSaved ? ACCENT + "50" : "#222"}`, cursor: "pointer" }}>
+                    style={{ padding: "4px 12px", fontSize: 9, fontFamily: "var(--font-mono)", letterSpacing: "0.1em", background: isSaved ? `${ACCENT}18` : "#111", color: isSaved ? ACCENT : "#aaaaaa", border: `1px solid ${isSaved ? ACCENT + "50" : "#222"}`, cursor: "pointer" }}>
                     {isSaved ? "✓ SAVED" : "SAVE CLUE"}
                   </button>
                 </motion.div>
               )}
-            </div>
-          )
-        })}
-      </div>
-    </div>
-  )
-}
-
-  const [selected, setSelected] = useState<string | null>(null)
-  const [saved, setSaved] = useState<string[]>([])
-
-  const handleSave = (d: typeof DOCS[number]) => {
-    if (!d.clue) return
-    const id = `docs-${d.id}`
-    if (saved.includes(id)) return
-    const gs = getGameState()
-    saveGameState(addClue(gs, { id, title: `[DOCS] ${d.name}`, text: d.clue, sourceRoute: "/leaks/docs", confidence: 4, status: "confirmed" }))
-    setSaved((p) => [...p, id])
-  }
-
-  return (
-    <div style={{ maxWidth: 820, margin: "0 auto" }}>
-      <div style={{ marginBottom: 24 }}>
-        <Link href="/hidden-wiki-2/leaks" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333", textDecoration: "none" }}>← LEAKS</Link>
-        <div style={{ height: 1, background: "#111", margin: "10px 0" }} />
-        <GlitchText text="DOCS" as="h2" intensity="low" className="text-xl font-bold tracking-widest" color={ACCENT} />
-        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", marginTop: 6 }}>6 документа. 2 с директни доказателства. Кликни за преглед.</div>
-      </div>
-
-      <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
-        {DOCS.map((d, i) => {
-          const id = `docs-${d.id}`
-          const isSaved = saved.includes(id)
-          const isSelected = selected === d.id
-          return (
-            <div key={d.id}>
-              <motion.div initial={{ opacity: 0, y: 3 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.07 }}
-                onClick={() => setSelected(isSelected ? null : d.id)}
-                style={{ padding: "11px 14px", background: isSelected ? `${ACCENT}07` : "#040404", border: `1px solid ${isSelected ? `${ACCENT}35` : d.clue ? `${ACCENT}18` : "#0f0f0f"}`, cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <div>
-                  <div style={{ fontSize: 7, fontFamily: "var(--font-mono)", color: "#2a2200", marginBottom: 3 }}>{d.id}</div>
-                  <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: isSelected ? ACCENT : d.clue ? "#cccccc" : "#666", fontWeight: d.clue ? 700 : 400 }}>{d.name}</div>
-                </div>
-                <div style={{ textAlign: "right" }}>
-                  <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#333" }}>{d.size}</div>
-                  {d.class && <div style={{ fontSize: 7, fontFamily: "var(--font-mono)", color: "#2a2200", marginTop: 2 }}>{d.class}</div>}
-                </div>
-              </motion.div>
-              <AnimatePresence>
-                {isSelected && (
-                  <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.17 }} style={{ overflow: "hidden" }}>
-                    <div style={{ padding: "12px 14px", background: "#050400", border: `1px solid ${ACCENT}18`, borderTop: "none" }}>
-                      <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: d.clue ? "#cccccc" : "#555", lineHeight: 1.8, whiteSpace: "pre-line", marginBottom: d.clue ? 12 : 0 }}>{d.preview}</div>
-                      {d.clue && (
-                        <>
-                          <div style={{ padding: "8px 12px", background: "#0a0800", border: `1px solid ${ACCENT}20`, marginBottom: 10 }}>
-                            <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#3a2a00", marginBottom: 3 }}>ДОКАЗАТЕЛСТВО</div>
-                            <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: ACCENT }}>{d.clue}</div>
-                          </div>
-                          <button onClick={(e) => { e.stopPropagation(); handleSave(d) }} disabled={isSaved}
-                            style={{ background: "transparent", border: `1px solid ${isSaved ? "#222" : `${ACCENT}40`}`, color: isSaved ? "#2a2a2a" : ACCENT, fontFamily: "var(--font-mono)", fontSize: 9, padding: "6px 16px", cursor: isSaved ? "default" : "pointer" }}>
-                            {isSaved ? "ЗАПИСАНО" : "ЗАПАЗИ (confidence: 4)"}
-                          </button>
-                        </>
-                      )}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
             </div>
           )
         })}

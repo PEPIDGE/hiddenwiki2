@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState } from "react"
 import Link from "next/link"
@@ -97,7 +97,7 @@ export default function ForumThreadsPage() {
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <div>
                     <div style={{ fontSize: 7, fontFamily: "var(--font-mono)", color: t.flagged ? ACCENT : "#2a2a2a", marginBottom: 4 }}>{t.id} // {t.author}</div>
-                    <div style={{ fontSize: 12, fontFamily: "var(--font-mono)", color: isExp ? ACCENT : "#888", fontWeight: t.flagged ? 700 : 400 }}>{t.title}</div>
+                    <div style={{ fontSize: 12, fontFamily: "var(--font-mono)", color: isExp ? ACCENT : "#bbbbbb", fontWeight: t.flagged ? 700 : 400 }}>{t.title}</div>
                   </div>
                   <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 3 }}>
                     <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333" }}>{t.replies} replies</span>
@@ -112,16 +112,16 @@ export default function ForumThreadsPage() {
                     <div style={{ background: "#030a06", border: `1px solid ${ACCENT}18`, borderTop: "none" }}>
                       {t.posts.map((post, pi) => (
                         <div key={post.id} style={{ padding: "10px 16px", borderBottom: pi < t.posts.length - 1 ? "1px solid #0e0e0e" : "none" }}>
-                          <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: post.author === t.author ? `${ACCENT}70` : "#2a2a2a", marginBottom: 5 }}>
+                          <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: post.author === t.author ? `${ACCENT}70` : "#2a2a2a", marginBottom: 5 }}>
                             {post.author} // {post.time}
                           </div>
-                          <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#666", lineHeight: 1.7 }}>{post.text}</div>
+                          <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#999999", lineHeight: 1.7 }}>{post.text}</div>
                         </div>
                       ))}
                       {t.clue && (
                         <div style={{ padding: "10px 16px", borderTop: "1px solid #111" }}>
                           <div style={{ padding: "7px 10px", background: "#040c07", border: `1px solid ${ACCENT}20`, marginBottom: 8 }}>
-                            <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#1a3a2a", marginBottom: 3 }}>ПОТЕНЦИАЛНА УЛИКА</div>
+                            <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#1a3a2a", marginBottom: 3 }}>ПОТЕНЦИАЛНА УЛИКА</div>
                             <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: ACCENT }}>{t.clue}</div>
                           </div>
                           <button onClick={(e) => { e.stopPropagation(); handleSave(t) }} disabled={isSaved}

@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -64,7 +64,7 @@ export default function CultOperatorsPage() {
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                   <div>
                     <div style={{ fontSize: 7, fontFamily: "var(--font-mono)", color: "#2a2a2a", marginBottom: 5 }}>{op.id} // {op.level}</div>
-                    <div style={{ fontSize: 14, fontFamily: "var(--font-mono)", color: isSelected ? ACCENT : op.anomaly ? "#cccccc" : "#555", fontWeight: 700 }}>{op.callsign}</div>
+                    <div style={{ fontSize: 14, fontFamily: "var(--font-mono)", color: isSelected ? ACCENT : op.anomaly ? "#cccccc" : "#909090", fontWeight: 700 }}>{op.callsign}</div>
                   </div>
                   <div style={{ textAlign: "right" }}>
                     <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: STATUS_COLOR[op.status] ?? "#333" }}>{op.status}</div>
@@ -76,12 +76,12 @@ export default function CultOperatorsPage() {
                 {isSelected && (
                   <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.18 }} style={{ overflow: "hidden" }}>
                     <div style={{ padding: "12px 16px", background: "#060208", border: `1px solid ${ACCENT}18`, borderTop: "none" }}>
-                      <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#333", marginBottom: 4 }}>LAST SEEN: {op.lastSeen}</div>
-                      <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#666", lineHeight: 1.7, marginBottom: op.clue ? 12 : 0 }}>{op.note}</div>
+                      <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333", marginBottom: 4 }}>LAST SEEN: {op.lastSeen}</div>
+                      <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#999999", lineHeight: 1.7, marginBottom: op.clue ? 12 : 0 }}>{op.note}</div>
                       {op.clue && (
                         <>
                           <div style={{ padding: "8px 12px", background: "#080310", border: `1px solid ${ACCENT}20`, marginBottom: 10 }}>
-                            <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#3a1050", marginBottom: 3 }}>УЛИКА</div>
+                            <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#3a1050", marginBottom: 3 }}>УЛИКА</div>
                             <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: ACCENT }}>{op.clue}</div>
                           </div>
                           <button onClick={(e) => { e.stopPropagation(); handleSave(op) }} disabled={isSaved}

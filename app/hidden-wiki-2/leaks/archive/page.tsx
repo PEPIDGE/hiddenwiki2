@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -51,7 +51,7 @@ export default function LeaksArchivePage() {
   return (
     <div style={{ maxWidth: 960, margin: "0 auto" }}>
       <div style={{ marginBottom: 20 }}>
-        <Link href="/hidden-wiki-2/leaks" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#555", letterSpacing: "0.15em", textDecoration: "none" }}>← LEAKS</Link>
+        <Link href="/hidden-wiki-2/leaks" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.15em", textDecoration: "none" }}>← LEAKS</Link>
         <div style={{ marginTop: 10 }}>
           <GlitchText text="ARCHIVE" as="h1" intensity="low" className="text-3xl font-bold tracking-widest" color={ACCENT} />
         </div>
@@ -66,12 +66,12 @@ export default function LeaksArchivePage() {
 
       <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 16 }}>
         <button onClick={() => setTagFilter(null)}
-          style={{ padding: "3px 10px", fontSize: 8, fontFamily: "var(--font-mono)", background: !tagFilter ? `${ACCENT}22` : "#0a0a0a", color: !tagFilter ? ACCENT : "#555", border: `1px solid ${!tagFilter ? ACCENT + "50" : "#1a1a1a"}`, cursor: "pointer", letterSpacing: "0.1em" }}>
+          style={{ padding: "3px 10px", fontSize: 9, fontFamily: "var(--font-mono)", background: !tagFilter ? `${ACCENT}22` : "#0a0a0a", color: !tagFilter ? ACCENT : "#909090", border: `1px solid ${!tagFilter ? ACCENT + "50" : "#1a1a1a"}`, cursor: "pointer", letterSpacing: "0.1em" }}>
           ALL
         </button>
         {allTags.map((tag) => (
           <button key={tag} onClick={() => setTagFilter(tagFilter === tag ? null : tag)}
-            style={{ padding: "3px 8px", fontSize: 8, fontFamily: "var(--font-mono)", background: tagFilter === tag ? `${ACCENT}15` : "#090909", color: tagFilter === tag ? ACCENT : "#666", border: `1px solid ${tagFilter === tag ? ACCENT + "30" : "#161616"}`, cursor: "pointer" }}>
+            style={{ padding: "3px 8px", fontSize: 9, fontFamily: "var(--font-mono)", background: tagFilter === tag ? `${ACCENT}15` : "#090909", color: tagFilter === tag ? ACCENT : "#999999", border: `1px solid ${tagFilter === tag ? ACCENT + "30" : "#161616"}`, cursor: "pointer" }}>
             {tag}
           </button>
         ))}
@@ -89,7 +89,7 @@ export default function LeaksArchivePage() {
               </div>
               <div style={{ padding: "8px 10px" }}>
                 <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#999", lineHeight: 1.5, marginBottom: 4 }}>{photo.caption}</div>
-                <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#444" }}>{photo.date}</div>
+                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444" }}>{photo.date}</div>
               </div>
             </motion.div>
           )
@@ -102,9 +102,9 @@ export default function LeaksArchivePage() {
           style={{ marginTop: 20, padding: "20px 24px", background: "#0a0a0a", border: `1px solid ${ACCENT}30` }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
             <div>
-              <div style={{ fontSize: 8, color: "#555", fontFamily: "var(--font-mono)", letterSpacing: "0.15em", marginBottom: 6 }}>{selected.id} · {selected.date}</div>
+              <div style={{ fontSize: 9, color: "#909090", fontFamily: "var(--font-mono)", letterSpacing: "0.15em", marginBottom: 6 }}>{selected.id} · {selected.date}</div>
               <div style={{ fontSize: 16, color: "#e0e0e0", fontFamily: "var(--font-mono)", fontWeight: 600, marginBottom: 6 }}>{selected.caption}</div>
-              <div style={{ fontSize: 10, color: "#777", fontFamily: "var(--font-mono)" }}>📍 {selected.location}</div>
+              <div style={{ fontSize: 10, color: "#aaaaaa", fontFamily: "var(--font-mono)" }}>📍 {selected.location}</div>
             </div>
             <button onClick={() => setSelected(null)} style={{ background: "none", border: "none", color: "#444", cursor: "pointer", fontSize: 16, fontFamily: "var(--font-mono)" }}>✕</button>
           </div>
@@ -113,12 +113,12 @@ export default function LeaksArchivePage() {
           </p>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             {selected.tags.map((t) => (
-              <span key={t} style={{ padding: "2px 8px", fontSize: 8, fontFamily: "var(--font-mono)", color: ACCENT, border: `1px solid ${ACCENT}30` }}>#{t}</span>
+              <span key={t} style={{ padding: "2px 8px", fontSize: 9, fontFamily: "var(--font-mono)", color: ACCENT, border: `1px solid ${ACCENT}30` }}>#{t}</span>
             ))}
           </div>
           <div style={{ marginTop: 12 }}>
             <button onClick={() => handleSave(selected)}
-              style={{ padding: "5px 16px", fontSize: 8, fontFamily: "var(--font-mono)", letterSpacing: "0.12em", background: savedClues.includes(`archive-${selected.id}`) ? `${ACCENT}18` : "#0d0d0d", color: savedClues.includes(`archive-${selected.id}`) ? ACCENT : "#777", border: `1px solid ${savedClues.includes(`archive-${selected.id}`) ? ACCENT + "50" : "#222"}`, cursor: "pointer" }}>
+              style={{ padding: "5px 16px", fontSize: 9, fontFamily: "var(--font-mono)", letterSpacing: "0.12em", background: savedClues.includes(`archive-${selected.id}`) ? `${ACCENT}18` : "#0d0d0d", color: savedClues.includes(`archive-${selected.id}`) ? ACCENT : "#aaaaaa", border: `1px solid ${savedClues.includes(`archive-${selected.id}`) ? ACCENT + "50" : "#222"}`, cursor: "pointer" }}>
               {savedClues.includes(`archive-${selected.id}`) ? "✓ SAVED TO EVIDENCE BOARD" : "SAVE CLUE"}
             </button>
           </div>

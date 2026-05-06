@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -95,7 +95,7 @@ export default function FullTruthPage() {
     <div style={{ maxWidth: 760, margin: "0 auto" }}>
       {/* Header */}
       <div style={{ marginBottom: 24 }}>
-        <Link href="/hidden-wiki-2/red-room" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#555", letterSpacing: "0.15em", textDecoration: "none" }}>
+        <Link href="/hidden-wiki-2/red-room" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.15em", textDecoration: "none" }}>
           ← RED ROOM
         </Link>
         <div style={{ marginTop: 10 }}>
@@ -116,7 +116,7 @@ export default function FullTruthPage() {
 
       {/* Bait intro text */}
       <div style={{ padding: "16px 18px", background: "#080808", border: "1px solid #1e1e1e", marginBottom: 24 }}>
-        <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#444", letterSpacing: "0.2em", marginBottom: 10 }}>
+        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", letterSpacing: "0.2em", marginBottom: 10 }}>
           АНАЛИЗ // ВЕРСИЯ 1.0
         </div>
         <p style={{ fontSize: 12, color: "#d0d0d0", lineHeight: 1.8, margin: 0, fontFamily: "var(--font-mono)" }}>
@@ -144,7 +144,7 @@ export default function FullTruthPage() {
                 </div>
               )}
               <div style={{ padding: "14px 16px" }}>
-                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: isUnlocked ? "#666" : "#333", letterSpacing: "0.15em", marginBottom: 8 }}>
+                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: isUnlocked ? "#999999" : "#333", letterSpacing: "0.15em", marginBottom: 8 }}>
                   FRAGMENT {String(idx + 1).padStart(2, "0")} / {isUnlocked ? "DECRYPTED" : "LOCKED"}
                 </div>
                 <div style={{ fontSize: 13, fontFamily: "var(--font-mono)", color: isUnlocked ? "#e0e0e0" : "#2a2a2a", fontWeight: 700, marginBottom: isUnlocked ? 10 : 0, letterSpacing: "0.06em" }}>
@@ -159,9 +159,9 @@ export default function FullTruthPage() {
                       <div style={{ display: "flex", justifyContent: "flex-end" }}>
                         <button onClick={() => handleSave(frag)}
                           style={{
-                            padding: "5px 12px", fontSize: 8, fontFamily: "var(--font-mono)", letterSpacing: "0.1em",
+                            padding: "5px 12px", fontSize: 9, fontFamily: "var(--font-mono)", letterSpacing: "0.1em",
                             background: isSaved ? `${ACCENT}18` : "#111",
-                            color: isSaved ? ACCENT : "#777",
+                            color: isSaved ? ACCENT : "#aaaaaa",
                             border: `1px solid ${isSaved ? ACCENT + "50" : "#282828"}`,
                           }}>
                           {isSaved ? "✓ SAVED" : "SAVE CLUE"}
@@ -195,7 +195,7 @@ export default function FullTruthPage() {
             <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.06em", padding: "6px 10px", background: "#120000", border: `1px solid ${ACCENT}30` }}>
               route-17-night
             </div>
-            <p style={{ fontSize: 10, color: "#888", margin: "10px 0 0", fontFamily: "var(--font-mono)", lineHeight: 1.7 }}>
+            <p style={{ fontSize: 10, color: "#bbbbbb", margin: "10px 0 0", fontFamily: "var(--font-mono)", lineHeight: 1.7 }}>
               Използвай този token в <Link href="/hidden-wiki-2/trace-node/terminal" style={{ color: ACCENT }}>TRACE-NODE /terminal</Link>. Внимание: резултатът може да не е правилен.
             </p>
           </motion.div>

@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
@@ -73,7 +73,7 @@ export default function TraceOutputPage() {
   return (
     <div style={{ maxWidth: 780, margin: "0 auto" }}>
       <div style={{ marginBottom: 24 }}>
-        <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.35em", marginBottom: 8 }}>
+        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.35em", marginBottom: 8 }}>
           TRACE-NODE // CASE OUTPUT
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
@@ -102,7 +102,7 @@ export default function TraceOutputPage() {
         }}
       >
         <div>
-          <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.25em", marginBottom: 4 }}>
+          <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.25em", marginBottom: 4 }}>
             STATUS
           </div>
           <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: isComplete ? ACCENT : "#444", fontWeight: 700, letterSpacing: "0.12em" }}>
@@ -128,11 +128,11 @@ export default function TraceOutputPage() {
                   transition={{ duration: 0.3 }}
                   style={{ padding: "16px", border: `1px solid ${block.color}20`, background: "#030303" }}
                 >
-                  <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: block.color, letterSpacing: "0.2em", marginBottom: 12, borderBottom: `1px solid ${block.color}15`, paddingBottom: 6 }}>
+                  <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: block.color, letterSpacing: "0.2em", marginBottom: 12, borderBottom: `1px solid ${block.color}15`, paddingBottom: 6 }}>
                     {block.label}
                   </div>
                   {block.lines.map((line, i) => (
-                    <div key={i} style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#666", lineHeight: 1.9 }}>
+                    <div key={i} style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#999999", lineHeight: 1.9 }}>
                       {line}
                     </div>
                   ))}
@@ -142,7 +142,7 @@ export default function TraceOutputPage() {
                   <motion.div
                     animate={{ opacity: [0.2, 0.6, 0.2] }}
                     transition={{ duration: 1, repeat: Infinity }}
-                    style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#222", letterSpacing: "0.2em" }}
+                    style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#222", letterSpacing: "0.2em" }}
                   >
                     LOADING...
                   </motion.div>
@@ -160,10 +160,10 @@ export default function TraceOutputPage() {
         transition={{ delay: 1.4 }}
         style={{ padding: "20px 24px", border: `1px solid ${ACCENT}20`, background: "#020a02" }}
       >
-        <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.25em", marginBottom: 12 }}>
+        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.25em", marginBottom: 12 }}>
           ФИНАЛНА СТЪПКА
         </div>
-        <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#555", lineHeight: 1.8, marginBottom: 16 }}>
+        <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#909090", lineHeight: 1.8, marginBottom: 16 }}>
           Предай координатите и вердикта на официалната страница за верификация.
         </div>
         <a

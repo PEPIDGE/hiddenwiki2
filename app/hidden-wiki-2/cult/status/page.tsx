@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -44,7 +44,7 @@ export default function CultStatusPage() {
       {/* Overall progress */}
       <div style={{ padding: "16px 18px", border: `1px solid ${ACCENT}20`, background: "#060208", marginBottom: 20 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-          <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.2em" }}>ОБЩ ПРОГРЕС</div>
+          <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.2em" }}>ОБЩ ПРОГРЕС</div>
           <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: ACCENT, fontWeight: 700 }}>{progress}%</div>
         </div>
         <div style={{ height: 3, background: "#111", position: "relative", overflow: "hidden" }}>
@@ -55,7 +55,7 @@ export default function CultStatusPage() {
 
       {/* Hierarchy */}
       <div style={{ marginBottom: 20 }}>
-        <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.2em", marginBottom: 10 }}>ЙЕРАРХИЯ</div>
+        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.2em", marginBottom: 10 }}>ЙЕРАРХИЯ</div>
         <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
           {LEVELS.map((lvl, i) => (
             <motion.div key={lvl.id} initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.08 }}
@@ -64,7 +64,7 @@ export default function CultStatusPage() {
                 <div style={{ width: 10, height: 10, border: `1px solid ${ACCENT}`, background: lvl.id === "LVL-3" ? ACCENT : "transparent", boxShadow: lvl.id === "LVL-3" ? `0 0 8px ${ACCENT}` : "none" }} />
               </div>
               <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 12, fontFamily: "var(--font-mono)", color: lvl.id === "LVL-3" ? ACCENT : "#888", fontWeight: 700, marginBottom: 3 }}>{lvl.name}</div>
+                <div style={{ fontSize: 12, fontFamily: "var(--font-mono)", color: lvl.id === "LVL-3" ? ACCENT : "#bbbbbb", fontWeight: 700, marginBottom: 3 }}>{lvl.name}</div>
                 <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", lineHeight: 1.6 }}>{lvl.description}</div>
               </div>
               <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#2a2a2a" }}>{lvl.count}</div>
@@ -75,7 +75,7 @@ export default function CultStatusPage() {
 
       {/* Checklist */}
       <div style={{ padding: "14px 16px", border: "1px solid #181818", background: "#040404" }}>
-        <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.2em", marginBottom: 10 }}>CHECKLIST</div>
+        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.2em", marginBottom: 10 }}>CHECKLIST</div>
         {PROGRESS_ITEMS.map((item) => {
           const done = item.key
             ? clueSavedIds.includes(item.key)
@@ -83,8 +83,8 @@ export default function CultStatusPage() {
           return (
             <div key={item.label} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 7 }}>
               <div style={{ width: 8, height: 8, background: done ? ACCENT : "#0e0e0e", border: `1px solid ${done ? ACCENT : "#2a2a2a"}`, boxShadow: done ? `0 0 6px ${ACCENT}` : "none", flexShrink: 0 }} />
-              <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: done ? "#888" : "#333" }}>{item.label}</div>
-              <div style={{ marginLeft: "auto", fontSize: 8, fontFamily: "var(--font-mono)", color: done ? `${ACCENT}70` : "#2a2a2a" }}>{done ? "DONE" : "PENDING"}</div>
+              <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: done ? "#bbbbbb" : "#333" }}>{item.label}</div>
+              <div style={{ marginLeft: "auto", fontSize: 9, fontFamily: "var(--font-mono)", color: done ? `${ACCENT}70` : "#2a2a2a" }}>{done ? "DONE" : "PENDING"}</div>
             </div>
           )
         })}

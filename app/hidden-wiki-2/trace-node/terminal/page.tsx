@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useRef, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
@@ -144,7 +144,7 @@ export default function TerminalPage() {
       case "error": return "#FF3333"
       case "boot": return "#333333"
       case "system": return "#444444"
-      default: return "#777777"
+      default: return "#aaaaaa"
     }
   }
 
@@ -158,7 +158,7 @@ export default function TerminalPage() {
     <div style={{ maxWidth: 900, margin: "0 auto" }}>
       {/* Header */}
       <div style={{ marginBottom: 20 }}>
-        <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.35em", marginBottom: 8 }}>
+        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.35em", marginBottom: 8 }}>
           HIDDEN WIKI 2 // MASTER TERMINAL
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
@@ -172,7 +172,7 @@ export default function TerminalPage() {
             <motion.span
               animate={{ opacity: [0.3, 1, 0.3] }}
               transition={{ duration: 0.5, repeat: Infinity }}
-              style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#FF6B00", letterSpacing: "0.2em" }}
+              style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#FF6B00", letterSpacing: "0.2em" }}
             >
               PROCESSING...
             </motion.span>
@@ -190,7 +190,7 @@ export default function TerminalPage() {
             style={{
               background: "transparent",
               border: "1px solid #1a1a1a",
-              color: "#555",
+              color: "#909090",
               fontFamily: "var(--font-mono)",
               fontSize: 9,
               letterSpacing: "0.12em",
@@ -198,7 +198,7 @@ export default function TerminalPage() {
               cursor: "pointer",
             }}
             onMouseEnter={(e) => { e.currentTarget.style.color = ACCENT; e.currentTarget.style.borderColor = `${ACCENT}40` }}
-            onMouseLeave={(e) => { e.currentTarget.style.color = "#555"; e.currentTarget.style.borderColor = "#1a1a1a" }}
+            onMouseLeave={(e) => { e.currentTarget.style.color = "#909090"; e.currentTarget.style.borderColor = "#1a1a1a" }}
           >
             {cmd}
           </button>
@@ -230,7 +230,7 @@ export default function TerminalPage() {
             <div style={{ width: 8, height: 8, background: "#1a0800", border: "1px solid #2a1200" }} />
             <div style={{ width: 8, height: 8, background: "#001a00", border: `1px solid ${ACCENT}30` }} />
           </div>
-          <span style={{ fontSize: 8, color: "#252525", letterSpacing: "0.25em", flex: 1, textAlign: "center" }}>
+          <span style={{ fontSize: 9, color: "#252525", letterSpacing: "0.25em", flex: 1, textAlign: "center" }}>
             TERMINAL — HIDDEN WIKI 2 // MASTER SESSION
           </span>
           <motion.div
@@ -314,12 +314,12 @@ export default function TerminalPage() {
       }}>
         {[
           { color: ACCENT, label: "SUCCESS / INPUT" },
-          { color: "#777", label: "OUTPUT" },
+          { color: "#aaaaaa", label: "OUTPUT" },
           { color: "#FF3333", label: "ERROR" },
         ].map(({ color, label }) => (
           <div key={label} style={{ display: "flex", alignItems: "center", gap: 6 }}>
             <div style={{ width: 6, height: 6, background: color }} />
-            <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#333", letterSpacing: "0.1em" }}>
+            <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333", letterSpacing: "0.1em" }}>
               {label}
             </span>
           </div>

@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState } from "react"
 import Link from "next/link"
@@ -73,7 +73,7 @@ export default function EventsAlbumsPage() {
   return (
     <div style={{ maxWidth: 860, margin: "0 auto" }}>
       <div style={{ marginBottom: 20 }}>
-        <Link href="/hidden-wiki-2/events" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#555", letterSpacing: "0.15em", textDecoration: "none" }}>← EVENTS</Link>
+        <Link href="/hidden-wiki-2/events" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.15em", textDecoration: "none" }}>← EVENTS</Link>
         <div style={{ marginTop: 10 }}>
           <GlitchText text="ALBUMS" as="h2" intensity="low" className="text-xl font-bold tracking-widest" color={ACCENT} />
         </div>
@@ -99,14 +99,14 @@ export default function EventsAlbumsPage() {
                 padding: "16px", cursor: "pointer",
               }}>
                 <div style={{ height: 90, background: alb.anomaly ? "repeating-linear-gradient(135deg,#140500,#140500 2px,#0a0300 2px,#0a0300 10px)" : "#060606", marginBottom: 12, position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: alb.anomaly ? `${ACCENT}50` : "#1a1a1a", letterSpacing: "0.2em" }}>
+                  <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: alb.anomaly ? `${ACCENT}50` : "#1a1a1a", letterSpacing: "0.2em" }}>
                     {alb.anomaly ? "[ ANOMALY ]" : `${alb.photos} PHOTOS`}
                   </div>
                   <div style={{ position: "absolute", bottom: 4, right: 6, fontSize: 7, fontFamily: "var(--font-mono)", color: "#1a1a1a" }}>{alb.id}</div>
                   {isSaved && <div style={{ position: "absolute", top: 4, left: 6, fontSize: 7, fontFamily: "var(--font-mono)", color: ACCENT }}>✓</div>}
                 </div>
                 <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: isSelected ? ACCENT : "#c0c0c0", fontWeight: 700, marginBottom: 4 }}>{alb.title}</div>
-                <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#444" }}>{alb.date} — {alb.photos} снимки</div>
+                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444" }}>{alb.date} — {alb.photos} снимки</div>
               </motion.div>
 
               <AnimatePresence>

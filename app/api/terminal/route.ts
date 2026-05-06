@@ -62,7 +62,6 @@ const HELP_TEXT = [
 const EVIDENCE_FILES = [
   "evidence/",
   "  rf_gate_token.enc       — RED ROOM gate key",
-  "  circuit3_shard.txt      — MIRRORS circuit token",
   "  calm_voice_log.bin      — forum confession #4",
   "  ARS_timeline.log        — 03:17 → 22:17 pattern",
   "  coords_encrypted.bin    — LAT/LON hex strings",
@@ -144,7 +143,6 @@ export async function POST(req: NextRequest) {
         lines: [
           "Scanning node signatures...",
           "  NODE-A (RED ROOM)    — RF-GATE token: required",
-          "  NODE-B (MIRRORS)     — CIRCUIT-3 token: required",
           "  NODE-C (LEAKS)       — R.A. identity fragment: active",
           "  NODE-D (EVENTS)      — Timeline 03:17: active",
           "  NODE-E (CULT)        — Ritual status: active",

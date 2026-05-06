@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState } from "react"
 import Link from "next/link"
@@ -47,18 +47,18 @@ export default function EventsVenuesPage() {
               onClick={() => setSelected(isSelected ? null : v.id)}
               style={{ background: isSelected ? `${ACCENT}08` : "#040404", border: `1px solid ${isSelected ? `${ACCENT}35` : v.anomaly ? `${ACCENT}18` : "#111"}`, padding: "16px", cursor: "pointer" }}>
               <div style={{ fontSize: 7, fontFamily: "var(--font-mono)", color: "#2a2a2a", marginBottom: 6 }}>{v.id}</div>
-              <div style={{ fontSize: 13, fontFamily: "var(--font-mono)", color: isSelected ? ACCENT : "#888", fontWeight: 700, marginBottom: 8 }}>{v.name}</div>
+              <div style={{ fontSize: 13, fontFamily: "var(--font-mono)", color: isSelected ? ACCENT : "#bbbbbb", fontWeight: 700, marginBottom: 8 }}>{v.name}</div>
               <div style={{ display: "flex", gap: 6, marginBottom: 8, flexWrap: "wrap" }}>
                 {[v.type, v.access].map((tag) => (
                   <span key={tag} style={{ fontSize: 7, fontFamily: "var(--font-mono)", color: "#2a2a2a", border: "1px solid #181818", padding: "1px 5px" }}>{tag}</span>
                 ))}
               </div>
-              <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#2a2a2a" }}>VISITS: {v.visits} | {v.lat !== "N/A" && v.lat !== "[R]" ? `${v.lat}, ${v.lon}` : v.lat}</div>
+              <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#2a2a2a" }}>VISITS: {v.visits} | {v.lat !== "N/A" && v.lat !== "[R]" ? `${v.lat}, ${v.lon}` : v.lat}</div>
 
               {isSelected && v.clue && (
                 <div style={{ marginTop: 12 }}>
                   <div style={{ padding: "8px 12px", background: "#0a0300", border: `1px solid ${ACCENT}20`, marginBottom: 8 }}>
-                    <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#3a2000", marginBottom: 3 }}>УЛИКА</div>
+                    <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#3a2000", marginBottom: 3 }}>УЛИКА</div>
                     <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: ACCENT }}>{v.clue}</div>
                   </div>
                   <button onClick={(e) => { e.stopPropagation(); handleSave(v) }} disabled={isSaved}

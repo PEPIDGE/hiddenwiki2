@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
@@ -10,7 +10,6 @@ const ACCENT = "#00FF41"
 
 const NODES = [
   { id: "NODE-A", label: "RED ROOM",   x: 18, y: 28, color: "#FF0033", active: true },
-  { id: "NODE-B", label: "MIRRORS",    x: 76, y: 14, color: "#00BFFF", active: true },
   { id: "NODE-C", label: "LEAKS",      x: 50, y: 52, color: "#FFD700", active: true },
   { id: "NODE-D", label: "EVENTS",     x: 14, y: 70, color: "#FF6B00", active: true },
   { id: "NODE-E", label: "CULT",       x: 82, y: 65, color: "#CC44FF", active: true },
@@ -19,9 +18,9 @@ const NODES = [
 ]
 
 const CONNECTIONS = [
-  ["NODE-A", "NODE-C"], ["NODE-B", "NODE-C"], ["NODE-C", "TRACE"],
+  ["NODE-A", "NODE-C"], ["NODE-C", "TRACE"],
   ["NODE-D", "TRACE"],  ["NODE-E", "TRACE"],  ["NODE-F", "NODE-C"],
-  ["NODE-A", "NODE-D"], ["NODE-B", "NODE-E"],
+  ["NODE-A", "NODE-D"],
 ]
 
 export default function TraceNodesPage() {
@@ -32,7 +31,7 @@ export default function TraceNodesPage() {
   return (
     <div style={{ maxWidth: 880, margin: "0 auto" }}>
       <div style={{ marginBottom: 20 }}>
-        <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.35em", marginBottom: 8 }}>
+        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.35em", marginBottom: 8 }}>
           TRACE-NODE // NODE TOPOLOGY
         </div>
         <GlitchText text="NODE MAP" as="h1" intensity="low" color={ACCENT} className="text-2xl font-bold tracking-widest" />
@@ -115,7 +114,7 @@ export default function TraceNodesPage() {
                   {node.id}
                 </span>
               </div>
-              <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#555", paddingLeft: 13 }}>
+              <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", paddingLeft: 13 }}>
                 {node.label}
               </div>
               <div style={{ fontSize: 7, fontFamily: "var(--font-mono)", color: node.active ? "#1a3a1a" : "#2a2a2a", paddingLeft: 13, marginTop: 3, letterSpacing: "0.1em" }}>

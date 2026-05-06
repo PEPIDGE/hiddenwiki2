@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -75,12 +75,12 @@ export default function DonorsPage() {
   return (
     <div style={{ maxWidth: 960, margin: "0 auto" }}>
       <div style={{ marginBottom: 20 }}>
-        <Link href="/hidden-wiki-2/red-room" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#555", letterSpacing: "0.15em", textDecoration: "none" }}>
+        <Link href="/hidden-wiki-2/red-room" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.15em", textDecoration: "none" }}>
           ← RED ROOM
         </Link>
         <div style={{ marginTop: 10, display: "flex", alignItems: "center", gap: 12 }}>
           <GlitchText text="DONORS" as="h1" intensity="low" className="text-3xl font-bold tracking-widest" color={ACCENT} />
-          <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#555", marginLeft: "auto", letterSpacing: "0.1em" }}>
+          <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", marginLeft: "auto", letterSpacing: "0.1em" }}>
             {DONORS.length} ЗАПИСА
           </span>
         </div>
@@ -88,7 +88,7 @@ export default function DonorsPage() {
       </div>
 
       <div style={{ padding: "10px 14px", background: "#080808", border: "1px solid #1e1e1e", marginBottom: 20 }}>
-        <p style={{ fontSize: 11, color: "#aaa", margin: 0, fontFamily: "var(--font-mono)", lineHeight: 1.7 }}>
+        <p style={{ fontSize: 11, color: "#cccccc", margin: 0, fontFamily: "var(--font-mono)", lineHeight: 1.7 }}>
           Сортирай по <span style={{ color: "#FFD700" }}>amount</span>, <span style={{ color: "#FF6B00" }}>timestamp</span> или <span style={{ color: "#CC44FF" }}>priority</span> — повтарящите се donor кодове крият информация.
         </p>
       </div>
@@ -108,11 +108,11 @@ export default function DonorsPage() {
                 ].map((col) => (
                   <th key={col.key}
                     onClick={() => handleSort(col.key)}
-                    style={{ padding: "8px 10px", fontSize: 8, fontFamily: "var(--font-mono)", color: sortKey === col.key ? ACCENT : "#555", letterSpacing: "0.15em", cursor: "pointer", textAlign: "left", whiteSpace: "nowrap" }}>
+                    style={{ padding: "8px 10px", fontSize: 9, fontFamily: "var(--font-mono)", color: sortKey === col.key ? ACCENT : "#909090", letterSpacing: "0.15em", cursor: "pointer", textAlign: "left", whiteSpace: "nowrap" }}>
                     {col.label} {sortKey === col.key ? (sortDir === "asc" ? "↑" : "↓") : ""}
                   </th>
                 ))}
-                <th style={{ padding: "8px 10px", fontSize: 8, fontFamily: "var(--font-mono)", color: "#555", letterSpacing: "0.15em" }}>ACTIONS</th>
+                <th style={{ padding: "8px 10px", fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.15em" }}>ACTIONS</th>
               </tr>
             </thead>
             <tbody>
@@ -133,19 +133,19 @@ export default function DonorsPage() {
                     <td style={{ padding: "8px 10px", fontSize: 11, color: donor.amount >= 2000 ? ACCENT : "#c0c0c0", fontFamily: "var(--font-mono)", fontWeight: donor.amount >= 2000 ? 700 : 400 }}>
                       {donor.amount.toLocaleString()}
                     </td>
-                    <td style={{ padding: "8px 10px", fontSize: 10, color: "#888", fontFamily: "var(--font-mono)" }}>
+                    <td style={{ padding: "8px 10px", fontSize: 10, color: "#bbbbbb", fontFamily: "var(--font-mono)" }}>
                       {donor.timestamp}
                     </td>
-                    <td style={{ padding: "8px 10px", fontSize: 10, color: isRepeat ? "#CC44FF" : "#777", fontFamily: "var(--font-mono)" }}>
+                    <td style={{ padding: "8px 10px", fontSize: 10, color: isRepeat ? "#CC44FF" : "#aaaaaa", fontFamily: "var(--font-mono)" }}>
                       {donor.code}
-                      {isRepeat && <span style={{ marginLeft: 6, fontSize: 8, color: "#CC44FF" }}>×REPEAT</span>}
+                      {isRepeat && <span style={{ marginLeft: 6, fontSize: 9, color: "#CC44FF" }}>×REPEAT</span>}
                     </td>
                     <td style={{ padding: "8px 10px" }}>
-                      {donor.priority && <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: ACCENT, border: `1px solid ${ACCENT}40`, padding: "2px 6px" }}>PRIORITY</span>}
+                      {donor.priority && <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: ACCENT, border: `1px solid ${ACCENT}40`, padding: "2px 6px" }}>PRIORITY</span>}
                     </td>
                     <td style={{ padding: "8px 10px" }}>
                       <button onClick={(e) => { e.stopPropagation(); handleSave(donor, "row", `Donor: ${donor.username} | ${donor.amount}€ | ${donor.timestamp} | ${donor.code}${donor.note ? " | " + donor.note : ""}`) }}
-                        style={{ padding: "3px 8px", fontSize: 7, fontFamily: "var(--font-mono)", background: savedClues.includes(`donors-${donor.id}-row`) ? `${ACCENT}18` : "#0d0d0d", color: savedClues.includes(`donors-${donor.id}-row`) ? ACCENT : "#666", border: `1px solid ${savedClues.includes(`donors-${donor.id}-row`) ? ACCENT + "40" : "#1e1e1e"}`, cursor: "pointer" }}>
+                        style={{ padding: "3px 8px", fontSize: 7, fontFamily: "var(--font-mono)", background: savedClues.includes(`donors-${donor.id}-row`) ? `${ACCENT}18` : "#0d0d0d", color: savedClues.includes(`donors-${donor.id}-row`) ? ACCENT : "#999999", border: `1px solid ${savedClues.includes(`donors-${donor.id}-row`) ? ACCENT + "40" : "#1e1e1e"}`, cursor: "pointer" }}>
                         {savedClues.includes(`donors-${donor.id}-row`) ? "✓" : "SAVE"}
                       </button>
                     </td>
@@ -160,19 +160,19 @@ export default function DonorsPage() {
         <div style={{ background: "#080808", border: "1px solid #1e1e1e", padding: 16, height: "fit-content" }}>
           {selectedDonor ? (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} key={selectedDonor.id}>
-              <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#444", letterSpacing: "0.2em", marginBottom: 12 }}>DONOR DETAIL</div>
+              <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", letterSpacing: "0.2em", marginBottom: 12 }}>DONOR DETAIL</div>
               <div style={{ fontSize: 16, fontFamily: "var(--font-mono)", color: "#e0e0e0", fontWeight: 700, marginBottom: 14 }}>{selectedDonor.username}</div>
               {[
                 { label: "ID", value: selectedDonor.id },
                 { label: "AMOUNT", value: `€${selectedDonor.amount}`, color: selectedDonor.amount >= 2000 ? ACCENT : "#c0c0c0" },
                 { label: "TIMESTAMP", value: selectedDonor.timestamp },
-                { label: "CODE", value: selectedDonor.code, color: DONORS.filter((d) => d.code === selectedDonor.code).length > 1 ? "#CC44FF" : "#888" },
+                { label: "CODE", value: selectedDonor.code, color: DONORS.filter((d) => d.code === selectedDonor.code).length > 1 ? "#CC44FF" : "#bbbbbb" },
                 { label: "STATUS", value: selectedDonor.status, color: PRIORITY_COLORS[selectedDonor.status] },
-                { label: "PRIORITY", value: selectedDonor.priority ? "YES" : "NO", color: selectedDonor.priority ? ACCENT : "#555" },
+                { label: "PRIORITY", value: selectedDonor.priority ? "YES" : "NO", color: selectedDonor.priority ? ACCENT : "#909090" },
               ].map((row) => (
                 <div key={row.label} style={{ display: "flex", justifyContent: "space-between", marginBottom: 8, paddingBottom: 8, borderBottom: "1px solid #111" }}>
-                  <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#555", letterSpacing: "0.1em" }}>{row.label}</span>
-                  <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: row.color ?? "#aaa" }}>{row.value}</span>
+                  <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.1em" }}>{row.label}</span>
+                  <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: row.color ?? "#cccccc" }}>{row.value}</span>
                 </div>
               ))}
               {selectedDonor.note && (
@@ -187,7 +187,7 @@ export default function DonorsPage() {
                   { field: "timestamp", text: `Timestamp: ${selectedDonor.timestamp}` },
                 ].map((action) => (
                   <button key={action.field} onClick={() => handleSave(selectedDonor, action.field, action.text)}
-                    style={{ padding: "5px 10px", fontSize: 8, fontFamily: "var(--font-mono)", letterSpacing: "0.08em", background: savedClues.includes(`donors-${selectedDonor.id}-${action.field}`) ? `${ACCENT}18` : "#0d0d0d", color: savedClues.includes(`donors-${selectedDonor.id}-${action.field}`) ? ACCENT : "#777", border: `1px solid ${savedClues.includes(`donors-${selectedDonor.id}-${action.field}`) ? ACCENT + "40" : "#222"}`, cursor: "pointer", textAlign: "left" }}>
+                    style={{ padding: "5px 10px", fontSize: 9, fontFamily: "var(--font-mono)", letterSpacing: "0.08em", background: savedClues.includes(`donors-${selectedDonor.id}-${action.field}`) ? `${ACCENT}18` : "#0d0d0d", color: savedClues.includes(`donors-${selectedDonor.id}-${action.field}`) ? ACCENT : "#aaaaaa", border: `1px solid ${savedClues.includes(`donors-${selectedDonor.id}-${action.field}`) ? ACCENT + "40" : "#222"}`, cursor: "pointer", textAlign: "left" }}>
                     {savedClues.includes(`donors-${selectedDonor.id}-${action.field}`) ? "✓ " : ""}{action.text.split(":")[0]} → SAVE
                   </button>
                 ))}

@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
@@ -69,11 +69,11 @@ export default function FinanceAnomaliesPage() {
   return (
     <div style={{ maxWidth: 820, margin: "0 auto" }}>
       <div style={{ marginBottom: 20 }}>
-        <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#2a0015", letterSpacing: "0.35em", marginBottom: 8 }}>FINANCE // ANOMALIES</div>
+        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#2a0015", letterSpacing: "0.35em", marginBottom: 8 }}>FINANCE // ANOMALIES</div>
         <GlitchText text="ANOMALY REPORT" as="h1" intensity="medium" color={ACCENT} className="text-2xl font-bold tracking-widest" />
         <div style={{ height: 1, background: `linear-gradient(90deg, ${ACCENT}40, transparent)`, marginTop: 10 }} />
       </div>
-      <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#555", lineHeight: 1.8, marginBottom: 24, borderLeft: "2px solid #2a0010", paddingLeft: 14 }}>
+      <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", lineHeight: 1.8, marginBottom: 24, borderLeft: "2px solid #2a0010", paddingLeft: 14 }}>
         4 транзакции показват аномалии свързани с операцията по изчезването на Лора. Всяка потвърдена аномалия носи clue с confidence 4-5.
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
@@ -86,14 +86,14 @@ export default function FinanceAnomaliesPage() {
             >
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
                 <div>
-                  <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#333", letterSpacing: "0.15em", marginBottom: 4 }}>{a.type}</div>
+                  <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333", letterSpacing: "0.15em", marginBottom: 4 }}>{a.type}</div>
                   <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: ACCENT, fontWeight: 700, letterSpacing: "0.06em" }}>{a.code}</div>
                 </div>
-                <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#333", letterSpacing: "0.1em" }}>
+                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333", letterSpacing: "0.1em" }}>
                   CONF: {a.confidence}/5
                 </div>
               </div>
-              <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#666", lineHeight: 1.7, marginBottom: 8 }}>{a.description}</div>
+              <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#999999", lineHeight: 1.7, marginBottom: 8 }}>{a.description}</div>
               <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", borderLeft: `2px solid ${ACCENT}30`, paddingLeft: 10, marginBottom: 12 }}>{a.evidence}</div>
               <button onClick={() => handleSave(a)} disabled={isSaved} style={{
                 background: "transparent", border: `1px solid ${isSaved ? "#1a1a1a" : `${ACCENT}40`}`,

@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState } from "react"
 import Link from "next/link"
@@ -56,21 +56,21 @@ export default function EventsTicketsPage() {
               <motion.div initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}
                 onClick={() => setSelected(isExp ? null : tk.id)}
                 style={{ display: "grid", gridTemplateColumns: "80px 1fr 80px 110px 80px", gap: 8, padding: "10px 12px", background: isExp ? `${ACCENT}08` : "#040404", border: `1px solid ${isExp ? `${ACCENT}35` : tk.anomaly ? `${ACCENT}15` : "#0e0e0e"}`, cursor: "pointer" }}>
-                <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: tk.anomaly ? ACCENT : "#2a2a2a" }}>{tk.id}</div>
-                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: tk.anomaly ? "#aaa" : "#444" }}>{tk.event}</div>
-                <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: tk.anomaly ? `${ACCENT}80` : "#333" }}>{tk.seat}</div>
-                <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#333" }}>{tk.issued}</div>
-                <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: STATUS_COLOR[tk.status] }}>{tk.status}</div>
+                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: tk.anomaly ? ACCENT : "#2a2a2a" }}>{tk.id}</div>
+                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: tk.anomaly ? "#cccccc" : "#444" }}>{tk.event}</div>
+                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: tk.anomaly ? `${ACCENT}80` : "#333" }}>{tk.seat}</div>
+                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333" }}>{tk.issued}</div>
+                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: STATUS_COLOR[tk.status] }}>{tk.status}</div>
               </motion.div>
               <AnimatePresence>
                 {isExp && (
                   <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.16 }} style={{ overflow: "hidden" }}>
                     <div style={{ padding: "12px 14px", background: "#060200", border: `1px solid ${ACCENT}20`, borderTop: "none" }}>
-                      <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#333", marginBottom: 6 }}>Носител: {tk.holder}</div>
+                      <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333", marginBottom: 6 }}>Носител: {tk.holder}</div>
                       {tk.clue && (
                         <>
                           <div style={{ padding: "8px 12px", background: "#0a0300", border: `1px solid ${ACCENT}20`, marginBottom: 10 }}>
-                            <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#3a2000", marginBottom: 3 }}>УЛИКА</div>
+                            <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#3a2000", marginBottom: 3 }}>УЛИКА</div>
                             <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: ACCENT }}>{tk.clue}</div>
                           </div>
                           <button onClick={(e) => { e.stopPropagation(); handleSave(tk) }} disabled={isSaved}

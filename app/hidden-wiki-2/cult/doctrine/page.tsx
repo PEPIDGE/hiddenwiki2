@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState } from "react"
 import Link from "next/link"
@@ -59,17 +59,17 @@ export default function CultDoctrinePage() {
                 style={{ padding: "14px 16px", background: isExp ? `${ACCENT}07` : "#050505", border: `1px solid ${isExp ? `${ACCENT}35` : d.clue ? `${ACCENT}14` : "#111"}`, cursor: "pointer", position: "relative" }}>
                 {d.clue && <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 1, background: ACCENT, opacity: 0.3 }} />}
                 <div style={{ fontSize: 7, fontFamily: "var(--font-mono)", color: "#2a2a2a", marginBottom: 5 }}>ЗАКОН {d.id}</div>
-                <div style={{ fontSize: 13, fontFamily: "var(--font-mono)", color: isExp ? ACCENT : "#888", fontWeight: 700 }}>{d.title}</div>
+                <div style={{ fontSize: 13, fontFamily: "var(--font-mono)", color: isExp ? ACCENT : "#bbbbbb", fontWeight: 700 }}>{d.title}</div>
               </motion.div>
               <AnimatePresence>
                 {isExp && (
                   <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.18 }} style={{ overflow: "hidden" }}>
                     <div style={{ padding: "12px 16px", background: "#060208", border: `1px solid ${ACCENT}18`, borderTop: "none" }}>
-                      <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#666", lineHeight: 1.8, marginBottom: d.clue ? 12 : 0 }}>{d.text}</div>
+                      <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#999999", lineHeight: 1.8, marginBottom: d.clue ? 12 : 0 }}>{d.text}</div>
                       {d.clue && (
                         <>
                           <div style={{ padding: "8px 12px", background: "#080310", border: `1px solid ${ACCENT}20`, marginBottom: 10 }}>
-                            <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#3a1050", marginBottom: 3 }}>УЛИКА</div>
+                            <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#3a1050", marginBottom: 3 }}>УЛИКА</div>
                             <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: ACCENT }}>{d.clue}</div>
                           </div>
                           <button onClick={(e) => { e.stopPropagation(); handleSave(d) }} disabled={isSaved}

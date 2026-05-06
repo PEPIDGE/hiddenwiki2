@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useMemo } from "react"
 import { motion, AnimatePresence } from "framer-motion"
@@ -101,7 +101,7 @@ export function SortableTable<T extends Record<string, unknown>>({
               whiteSpace: "nowrap",
               overflow: "hidden",
             }}
-            onMouseEnter={(e) => { if (sortKey !== col.key) e.currentTarget.style.color = "#888" }}
+            onMouseEnter={(e) => { if (sortKey !== col.key) e.currentTarget.style.color = "#bbbbbb" }}
             onMouseLeave={(e) => { if (sortKey !== col.key) e.currentTarget.style.color = "#444" }}
           >
             {col.label}
@@ -150,7 +150,7 @@ export function SortableTable<T extends Record<string, unknown>>({
                       padding: "8px 12px",
                       fontSize: 10,
                       fontFamily: "var(--font-mono)",
-                      color: highlighted ? accentColor : hovered ? "#aaa" : "#555",
+                      color: highlighted ? accentColor : hovered ? "#cccccc" : "#909090",
                       borderRight: "1px solid #0a0a0a",
                       overflow: "hidden",
                       textOverflow: "ellipsis",

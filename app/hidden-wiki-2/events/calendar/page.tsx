@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState } from "react"
 import Link from "next/link"
@@ -86,17 +86,17 @@ export default function EventsCalendarPage() {
                 border: `1px solid ${isSelected ? `${ACCENT}35` : ev.highlight ? `${ACCENT}18` : "#0f0f0f"}`,
                 cursor: "pointer",
               }}>
-                <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: isSelected ? ACCENT : ev.highlight ? "#cccccc" : "#555", fontWeight: ev.highlight ? 700 : 400 }}>
+                <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: isSelected ? ACCENT : ev.highlight ? "#cccccc" : "#909090", fontWeight: ev.highlight ? 700 : 400 }}>
                   {ev.title}
                 </div>
-                {ev.note && <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#333", marginTop: 3 }}>{ev.note}</div>}
+                {ev.note && <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333", marginTop: 3 }}>{ev.note}</div>}
               </div>
 
               <AnimatePresence>
                 {isSelected && ev.clue && (
                   <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.16 }} style={{ overflow: "hidden" }}>
                     <div style={{ padding: "10px 14px", background: "#060300", border: `1px solid ${ACCENT}20`, borderTop: "none" }}>
-                      <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#3a2000", letterSpacing: "0.12em", marginBottom: 4 }}>УЛИКА</div>
+                      <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#3a2000", letterSpacing: "0.12em", marginBottom: 4 }}>УЛИКА</div>
                       <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: ACCENT, marginBottom: 10 }}>{ev.clue}</div>
                       <button onClick={(e) => { e.stopPropagation(); handleSave(ev, i) }} disabled={isSaved}
                         style={{ background: "transparent", border: `1px solid ${isSaved ? "#222" : `${ACCENT}40`}`, color: isSaved ? "#2a2a2a" : ACCENT, fontFamily: "var(--font-mono)", fontSize: 9, letterSpacing: "0.1em", padding: "6px 16px", cursor: isSaved ? "default" : "pointer" }}>

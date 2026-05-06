@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -89,7 +89,7 @@ export default function CultChatSystemPage() {
   return (
     <div style={{ maxWidth: 820, margin: "0 auto" }}>
       <div style={{ marginBottom: 20 }}>
-        <Link href="/hidden-wiki-2/cult" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#555", letterSpacing: "0.15em", textDecoration: "none" }}>← CULT</Link>
+        <Link href="/hidden-wiki-2/cult" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.15em", textDecoration: "none" }}>← CULT</Link>
         <div style={{ marginTop: 10 }}>
           <GlitchText text="CHAT SYSTEM" as="h1" intensity="low" className="text-3xl font-bold tracking-widest" color={ACCENT} />
         </div>
@@ -106,17 +106,17 @@ export default function CultChatSystemPage() {
             </div>
 
             <div style={{ maxWidth: 400, margin: "0 auto", padding: "28px 24px", background: "#080808", border: "1px solid #1e1e1e" }}>
-              <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#444", letterSpacing: "0.2em", marginBottom: 20 }}>
+              <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", letterSpacing: "0.2em", marginBottom: 20 }}>
                 BROTHERHOOD INTERNAL CHAT — LOGIN
               </div>
               <div style={{ marginBottom: 14 }}>
-                <div style={{ fontSize: 8, color: "#555", fontFamily: "var(--font-mono)", marginBottom: 5 }}>USERNAME</div>
+                <div style={{ fontSize: 9, color: "#909090", fontFamily: "var(--font-mono)", marginBottom: 5 }}>USERNAME</div>
                 <input value={username} onChange={(e) => setUsername(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleLogin()}
                   style={{ width: "100%", padding: "7px 10px", background: "#111", border: "1px solid #222", color: "#e0e0e0", fontSize: 12, fontFamily: "var(--font-mono)", outline: "none" }} />
               </div>
               <div style={{ marginBottom: 16 }}>
-                <div style={{ fontSize: 8, color: "#555", fontFamily: "var(--font-mono)", marginBottom: 5 }}>PASSWORD</div>
+                <div style={{ fontSize: 9, color: "#909090", fontFamily: "var(--font-mono)", marginBottom: 5 }}>PASSWORD</div>
                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleLogin()}
                   style={{ width: "100%", padding: "7px 10px", background: "#111", border: "1px solid #222", color: "#e0e0e0", fontSize: 12, fontFamily: "var(--font-mono)", outline: "none" }} />
@@ -141,19 +141,19 @@ export default function CultChatSystemPage() {
         ) : (
           <motion.div key="chat" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 14px", background: "#0a000a", border: `1px solid ${ACCENT}20`, marginBottom: 16 }}>
-              <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#888" }}>
+              <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#bbbbbb" }}>
                 Влязъл като: <span style={{ color: ACCENT }}>{loggedIn.displayName}</span>
-                <span style={{ marginLeft: 10, fontSize: 8, color: "#555" }}>[{loggedIn.role}]</span>
+                <span style={{ marginLeft: 10, fontSize: 9, color: "#909090" }}>[{loggedIn.role}]</span>
               </div>
               <button onClick={() => { setLoggedIn(null); setUsername(""); setPassword("") }}
-                style={{ background: "none", border: "1px solid #222", color: "#555", fontSize: 8, fontFamily: "var(--font-mono)", padding: "3px 8px", cursor: "pointer" }}>
+                style={{ background: "none", border: "1px solid #222", color: "#909090", fontSize: 9, fontFamily: "var(--font-mono)", padding: "3px 8px", cursor: "pointer" }}>
                 LOGOUT
               </button>
             </div>
 
             <div style={{ padding: "10px 14px", background: "#080808", border: "1px solid #1a1a1a", marginBottom: 16 }}>
-              <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#555", letterSpacing: "0.15em", marginBottom: 6 }}>АРХИВ — ОКТОМВРИ 2025</div>
-              <p style={{ fontSize: 10, color: "#888", margin: 0, fontFamily: "var(--font-mono)", lineHeight: 1.6 }}>
+              <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.15em", marginBottom: 6 }}>АРХИВ — ОКТОМВРИ 2025</div>
+              <p style={{ fontSize: 10, color: "#bbbbbb", margin: 0, fontFamily: "var(--font-mono)", lineHeight: 1.6 }}>
                 Показани само съобщения до теб или до ALL. Съобщенията между GothGirl и ToxicBabe са скрити — паролата е сменена.
               </p>
             </div>
@@ -168,15 +168,15 @@ export default function CultChatSystemPage() {
                     <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
                       <div style={{ flex: 1 }}>
                         <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 5 }}>
-                          <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#444" }}>{msg.time}</span>
+                          <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444" }}>{msg.time}</span>
                           <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: msg.from === "RedFox" ? "#FF0033" : ACCENT, fontWeight: 600 }}>{msg.from}</span>
-                          <span style={{ fontSize: 8, color: "#333", fontFamily: "var(--font-mono)" }}>→ {msg.to}</span>
+                          <span style={{ fontSize: 9, color: "#333", fontFamily: "var(--font-mono)" }}>→ {msg.to}</span>
                           {msg.highlighted && <span style={{ fontSize: 7, color: "#FF0033", border: "1px solid #FF003330", padding: "1px 5px", fontFamily: "var(--font-mono)" }}>⚠ KEY</span>}
                         </div>
                         <div style={{ fontSize: 11, color: "#d0d0d0", fontFamily: "var(--font-mono)", lineHeight: 1.6 }}>{msg.text}</div>
                       </div>
                       <button onClick={() => handleSave(msg)}
-                        style={{ padding: "3px 10px", fontSize: 8, fontFamily: "var(--font-mono)", background: isSaved ? `${ACCENT}18` : "#0d0d0d", color: isSaved ? ACCENT : "#555", border: `1px solid ${isSaved ? ACCENT + "40" : "#1e1e1e"}`, cursor: "pointer", flexShrink: 0 }}>
+                        style={{ padding: "3px 10px", fontSize: 9, fontFamily: "var(--font-mono)", background: isSaved ? `${ACCENT}18` : "#0d0d0d", color: isSaved ? ACCENT : "#909090", border: `1px solid ${isSaved ? ACCENT + "40" : "#1e1e1e"}`, cursor: "pointer", flexShrink: 0 }}>
                         {isSaved ? "✓" : "SAVE"}
                       </button>
                     </div>

@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
@@ -102,12 +102,12 @@ export default function ForumConfessionsPage() {
               <div style={{ padding: "12px 16px", display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #0e0e0e" }}>
                 <div>
                   <div style={{ fontSize: 7, fontFamily: "var(--font-mono)", color: cf.verified ? `${ACCENT}50` : "#2a2a2a", letterSpacing: "0.15em", marginBottom: 3 }}>{cf.id}</div>
-                  <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#333" }}>{cf.anon} // {cf.timestamp}</div>
+                  <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333" }}>{cf.anon} // {cf.timestamp}</div>
                 </div>
                 {!isRev && (
                   <button onClick={() => handleReveal(cf.id)}
                     disabled={!!cd && cd > 0}
-                    style={{ background: "transparent", border: `1px solid ${cf.verified ? `${ACCENT}35` : "#222"}`, color: cf.verified ? ACCENT : "#333", fontFamily: "var(--font-mono)", fontSize: 8, padding: "5px 12px", cursor: "pointer", letterSpacing: "0.1em" }}>
+                    style={{ background: "transparent", border: `1px solid ${cf.verified ? `${ACCENT}35` : "#222"}`, color: cf.verified ? ACCENT : "#333", fontFamily: "var(--font-mono)", fontSize: 9, padding: "5px 12px", cursor: "pointer", letterSpacing: "0.1em" }}>
                     {cd && cd > 0 ? `WAIT ${cd}s` : "REVEAL"}
                   </button>
                 )}
@@ -122,7 +122,7 @@ export default function ForumConfessionsPage() {
                     {cf.clue && (
                       <>
                         <div style={{ padding: "8px 12px", background: "#040c07", border: `1px solid ${ACCENT}20`, marginBottom: 8 }}>
-                          <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#1a3a2a", marginBottom: 3 }}>УЛИКА</div>
+                          <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#1a3a2a", marginBottom: 3 }}>УЛИКА</div>
                           <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: ACCENT }}>{cf.clue}</div>
                         </div>
                         <button onClick={() => handleSave(cf)} disabled={isSaved}

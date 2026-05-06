@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -63,7 +63,7 @@ export default function LeaksCardsPage() {
   return (
     <div style={{ maxWidth: 1000, margin: "0 auto" }}>
       <div style={{ marginBottom: 20 }}>
-        <Link href="/hidden-wiki-2/leaks" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#555", letterSpacing: "0.15em", textDecoration: "none" }}>← LEAKS</Link>
+        <Link href="/hidden-wiki-2/leaks" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.15em", textDecoration: "none" }}>← LEAKS</Link>
         <div style={{ marginTop: 10 }}>
           <GlitchText text="CARDS" as="h1" intensity="low" className="text-3xl font-bold tracking-widest" color={ACCENT} />
         </div>
@@ -86,7 +86,7 @@ export default function LeaksCardsPage() {
             <thead>
               <tr style={{ borderBottom: "1px solid #222" }}>
                 {["ПРИТЕЖАТЕЛ", "БАНКА", "КАРТА", "ВАЛУТА", "СТАТУС", ""].map((h) => (
-                  <th key={h} style={{ padding: "6px 10px", fontSize: 8, fontFamily: "var(--font-mono)", color: "#555", letterSpacing: "0.12em", textAlign: "left" }}>{h}</th>
+                  <th key={h} style={{ padding: "6px 10px", fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.12em", textAlign: "left" }}>{h}</th>
                 ))}
               </tr>
             </thead>
@@ -102,16 +102,16 @@ export default function LeaksCardsPage() {
                       </span>
                       {(card as any).key && <span style={{ marginLeft: 6, fontSize: 7, color: ACCENT, border: `1px solid ${ACCENT}40`, padding: "1px 4px" }}>KEY</span>}
                     </td>
-                    <td style={{ padding: "8px 10px", fontSize: 10, color: "#888", fontFamily: "var(--font-mono)" }}>{card.bank}</td>
-                    <td style={{ padding: "8px 10px", fontSize: 10, color: "#666", fontFamily: "var(--font-mono)" }}>**** {card.last4}</td>
-                    <td style={{ padding: "8px 10px", fontSize: 9, color: "#555", fontFamily: "var(--font-mono)" }}>{card.currency}</td>
+                    <td style={{ padding: "8px 10px", fontSize: 10, color: "#bbbbbb", fontFamily: "var(--font-mono)" }}>{card.bank}</td>
+                    <td style={{ padding: "8px 10px", fontSize: 10, color: "#999999", fontFamily: "var(--font-mono)" }}>**** {card.last4}</td>
+                    <td style={{ padding: "8px 10px", fontSize: 9, color: "#909090", fontFamily: "var(--font-mono)" }}>{card.currency}</td>
                     <td style={{ padding: "8px 10px" }}>
-                      <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: STATUS_COLORS[card.status] }}>{card.status}</span>
+                      <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: STATUS_COLORS[card.status] }}>{card.status}</span>
                     </td>
                     <td style={{ padding: "8px 10px" }}>
                       {card.history && (
                         <button onClick={(e) => { e.stopPropagation(); handleSave(card, "holder", `${card.holder} — ${card.bank} **** ${card.last4}`, 4) }}
-                          style={{ padding: "2px 7px", fontSize: 7, fontFamily: "var(--font-mono)", background: savedClues.includes(`cards-${card.id}-holder`) ? `${ACCENT}18` : "#0d0d0d", color: savedClues.includes(`cards-${card.id}-holder`) ? ACCENT : "#555", border: `1px solid ${savedClues.includes(`cards-${card.id}-holder`) ? ACCENT + "40" : "#1e1e1e"}`, cursor: "pointer" }}>
+                          style={{ padding: "2px 7px", fontSize: 7, fontFamily: "var(--font-mono)", background: savedClues.includes(`cards-${card.id}-holder`) ? `${ACCENT}18` : "#0d0d0d", color: savedClues.includes(`cards-${card.id}-holder`) ? ACCENT : "#909090", border: `1px solid ${savedClues.includes(`cards-${card.id}-holder`) ? ACCENT + "40" : "#1e1e1e"}`, cursor: "pointer" }}>
                           {savedClues.includes(`cards-${card.id}-holder`) ? "✓" : "SAVE"}
                         </button>
                       )}
@@ -127,31 +127,31 @@ export default function LeaksCardsPage() {
         <div style={{ background: "#080808", border: "1px solid #1a1a1a", padding: 16, height: "fit-content" }}>
           {selected ? (
             <motion.div key={selected.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#444", letterSpacing: "0.2em", marginBottom: 12 }}>CARD DETAIL</div>
+              <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", letterSpacing: "0.2em", marginBottom: 12 }}>CARD DETAIL</div>
               <div style={{ fontSize: 16, fontFamily: "var(--font-mono)", color: (selected as any).key ? ACCENT : "#e0e0e0", fontWeight: 700, marginBottom: 4 }}>{selected.holder}</div>
-              <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#666", marginBottom: 14 }}>{selected.bank} · **** {selected.last4} · {selected.currency}</div>
+              <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#999999", marginBottom: 14 }}>{selected.bank} · **** {selected.last4} · {selected.currency}</div>
 
               {selected.history ? (
                 <div>
-                  <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#555", letterSpacing: "0.15em", marginBottom: 10 }}>TRANSACTION HISTORY</div>
+                  <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.15em", marginBottom: 10 }}>TRANSACTION HISTORY</div>
                   <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                     {selected.history.map((tx, i) => (
                       <div key={i} style={{ padding: "8px 10px", background: tx.note.includes("Тетрабеназин") ? "#001200" : "#0d0d0d", border: `1px solid ${tx.note.includes("Тетрабеназин") ? ACCENT + "40" : "#1a1a1a"}` }}>
                         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-                          <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#777" }}>{tx.date}</span>
-                          <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: tx.note.includes("Тетрабеназин") ? ACCENT : "#bbb", fontWeight: 600 }}>{tx.amount}</span>
+                          <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#aaaaaa" }}>{tx.date}</span>
+                          <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: tx.note.includes("Тетрабеназин") ? ACCENT : "#dddddd", fontWeight: 600 }}>{tx.amount}</span>
                         </div>
-                        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#888", marginBottom: 4 }}>{tx.merchant}</div>
-                        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: tx.note.includes("Тетрабеназин") ? ACCENT : "#555", lineHeight: 1.5 }}>{tx.note}</div>
+                        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#bbbbbb", marginBottom: 4 }}>{tx.merchant}</div>
+                        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: tx.note.includes("Тетрабеназин") ? ACCENT : "#909090", lineHeight: 1.5 }}>{tx.note}</div>
                         {tx.note.includes("Тетрабеназин") && (
                           <button onClick={() => handleSave(selected, `tx-tetra-${i}`, `Р. Алексиев купува Тетрабеназин — ${tx.date}, ${tx.merchant}, ${tx.amount}. Без рецепта.`, 5)}
-                            style={{ marginTop: 6, padding: "3px 10px", fontSize: 8, fontFamily: "var(--font-mono)", background: savedClues.includes(`cards-${selected.id}-tx-tetra-${i}`) ? `${ACCENT}18` : "#001a00", color: savedClues.includes(`cards-${selected.id}-tx-tetra-${i}`) ? ACCENT : "#555", border: `1px solid ${savedClues.includes(`cards-${selected.id}-tx-tetra-${i}`) ? ACCENT + "50" : "#1a2a1a"}`, cursor: "pointer" }}>
+                            style={{ marginTop: 6, padding: "3px 10px", fontSize: 9, fontFamily: "var(--font-mono)", background: savedClues.includes(`cards-${selected.id}-tx-tetra-${i}`) ? `${ACCENT}18` : "#001a00", color: savedClues.includes(`cards-${selected.id}-tx-tetra-${i}`) ? ACCENT : "#909090", border: `1px solid ${savedClues.includes(`cards-${selected.id}-tx-tetra-${i}`) ? ACCENT + "50" : "#1a2a1a"}`, cursor: "pointer" }}>
                             {savedClues.includes(`cards-${selected.id}-tx-tetra-${i}`) ? "✓ SAVED" : "⚠ SAVE KEY CLUE"}
                           </button>
                         )}
                         {tx.note.includes("22:07") && (
                           <button onClick={() => handleSave(selected, `tx-shell-${i}`, `Р. Алексиев — гориво от Shell на Ул. Бенковски, 22:07 на 15.10.2025 — съвпада с времето на изчезването`, 5)}
-                            style={{ marginTop: 6, padding: "3px 10px", fontSize: 8, fontFamily: "var(--font-mono)", background: savedClues.includes(`cards-${selected.id}-tx-shell-${i}`) ? `${ACCENT}18` : "#001a00", color: savedClues.includes(`cards-${selected.id}-tx-shell-${i}`) ? ACCENT : "#555", border: `1px solid ${savedClues.includes(`cards-${selected.id}-tx-shell-${i}`) ? ACCENT + "50" : "#1a2a1a"}`, cursor: "pointer" }}>
+                            style={{ marginTop: 6, padding: "3px 10px", fontSize: 9, fontFamily: "var(--font-mono)", background: savedClues.includes(`cards-${selected.id}-tx-shell-${i}`) ? `${ACCENT}18` : "#001a00", color: savedClues.includes(`cards-${selected.id}-tx-shell-${i}`) ? ACCENT : "#909090", border: `1px solid ${savedClues.includes(`cards-${selected.id}-tx-shell-${i}`) ? ACCENT + "50" : "#1a2a1a"}`, cursor: "pointer" }}>
                             {savedClues.includes(`cards-${selected.id}-tx-shell-${i}`) ? "✓ SAVED" : "⚠ SAVE KEY CLUE"}
                           </button>
                         )}

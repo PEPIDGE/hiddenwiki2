@@ -113,15 +113,6 @@ export const ROUTES_CONFIG = [
     sublinks: [],
   },
   {
-    id: "mirrors",
-    path: "/hidden-wiki-2/mirrors",
-    label: "MIRRORS",
-    accentColor: "#00BFFF",
-    status: "LOCKED",
-    locked: true,
-    sublinks: ["/gallery", "/quotes", "/cache"],
-  },
-  {
     id: "trace-node",
     path: "/hidden-wiki-2/trace-node",
     label: "TRACE-NODE",

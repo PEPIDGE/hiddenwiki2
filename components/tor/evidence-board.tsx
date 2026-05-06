@@ -12,7 +12,7 @@ const STATUS_LABELS: Record<string, string> = {
 
 const STATUS_COLORS: Record<string, string> = {
   confirmed: "#00FF41",
-  unverified: "#444444",
+  unverified: "#777777",
   suspicious: "#FF0033",
 }
 
@@ -68,7 +68,7 @@ export function EvidenceBoard() {
           letterSpacing: "0.05em",
         }}
         onMouseEnter={(e) => (e.currentTarget.style.color = "#00FF41")}
-        onMouseLeave={(e) => (e.currentTarget.style.color = "#333333")}
+        onMouseLeave={(e) => (e.currentTarget.style.color = "#777777")}
       >
         {collapsed ? "▶" : "◀"}
       </button>
@@ -85,8 +85,8 @@ export function EvidenceBoard() {
           >
             <div
               style={{
-                fontSize: 8,
-                color: "#303030",
+                fontSize: 10,
+                color: "#909090",
                 letterSpacing: "0.22em",
                 marginBottom: 8,
               }}
@@ -100,7 +100,7 @@ export function EvidenceBoard() {
                 style={{
                   fontSize: 9,
                   fontFamily: "var(--font-mono)",
-                  color: confirmedCount >= totalNeeded ? "#00FF41" : "#444444",
+                  color: confirmedCount >= totalNeeded ? "#00FF41" : "#aaaaaa",
                   marginBottom: 4,
                   letterSpacing: "0.1em",
                 }}
@@ -117,7 +117,7 @@ export function EvidenceBoard() {
             </div>
 
             {/* Canon anchors */}
-            <div style={{ fontSize: 8, color: "#1e1e1e", letterSpacing: "0.12em", marginBottom: 5 }}>
+            <div style={{ fontSize: 10, color: "#808080", letterSpacing: "0.12em", marginBottom: 5 }}>
               КАНОН-КОТВИ
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
@@ -127,12 +127,12 @@ export function EvidenceBoard() {
                   style={{ display: "flex", alignItems: "center", gap: 6, padding: "2px 0" }}
                   title={anchor.description}
                 >
-                  <span style={{ width: 3, height: 3, background: "#1e1e1e", flexShrink: 0 }} />
+                  <span style={{ width: 3, height: 3, background: "#606060", flexShrink: 0 }} />
                   <span
                     style={{
-                      fontSize: 8,
+                      fontSize: 10,
                       fontFamily: "var(--font-mono)",
-                      color: "#2a2a2a",
+                      color: "#909090",
                       letterSpacing: "0.06em",
                     }}
                   >
@@ -149,9 +149,9 @@ export function EvidenceBoard() {
               <div style={{ padding: "20px 12px", textAlign: "center" }}>
                 <div
                   style={{
-                    fontSize: 8,
+                    fontSize: 10,
                     fontFamily: "var(--font-mono)",
-                    color: "#181818",
+                    color: "#707070",
                     letterSpacing: "0.12em",
                     lineHeight: 2.2,
                   }}
@@ -166,8 +166,8 @@ export function EvidenceBoard() {
                 <div
                   style={{
                     padding: "3px 12px 6px",
-                    fontSize: 8,
-                    color: "#2a2a2a",
+                    fontSize: 10,
+                    color: "#909090",
                     letterSpacing: "0.18em",
                   }}
                 >
@@ -194,7 +194,7 @@ export function EvidenceBoard() {
                     >
                       <div
                         style={{
-                          fontSize: 9,
+                          fontSize: 11,
                           fontFamily: "var(--font-mono)",
                           color: STATUS_COLORS[clue.status],
                           marginBottom: 2,
@@ -205,8 +205,8 @@ export function EvidenceBoard() {
                       </div>
                       <div
                         style={{
-                          fontSize: 8,
-                          color: "#3a3a3a",
+                          fontSize: 10,
+                          color: "#aaaaaa",
                           fontFamily: "var(--font-mono)",
                           display: "flex",
                           justifyContent: "space-between",
@@ -245,16 +245,16 @@ export function EvidenceBoard() {
                             >
                               <div
                                 style={{
-                                  fontSize: 8,
-                                  fontFamily: "var(--font-mono)",
-                                  color: "#404040",
+                                fontSize: 10,
+                                fontFamily: "var(--font-mono)",
+                                color: "#b0b0b0",
                                   lineHeight: 1.7,
                                   marginBottom: 4,
                                 }}
                               >
                                 {clue.text}
                               </div>
-                              <div style={{ fontSize: 8, color: "#2a2a2a", fontFamily: "var(--font-mono)" }}>
+                              <div style={{ fontSize: 9, color: "#808080", fontFamily: "var(--font-mono)" }}>
                                 SRC: {clue.sourceRoute}
                               </div>
                             </div>
@@ -276,7 +276,7 @@ export function EvidenceBoard() {
                 borderTop: "1px solid var(--panel-border)",
               }}
             >
-              <div style={{ fontSize: 8, color: "#2a2a2a", letterSpacing: "0.18em", marginBottom: 5 }}>
+              <div style={{ fontSize: 10, color: "#909090", letterSpacing: "0.18em", marginBottom: 5 }}>
                 TOKENS
               </div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 3 }}>
@@ -288,7 +288,7 @@ export function EvidenceBoard() {
                       initial={{ scale: 0.8, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
                       style={{
-                        fontSize: 8,
+                        fontSize: 9,
                         fontFamily: "var(--font-mono)",
                         color: "#00FF41",
                         border: "1px solid #00FF4120",
@@ -306,7 +306,7 @@ export function EvidenceBoard() {
 
           {/* Progress footer */}
           <div style={{ padding: "9px 12px", borderTop: "1px solid var(--panel-border)" }}>
-            <div style={{ fontSize: 8, color: "#2a2a2a", letterSpacing: "0.12em", marginBottom: 4 }}>
+            <div style={{ fontSize: 10, color: "#909090", letterSpacing: "0.12em", marginBottom: 4 }}>
               ПРОГРЕС
             </div>
             <div style={{ height: 2, background: "#0e0e0e", position: "relative" }}>

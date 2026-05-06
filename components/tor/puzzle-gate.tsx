@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect, useCallback } from "react"
 import {
@@ -275,7 +275,7 @@ export function PuzzleGate({
             style={{
               fontSize: 10,
               fontFamily: "var(--font-mono)",
-              color: "#555555",
+              color: "#909090",
               lineHeight: 1.6,
             }}
           >

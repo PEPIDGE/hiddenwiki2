@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -67,6 +67,20 @@ export function TorNav() {
         zIndex: 10,
       }}
     >
+      {/* Logo */}
+      <Link
+        href="/"
+        style={{
+          display: "block",
+          padding: "12px 14px 10px",
+          borderBottom: "1px solid var(--panel-border)",
+          textDecoration: "none",
+          cursor: "pointer",
+        }}
+      >
+        <GlitchText text="HIDDEN WIKI 2" intensity="low" color="#00FF41" />
+      </Link>
+
       {/* Header */}
       <div style={{ padding: "10px 14px", borderBottom: "1px solid var(--panel-border)", display: "flex", flexDirection: "column", gap: 6 }}>
         <div style={{ fontSize: 8, color: "#383838", letterSpacing: "0.25em", fontFamily: "var(--font-mono)" }}>
@@ -188,7 +202,7 @@ export function TorNav() {
                       <Link href={route.path} style={{
                         display: "block", padding: "3px 6px",
                         fontSize: 9, fontFamily: "var(--font-mono)",
-                        color: pathname === route.path ? route.accentColor : "#777777",
+                        color: pathname === route.path ? route.accentColor : "#aaaaaa",
                         textDecoration: "none",
                         letterSpacing: "0.06em",
                       }}>
@@ -201,7 +215,7 @@ export function TorNav() {
                           <Link key={sub} href={fullPath} style={{
                             display: "block", padding: "3px 6px",
                             fontSize: 9, fontFamily: "var(--font-mono)",
-                            color: subActive ? route.accentColor : "#777777",
+                            color: subActive ? route.accentColor : "#aaaaaa",
                             textDecoration: "none",
                             letterSpacing: "0.06em",
                             fontWeight: subActive ? 700 : 400,

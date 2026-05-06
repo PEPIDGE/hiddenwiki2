@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
@@ -114,8 +114,8 @@ export default function CultRitualPage() {
             <motion.div key={step.id} whileHover={{ scale: 1.01 }} onClick={() => handleStep(step.id)}
               style={{ padding: "12px 16px", background: pos > 0 ? `${ACCENT}08` : "#040404", border: `1px solid ${pos > 0 ? `${ACCENT}35` : "#111"}`, cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div>
-                <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: pos > 0 ? `${ACCENT}70` : "#2a2a2a", marginBottom: 3 }}>СТЪПКА {step.id}</div>
-                <div style={{ fontSize: 12, fontFamily: "var(--font-mono)", color: pos > 0 ? ACCENT : "#666", fontWeight: 700 }}>{step.label}</div>
+                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: pos > 0 ? `${ACCENT}70` : "#2a2a2a", marginBottom: 3 }}>СТЪПКА {step.id}</div>
+                <div style={{ fontSize: 12, fontFamily: "var(--font-mono)", color: pos > 0 ? ACCENT : "#999999", fontWeight: 700 }}>{step.label}</div>
                 <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", marginTop: 3 }}>{step.desc}</div>
               </div>
               {pos > 0 && <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: ACCENT, fontWeight: 700 }}>#{pos}</div>}
@@ -128,8 +128,8 @@ export default function CultRitualPage() {
         {solved && (
           <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
             style={{ padding: "14px 16px", border: `1px solid ${ACCENT}40`, background: "#060208" }}>
-            <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: `${ACCENT}70`, letterSpacing: "0.15em", marginBottom: 8 }}>РИТУАЛЪТ Е ЗАВЪРШЕН</div>
-            <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#555", lineHeight: 1.7, marginBottom: 10 }}>
+            <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: `${ACCENT}70`, letterSpacing: "0.15em", marginBottom: 8 }}>РИТУАЛЪТ Е ЗАВЪРШЕН</div>
+            <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", lineHeight: 1.7, marginBottom: 10 }}>
               Последователност: СИМВОЛ → ТОКЕН → ОГЛЕДАЛО → ПРЕХОД → ВРЕМЕТО<br />
               Подсказка за КРЪГЪТ код: следвай числата — 2,4,1,5,3.
             </div>

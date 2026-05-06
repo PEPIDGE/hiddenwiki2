@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState } from "react"
 import Link from "next/link"
@@ -126,7 +126,7 @@ export default function CultForumPage() {
               ? "#8844CC"
               : msg.level === "SYSTEM"
               ? "#222222"
-              : "#555555"
+              : "#909090"
 
           return (
             <div key={msg.id}>
@@ -176,7 +176,7 @@ export default function CultForumPage() {
                       style={{
                         fontSize: isExp ? 11 : 10,
                         fontFamily: "var(--font-mono)",
-                        color: isExp ? "#aaa" : isDecoy ? "#2a2a2a" : "#777",
+                        color: isExp ? "#cccccc" : isDecoy ? "#2a2a2a" : "#aaaaaa",
                         lineHeight: 1.6,
                       }}
                     >
@@ -224,7 +224,7 @@ export default function CultForumPage() {
                       >
                         <div
                           style={{
-                            fontSize: 8,
+                            fontSize: 9,
                             fontFamily: "var(--font-mono)",
                             color: "#2a1040",
                             letterSpacing: "0.12em",
@@ -285,14 +285,14 @@ export default function CultForumPage() {
         {[
           { color: ACCENT, label: "АРХИТЕКТ" },
           { color: "#8844CC", label: "ОПЕРАТОР" },
-          { color: "#555", label: "ПОСВЕТЕН" },
+          { color: "#909090", label: "ПОСВЕТЕН" },
           { color: "#222", label: "DECOY" },
         ].map(({ color, label }) => (
           <div key={label} style={{ display: "flex", alignItems: "center", gap: 5 }}>
             <div style={{ width: 6, height: 6, background: color }} />
             <span
               style={{
-                fontSize: 8,
+                fontSize: 9,
                 fontFamily: "var(--font-mono)",
                 color: "#333",
                 letterSpacing: "0.1em",

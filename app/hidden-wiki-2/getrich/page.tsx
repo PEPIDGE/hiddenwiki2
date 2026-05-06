@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from "react"
 import { GlitchText } from "@/components/tor/glitch-text"
@@ -138,7 +138,7 @@ export default function GetRichPage() {
     <div style={{ maxWidth: 900, margin: "0 auto" }}>
       {/* Header */}
       <div style={{ marginBottom: 28 }}>
-        <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#888", letterSpacing: "0.35em", marginBottom: 8 }}>
+        <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#bbbbbb", letterSpacing: "0.35em", marginBottom: 8 }}>
           HIDDEN WIKI 2 // GETRICH // EARN HIDDEN COINS
         </div>
         <GlitchText text="GETRICH" as="h1" intensity="low" className="text-4xl font-bold tracking-widest" color={ACCENT} />
@@ -148,20 +148,20 @@ export default function GetRichPage() {
       {/* Balance */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 1, background: "#111", marginBottom: 28 }}>
         <div style={{ background: "#080808", padding: "20px 24px" }}>
-          <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#666", letterSpacing: "0.2em", marginBottom: 8 }}>БАЛАНС</div>
+          <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#999999", letterSpacing: "0.2em", marginBottom: 8 }}>БАЛАНС</div>
           <div style={{ fontSize: 28, fontFamily: "var(--font-mono)", fontWeight: 900, color: ACCENT, letterSpacing: "0.05em" }}>
             {coins.toLocaleString("bg-BG")} HC
           </div>
         </div>
         <div style={{ background: "#080808", padding: "20px 24px" }}>
-          <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#666", letterSpacing: "0.2em", marginBottom: 8 }}>СПЕЧЕЛЕНИ</div>
+          <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#999999", letterSpacing: "0.2em", marginBottom: 8 }}>СПЕЧЕЛЕНИ</div>
           <div style={{ fontSize: 28, fontFamily: "var(--font-mono)", fontWeight: 900, color: "#FFD700" }}>
             {totalEarned} HC
           </div>
         </div>
         <div style={{ background: "#080808", padding: "20px 24px" }}>
-          <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#666", letterSpacing: "0.2em", marginBottom: 8 }}>МИСИИ</div>
-          <div style={{ fontSize: 28, fontFamily: "var(--font-mono)", fontWeight: 900, color: "#aaa" }}>
+          <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#999999", letterSpacing: "0.2em", marginBottom: 8 }}>МИСИИ</div>
+          <div style={{ fontSize: 28, fontFamily: "var(--font-mono)", fontWeight: 900, color: "#cccccc" }}>
             {claimed.size}/{MISSIONS.length}
           </div>
         </div>
@@ -170,7 +170,7 @@ export default function GetRichPage() {
       {/* Progress bar */}
       <div style={{ marginBottom: 28 }}>
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-          <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#888", letterSpacing: "0.15em" }}>ПРОГРЕС</span>
+          <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#bbbbbb", letterSpacing: "0.15em" }}>ПРОГРЕС</span>
           <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: ACCENT }}>{totalEarned}/{totalEarnable} HC</span>
         </div>
         <div style={{ height: 3, background: "#111" }}>
@@ -216,19 +216,19 @@ export default function GetRichPage() {
                     color: DIFF_COLORS[mission.difficulty], border: `1px solid ${DIFF_COLORS[mission.difficulty]}40`,
                     padding: "1px 7px",
                   }}>{mission.difficulty}</span>
-                  <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#555", letterSpacing: "0.1em" }}>{mission.id}</span>
+                  <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.1em" }}>{mission.id}</span>
                 </div>
                 <div style={{ fontSize: 15, fontFamily: "var(--font-mono)", fontWeight: 700, color: isClaimed ? ACCENT : "#e0e0e0", marginBottom: 8, letterSpacing: "0.04em" }}>
                   {isClaimed ? "✓ " : ""}{mission.title}
                 </div>
-                <p style={{ fontSize: 12, color: "#aaa", margin: "0 0 10px", fontFamily: "var(--font-mono)", lineHeight: 1.7 }}>
+                <p style={{ fontSize: 12, color: "#cccccc", margin: "0 0 10px", fontFamily: "var(--font-mono)", lineHeight: 1.7 }}>
                   {mission.description}
                 </p>
                 <a
                   href={mission.link}
-                  style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#555", letterSpacing: "0.1em", textDecoration: "none" }}
+                  style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.1em", textDecoration: "none" }}
                   onMouseEnter={(e) => (e.currentTarget.style.color = ACCENT)}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "#555")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "#909090")}
                 >
                   → {mission.link}
                 </a>
@@ -273,7 +273,7 @@ export default function GetRichPage() {
       </div>
 
       <div style={{ marginTop: 24, padding: "12px 16px", background: "#060606", border: "1px solid #181818" }}>
-        <p style={{ fontSize: 11, color: "#666", margin: 0, fontFamily: "var(--font-mono)", lineHeight: 1.7 }}>
+        <p style={{ fontSize: 11, color: "#999999", margin: 0, fontFamily: "var(--font-mono)", lineHeight: 1.7 }}>
           HIDDEN COINS не могат да бъдат изтеглени. Те са вътрешна валута за закупуване на услуги в разследването.
           Харчи ги умно — всяка услуга в Blackmarket струва HC.
         </p>

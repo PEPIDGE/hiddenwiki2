@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -102,7 +102,7 @@ export default function ForumPage() {
     <div style={{ maxWidth: 880, margin: "0 auto" }}>
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
         <div>
-          <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.35em", marginBottom: 8 }}>
+          <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.35em", marginBottom: 8 }}>
             FORUM — ANONYMOUS BOARD // NODE: FRM-ANON
           </div>
           <GlitchText text="FORUM" as="h1" intensity="low" className="text-3xl font-bold tracking-widest" color={ACCENT} />
@@ -162,12 +162,12 @@ export default function ForumPage() {
                   cursor: "pointer",
                 }}
               >
-                <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: thread.flagged ? ACCENT : "#2a2a2a" }}>{thread.id}</div>
+                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: thread.flagged ? ACCENT : "#2a2a2a" }}>{thread.id}</div>
                 <div>
-                  <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: isExpanded ? ACCENT : "#888888", fontWeight: thread.flagged ? 700 : 400, marginBottom: 3 }}>
+                  <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: isExpanded ? ACCENT : "#bbbbbb", fontWeight: thread.flagged ? 700 : 400, marginBottom: 3 }}>
                     {thread.title}
                   </div>
-                  <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#444444" }}>{thread.preview.slice(0, 60)}...</div>
+                  <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444444" }}>{thread.preview.slice(0, 60)}...</div>
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4 }}>
                   <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333333" }}>{thread.replies}</span>
@@ -185,16 +185,16 @@ export default function ForumPage() {
                     style={{ overflow: "hidden" }}
                   >
                     <div style={{ padding: "12px 16px", background: "#030a06", border: `1px solid ${ACCENT}18`, borderTop: "none" }}>
-                      <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.12em", marginBottom: 6 }}>
+                      <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.12em", marginBottom: 6 }}>
                         {thread.author} // {thread.replies} replies
                       </div>
-                      <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#666666", lineHeight: 1.8, marginBottom: thread.clue ? 12 : 0 }}>
+                      <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#999999", lineHeight: 1.8, marginBottom: thread.clue ? 12 : 0 }}>
                         {thread.preview}
                       </div>
                       {thread.clue && (
                         <>
                           <div style={{ padding: "8px 12px", background: "#040c07", border: `1px solid ${ACCENT}20`, marginBottom: 10 }}>
-                            <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#1a3a2a", letterSpacing: "0.12em", marginBottom: 4 }}>ПОТЕНЦИАЛНА УЛИКА</div>
+                            <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#1a3a2a", letterSpacing: "0.12em", marginBottom: 4 }}>ПОТЕНЦИАЛНА УЛИКА</div>
                             <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: ACCENT }}>{thread.clue}</div>
                           </div>
                           <button

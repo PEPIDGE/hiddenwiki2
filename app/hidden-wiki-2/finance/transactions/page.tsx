@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState } from "react"
 import { motion } from "framer-motion"
@@ -24,7 +24,7 @@ export default function FinanceTransactionsPage() {
   return (
     <div style={{ maxWidth: 880, margin: "0 auto" }}>
       <div style={{ marginBottom: 20 }}>
-        <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#2a0015", letterSpacing: "0.35em", marginBottom: 8 }}>FINANCE // TRANSACTIONS</div>
+        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#2a0015", letterSpacing: "0.35em", marginBottom: 8 }}>FINANCE // TRANSACTIONS</div>
         <GlitchText text="TRANSACTION LEDGER" as="h1" intensity="low" color={ACCENT} className="text-2xl font-bold tracking-widest" />
         <div style={{ height: 1, background: `linear-gradient(90deg, ${ACCENT}40, transparent)`, marginTop: 10 }} />
       </div>
@@ -33,7 +33,7 @@ export default function FinanceTransactionsPage() {
           <button key={f} onClick={() => setFilter(f)} style={{
             padding: "5px 14px", background: filter === f ? `${ACCENT}15` : "transparent",
             border: `1px solid ${filter === f ? `${ACCENT}50` : "#1a1a1a"}`,
-            color: filter === f ? ACCENT : "#555",
+            color: filter === f ? ACCENT : "#909090",
             fontFamily: "var(--font-mono)", fontSize: 9, letterSpacing: "0.12em", cursor: "pointer",
           }}>
             {f === "all" ? "ALL TX" : "ANOMALIES ONLY"}
@@ -51,7 +51,7 @@ export default function FinanceTransactionsPage() {
           { key: "to",     label: "TO" },
           { key: "time",   label: "TIME",    width: 70 },
           { key: "method", label: "METHOD",  width: 80 },
-          { key: "flag",   label: "FLAG",    width: 70, render: (v) => v ? <span style={{ color: ACCENT, fontSize: 8 }}>{String(v)}</span> : <span style={{ color: "#222", fontSize: 8 }}>—</span> },
+          { key: "flag",   label: "FLAG",    width: 70, render: (v) => v ? <span style={{ color: ACCENT, fontSize: 9 }}>{String(v)}</span> : <span style={{ color: "#222", fontSize: 9 }}>—</span> },
         ]}
         rows={rows as Record<string, unknown>[]}
       />

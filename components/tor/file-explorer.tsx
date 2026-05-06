@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
@@ -31,8 +31,8 @@ const TYPE_ICONS: Record<FSItem["type"], string> = {
 }
 
 const TYPE_COLORS: Record<FSItem["type"], string> = {
-  file: "#555",
-  folder: "#888",
+  file: "#909090",
+  folder: "#bbbbbb",
   encrypted: "#FF6B00",
   redacted: "#333",
 }
@@ -85,7 +85,7 @@ function FSRow({
         <span style={{
           fontSize: 11,
           fontFamily: "var(--font-mono)",
-          color: hovered && !item.locked ? accentColor : item.type === "redacted" ? "#2a2a2a" : "#666",
+          color: hovered && !item.locked ? accentColor : item.type === "redacted" ? "#2a2a2a" : "#999999",
           letterSpacing: "0.04em",
           flex: 1,
           overflow: "hidden",

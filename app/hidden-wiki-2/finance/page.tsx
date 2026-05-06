@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -123,12 +123,12 @@ export default function FinancePage() {
     <div style={{ maxWidth: 880, margin: "0 auto" }}>
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
         <div>
-          <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.35em", marginBottom: 8 }}>
+          <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.35em", marginBottom: 8 }}>
             FINANCE — TRANSACTION LEDGER // RESTRICTED ACCESS
           </div>
           <GlitchText text="FINANCE" as="h1" intensity="medium" className="text-3xl font-bold tracking-widest" color={ACCENT} />
         </div>
-        <div style={{ padding: "6px 12px", border: `1px solid ${ACCENT}25`, background: "#0d0008", fontSize: 8, fontFamily: "var(--font-mono)", color: `${ACCENT}60`, letterSpacing: "0.1em" }}>
+        <div style={{ padding: "6px 12px", border: `1px solid ${ACCENT}25`, background: "#0d0008", fontSize: 9, fontFamily: "var(--font-mono)", color: `${ACCENT}60`, letterSpacing: "0.1em" }}>
           {accessGranted ? "ACCESS GRANTED" : "LOCKED — ТРЕБВА ТОКЕН"}
         </div>
       </div>
@@ -139,13 +139,11 @@ export default function FinancePage() {
           animate={{ opacity: 1, y: 0 }}
           style={{ padding: "32px 28px", border: `1px solid ${ACCENT}20`, background: "#060006", maxWidth: 420 }}
         >
-          <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.2em", marginBottom: 20 }}>
+          <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.2em", marginBottom: 20 }}>
             ACCESS GATE — ФИНАНСОВ АРХИВ
           </div>
           <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#444444", lineHeight: 1.7, marginBottom: 24 }}>
             Тази секция изисква токен. Намери го в{" "}
-            <Link href="/hidden-wiki-2/mirrors" style={{ color: "#00BFFF", textDecoration: "none" }}>MIRRORS</Link>{" "}
-            или{" "}
             <Link href="/hidden-wiki-2/cult" style={{ color: "#CC44FF", textDecoration: "none" }}>CULT</Link>.
           </div>
           <div style={{ display: "flex", gap: 0, marginBottom: 10 }}>
@@ -218,11 +216,11 @@ export default function FinancePage() {
                       cursor: "pointer",
                     }}
                   >
-                    <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: tx.anomaly ? ACCENT : "#2a2a2a" }}>{tx.id}</div>
+                    <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: tx.anomaly ? ACCENT : "#2a2a2a" }}>{tx.id}</div>
                     <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: tx.anomaly ? "#dddddd" : "#444444", fontWeight: tx.anomaly ? 700 : 400 }}>{tx.amount}</div>
-                    <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#444444" }}>{tx.from}</div>
-                    <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: tx.anomaly ? `${ACCENT}80` : "#444444" }}>{tx.to}</div>
-                    <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: tx.anomaly ? `${ACCENT}70` : "#333333" }}>{tx.timestamp.split(" ")[1]}</div>
+                    <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444444" }}>{tx.from}</div>
+                    <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: tx.anomaly ? `${ACCENT}80` : "#444444" }}>{tx.to}</div>
+                    <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: tx.anomaly ? `${ACCENT}70` : "#333333" }}>{tx.timestamp.split(" ")[1]}</div>
                   </motion.div>
 
                   <AnimatePresence>
@@ -235,7 +233,7 @@ export default function FinancePage() {
                         style={{ overflow: "hidden" }}
                       >
                         <div style={{ padding: "12px 16px", background: "#060003", border: `1px solid ${ACCENT}20`, borderTop: "none" }}>
-                          <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#3a0015", letterSpacing: "0.12em", marginBottom: 6 }}>ПОТВЪРДЕНА ТРАНЗАКЦИЯ</div>
+                          <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#3a0015", letterSpacing: "0.12em", marginBottom: 6 }}>ПОТВЪРДЕНА ТРАНЗАКЦИЯ</div>
                           <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: ACCENT, marginBottom: 12 }}>{tx.clue}</div>
                           <button
                             onClick={(e) => { e.stopPropagation(); handleSave(tx) }}

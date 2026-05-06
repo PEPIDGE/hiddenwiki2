@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from "react"
 import { GlitchText } from "@/components/tor/glitch-text"
@@ -15,7 +15,6 @@ const LON_HEX = "32332e33323139"
 
 const NODES = [
   { id: "NODE-A", label: "RED ROOM",   x: 18, y: 28, color: "#FF0033" },
-  { id: "NODE-B", label: "MIRRORS",    x: 76, y: 14, color: "#00BFFF" },
   { id: "NODE-C", label: "LEAKS",      x: 50, y: 52, color: "#FFD700" },
   { id: "NODE-D", label: "EVENTS",     x: 14, y: 70, color: "#FF6B00" },
   { id: "NODE-E", label: "CULT",       x: 82, y: 65, color: "#CC44FF" },
@@ -24,9 +23,9 @@ const NODES = [
 ]
 
 const CONNECTIONS = [
-  ["NODE-A", "NODE-C"], ["NODE-B", "NODE-C"], ["NODE-C", "TRACE"],
+  ["NODE-A", "NODE-C"], ["NODE-C", "TRACE"],
   ["NODE-D", "TRACE"],  ["NODE-E", "TRACE"],  ["NODE-F", "NODE-C"],
-  ["NODE-A", "NODE-D"], ["NODE-B", "NODE-E"],
+  ["NODE-A", "NODE-D"],
 ]
 
 const BOOT_LINES = [
@@ -44,7 +43,6 @@ const NODE_COMMANDS = [
     handler: () => [
       "Scanning node signatures...",
       "  NODE-A (RED ROOM)   — Лора видима в стрийм фрейм: ACTIVE",
-      "  NODE-B (MIRRORS)    — Локация токен ZAHARNA::STAYA::9: ACTIVE",
       "  NODE-C (LEAKS)      — Р. Алексиев идентитет: ACTIVE",
       "  NODE-D (EVENTS)     — Timeline 15.10.2025: ACTIVE",
       "  NODE-E (CULT)       — Оператори / Братство: ACTIVE",
@@ -285,7 +283,7 @@ export default function TraceNodePage() {
 
       {/* Header */}
       <div style={{ marginBottom: 24 }}>
-        <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.35em", marginBottom: 8 }}>
+        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.35em", marginBottom: 8 }}>
           HIDDEN WIKI 2 // TRACE-NODE // FINAL STAGE
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
@@ -318,14 +316,14 @@ export default function TraceNodePage() {
             </div>
 
             <div style={{ padding: "18px 24px", border: "1px solid #141414", background: "#020202", marginBottom: 2 }}>
-              <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.2em", marginBottom: 10 }}>ВЕРДИКТ</div>
-              <div style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "#bbb", lineHeight: 1.8, borderLeft: `2px solid ${ACCENT}30`, paddingLeft: 14 }}>
+              <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.2em", marginBottom: 10 }}>ВЕРДИКТ</div>
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "#dddddd", lineHeight: 1.8, borderLeft: `2px solid ${ACCENT}30`, paddingLeft: 14 }}>
                 {output.verdict}
               </div>
             </div>
 
             <div style={{ padding: "18px 24px", border: "1px solid #141414", background: "#020202", marginBottom: 2 }}>
-              <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.2em", marginBottom: 12 }}>КЛЮЧОВИ ДОКАЗАТЕЛСТВА</div>
+              <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.2em", marginBottom: 12 }}>КЛЮЧОВИ ДОКАЗАТЕЛСТВА</div>
               {output.clues.map((clue, i) => (
                 <div key={clue.id} style={{ padding: "10px 14px", border: `1px solid ${ACCENT}15`, background: "#030303", marginBottom: 2, display: "flex", gap: 14 }}>
                   <span style={{ fontSize: 9, color: `${ACCENT}40`, fontFamily: "var(--font-mono)", minWidth: 18 }}>#{i + 1}</span>
@@ -344,10 +342,10 @@ export default function TraceNodePage() {
               transition={{ delay: 0.6 }}
               style={{ padding: "24px", border: `1px solid ${ACCENT}30`, background: "#020a02" }}
             >
-              <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.25em", marginBottom: 16 }}>
+              <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.25em", marginBottom: 16 }}>
                 ПОСЛЕДНА СТЪПКА — ОФИЦИАЛНА ВЕРИФИКАЦИЯ
               </div>
-              <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "#555", lineHeight: 1.9, marginBottom: 20, maxWidth: 540 }}>
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "#909090", lineHeight: 1.9, marginBottom: 20, maxWidth: 540 }}>
                 Ако си готов с решението, предай своя случай на официалната страница за верификация.
                 Ще ти трябват:{" "}
                 <span style={{ color: ACCENT }}>Координатите</span>
@@ -377,7 +375,7 @@ export default function TraceNodePage() {
                 >
                   → sluchayat.com/verify
                 </a>
-                <div style={{ fontFamily: "var(--font-mono)", fontSize: 8, color: "#1a2a1a", lineHeight: 2 }}>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: "#1a2a1a", lineHeight: 2 }}>
                   <div>CASE ID: {output.caseId}</div>
                   <div>COORDINATES: {REAL_LAT}°N, {REAL_LON}°E</div>
                 </div>
@@ -391,7 +389,7 @@ export default function TraceNodePage() {
             {/* Node map + canon anchors */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2, marginBottom: 2 }}>
               <div style={{ padding: "16px", border: "1px solid #181818", background: "#030303" }}>
-                <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.2em", marginBottom: 14 }}>NODE MAP</div>
+                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.2em", marginBottom: 14 }}>NODE MAP</div>
                 <svg viewBox="0 0 100 100" style={{ width: "100%", height: 200 }}>
                   {CONNECTIONS.map(([a, b], i) => {
                     const na = getNode(a); const nb = getNode(b)
@@ -416,7 +414,7 @@ export default function TraceNodePage() {
               </div>
 
               <div style={{ padding: "16px", border: "1px solid #181818", background: "#020202" }}>
-                <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.2em", marginBottom: 14 }}>CANON ANCHORS</div>
+                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.2em", marginBottom: 14 }}>CANON ANCHORS</div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
                   {CANON_ANCHORS.map((anchor, i) => (
                     <motion.div key={anchor.id} initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.08 }}
@@ -424,7 +422,7 @@ export default function TraceNodePage() {
                       <div style={{ width: 4, height: 4, background: `${ACCENT}40`, flexShrink: 0 }} />
                       <div>
                         <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: ACCENT, fontWeight: 700, marginBottom: 2 }}>{anchor.label}</div>
-                        <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#333" }}>{anchor.description}</div>
+                        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333" }}>{anchor.description}</div>
                       </div>
                     </motion.div>
                   ))}
@@ -434,7 +432,7 @@ export default function TraceNodePage() {
 
             {/* Terminal */}
             <div style={{ marginBottom: 2 }}>
-              <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.22em", marginBottom: 8 }}>
+              <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.22em", marginBottom: 8 }}>
                 COORDINATE CRACK TERMINAL
               </div>
               <HackTerminal
@@ -455,7 +453,7 @@ export default function TraceNodePage() {
                 { label: bundleReady ? "BUNDLE: ГОТОВ — РУМЕН АЛЕКСИЕВ" : "BUNDLE: PENDING", active: bundleReady },
               ].map(({ label, active }) => (
                 <div key={label} style={{ padding: "12px 16px", border: `1px solid ${active ? `${ACCENT}30` : "#141414"}`, background: active ? "#020a02" : "#020202" }}>
-                  <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: active ? ACCENT : "#1a1a1a", letterSpacing: "0.2em" }}>{label}</div>
+                  <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: active ? ACCENT : "#1a1a1a", letterSpacing: "0.2em" }}>{label}</div>
                 </div>
               ))}
             </div>
@@ -463,7 +461,7 @@ export default function TraceNodePage() {
             {/* Clue selector */}
             <div style={{ padding: "18px", border: "1px solid #141414", background: "#030303", marginBottom: 2 }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 14 }}>
-                <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.22em" }}>ИЗБЕРИ 3 КЛЮЧОВИ УЛИКИ</div>
+                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.22em" }}>ИЗБЕРИ 3 КЛЮЧОВИ УЛИКИ</div>
                 <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: selectedClueIds.length === 3 ? ACCENT : "#333" }}>{selectedClueIds.length}/3</div>
               </div>
               {allClues.length === 0 ? (
@@ -489,7 +487,7 @@ export default function TraceNodePage() {
                     </div>
                     <div style={{ flex: 1 }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 3 }}>
-                        <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: isSelected ? "#ccc" : "#555", fontWeight: 600 }}>{clue.title}</span>
+                        <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: isSelected ? "#ccc" : "#909090", fontWeight: 600 }}>{clue.title}</span>
                         <span style={{ fontSize: 7, fontFamily: "var(--font-mono)", color: statusColor, border: `1px solid ${statusColor}25`, padding: "1px 5px", letterSpacing: "0.1em" }}>{clue.status.toUpperCase()}</span>
                       </div>
                       <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333", lineHeight: 1.5 }}>{clue.text.slice(0, 110)}{clue.text.length > 110 ? "..." : ""}</div>
@@ -501,7 +499,7 @@ export default function TraceNodePage() {
 
             {/* Verdict */}
             <div style={{ padding: "18px", border: "1px solid #141414", background: "#030303", marginBottom: 2 }}>
-              <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.22em", marginBottom: 10 }}>АНАЛИТИЧЕН ВЕРДИКТ</div>
+              <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.22em", marginBottom: 10 }}>АНАЛИТИЧЕН ВЕРДИКТ</div>
               <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#252525", marginBottom: 12, lineHeight: 1.8 }}>
                 Кой? Кога? Защо? Системата архивира твоя анализ — не проверява "правилен отговор".
               </div>
@@ -519,7 +517,7 @@ export default function TraceNodePage() {
                 }}
               />
               <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 4 }}>
-                <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: verdict.length >= 20 ? `${ACCENT}50` : "#1e1e1e" }}>{verdict.length} / мин. 20</span>
+                <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: verdict.length >= 20 ? `${ACCENT}50` : "#1e1e1e" }}>{verdict.length} / мин. 20</span>
               </div>
             </div>
 
@@ -541,7 +539,7 @@ export default function TraceNodePage() {
                   onMouseLeave={(e) => { if (!submitting) e.currentTarget.style.background = `${ACCENT}10` }}>
                   {submitting ? "ПРЕДАВАНЕ..." : "ПРЕДАЙ КАЗУСА"}
                 </button>
-                <div style={{ fontFamily: "var(--font-mono)", fontSize: 8, color: "#1e1e1e", lineHeight: 2 }}>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: "#1e1e1e", lineHeight: 2 }}>
                   <div>Избрани: {selectedClueIds.length}/3</div>
                   <div>Потвърдени: {allClues.filter((c) => selectedClueIds.includes(c.id) && c.status === "confirmed").length}/3</div>
                 </div>

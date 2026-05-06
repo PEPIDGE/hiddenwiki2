@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
@@ -9,7 +9,6 @@ const ACCENT = "#00FF41"
 
 const TRACE_STEPS = [
   { id: "step-1", label: "RF-GATE scan", status: "complete", detail: "RED ROOM gate — token issued", node: "NODE-A" },
-  { id: "step-2", label: "CIRCUIT-3 lock", status: "complete", detail: "MIRRORS circuit — shard collected", node: "NODE-B" },
   { id: "step-3", label: "Identity resolve", status: "complete", detail: "R. Алексиев // RedFox — confirmed", node: "NODE-C" },
   { id: "step-4", label: "Timeline match", status: "complete", detail: "03:17 → 22:17 — two anchor match", node: "NODE-D" },
   { id: "step-5", label: "Ritual log parse", status: "complete", detail: "Cult operator status — confirmed", node: "NODE-E" },
@@ -32,7 +31,7 @@ export default function TraceTracePage() {
   return (
     <div style={{ maxWidth: 780, margin: "0 auto" }}>
       <div style={{ marginBottom: 20 }}>
-        <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.35em", marginBottom: 8 }}>
+        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.35em", marginBottom: 8 }}>
           TRACE-NODE // TRACE LOG
         </div>
         <GlitchText text="TRACE SEQUENCE" as="h1" intensity="low" color={ACCENT} className="text-2xl font-bold tracking-widest" />
@@ -42,8 +41,8 @@ export default function TraceTracePage() {
       {/* Progress bar */}
       <div style={{ marginBottom: 24, padding: "14px 16px", border: "1px solid #141414", background: "#030303" }}>
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
-          <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#333", letterSpacing: "0.18em" }}>TRACE PROGRESS</span>
-          <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: ACCENT }}>{complete}/{TRACE_STEPS.length} STEPS</span>
+          <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333", letterSpacing: "0.18em" }}>TRACE PROGRESS</span>
+          <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: ACCENT }}>{complete}/{TRACE_STEPS.length} STEPS</span>
         </div>
         <div style={{ height: 2, background: "#0e0e0e" }}>
           <motion.div
@@ -93,7 +92,7 @@ export default function TraceTracePage() {
 
               <div style={{ flex: 1 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: step.status === "complete" ? "#ccc" : step.status === "pending" ? "#888" : "#333", letterSpacing: "0.06em", fontWeight: 600 }}>
+                  <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: step.status === "complete" ? "#ccc" : step.status === "pending" ? "#bbbbbb" : "#333", letterSpacing: "0.06em", fontWeight: 600 }}>
                     {String(i + 1).padStart(2, "0")}. {step.label.toUpperCase()}
                   </span>
                   <span style={{ fontSize: 7, fontFamily: "var(--font-mono)", color: "#222", letterSpacing: "0.15em" }}>
@@ -109,7 +108,7 @@ export default function TraceTracePage() {
                       transition={{ duration: 0.15 }}
                       style={{ overflow: "hidden" }}
                     >
-                      <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#666", marginTop: 6, lineHeight: 1.7 }}>
+                      <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#999999", marginTop: 6, lineHeight: 1.7 }}>
                         {step.detail}
                       </div>
                     </motion.div>
@@ -123,7 +122,7 @@ export default function TraceTracePage() {
 
       {/* Canon anchors */}
       <div style={{ marginTop: 20, padding: "16px", border: "1px solid #141414", background: "#020202" }}>
-        <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.2em", marginBottom: 12 }}>
+        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.2em", marginBottom: 12 }}>
           CANON ANCHORS — 5/5 VERIFIED
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
@@ -131,7 +130,7 @@ export default function TraceTracePage() {
             <div key={a.id} style={{ display: "flex", gap: 12, alignItems: "center" }}>
               <div style={{ width: 4, height: 4, background: `${ACCENT}60`, flexShrink: 0 }} />
               <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: ACCENT, minWidth: 90 }}>{a.label}</span>
-              <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#555" }}>{a.description}</span>
+              <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090" }}>{a.description}</span>
             </div>
           ))}
         </div>

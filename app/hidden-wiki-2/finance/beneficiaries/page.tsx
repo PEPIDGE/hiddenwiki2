@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
@@ -33,7 +33,7 @@ export default function FinanceBeneficiariesPage() {
   return (
     <div style={{ maxWidth: 800, margin: "0 auto" }}>
       <div style={{ marginBottom: 20 }}>
-        <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#2a0015", letterSpacing: "0.35em", marginBottom: 8 }}>FINANCE // BENEFICIARIES</div>
+        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#2a0015", letterSpacing: "0.35em", marginBottom: 8 }}>FINANCE // BENEFICIARIES</div>
         <GlitchText text="BENEFICIARY INDEX" as="h1" intensity="low" color={ACCENT} className="text-2xl font-bold tracking-widest" />
         <div style={{ height: 1, background: `linear-gradient(90deg, ${ACCENT}40, transparent)`, marginTop: 10 }} />
       </div>
@@ -46,17 +46,17 @@ export default function FinanceBeneficiariesPage() {
               style={{ display: "grid", gridTemplateColumns: "1fr 80px 70px 100px", gap: 12, padding: "12px 16px", border: `1px solid ${b.confirmed ? `${ACCENT}25` : "#111"}`, background: b.confirmed ? `${ACCENT}05` : "#030303", alignItems: "center" }}
             >
               <div>
-                <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: b.confirmed ? ACCENT : "#666", fontWeight: 700, marginBottom: 2 }}>{b.name}</div>
-                <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#333" }}>{b.alias}</div>
+                <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: b.confirmed ? ACCENT : "#999999", fontWeight: 700, marginBottom: 2 }}>{b.name}</div>
+                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333" }}>{b.alias}</div>
               </div>
               <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: b.confirmed ? "#ddd" : "#444", fontWeight: 700 }}>{b.total}</div>
-              <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#333" }}>{b.count} TX</div>
+              <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333" }}>{b.count} TX</div>
               <div>
                 {b.clue && (
                   <button onClick={() => handleSave(b)} disabled={isSaved} style={{
                     background: "transparent", border: `1px solid ${isSaved ? "#1a1a1a" : `${ACCENT}40`}`,
                     color: isSaved ? "#2a2a2a" : ACCENT,
-                    fontFamily: "var(--font-mono)", fontSize: 8, letterSpacing: "0.08em",
+                    fontFamily: "var(--font-mono)", fontSize: 9, letterSpacing: "0.08em",
                     padding: "5px 10px", cursor: isSaved ? "default" : "pointer",
                   }}>
                     {isSaved ? "SAVED" : "+ CLUE"}

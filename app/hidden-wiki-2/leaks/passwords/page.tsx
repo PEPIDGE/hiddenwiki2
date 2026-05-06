@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -28,7 +28,7 @@ const ROLE_COLORS: Record<string, string> = {
   ADMIN: "#FF0033",
   OPERATOR: ACCENT,
   ANALYST: "#FFD700",
-  GUEST: "#555",
+  GUEST: "#909090",
   SERVICE: "#00A8FF",
 }
 
@@ -61,7 +61,7 @@ export default function LeaksPasswordsPage() {
   return (
     <div style={{ maxWidth: 960, margin: "0 auto" }}>
       <div style={{ marginBottom: 20 }}>
-        <Link href="/hidden-wiki-2/leaks" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#555", letterSpacing: "0.15em", textDecoration: "none" }}>← LEAKS</Link>
+        <Link href="/hidden-wiki-2/leaks" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.15em", textDecoration: "none" }}>← LEAKS</Link>
         <div style={{ marginTop: 10 }}>
           <GlitchText text="PASSWORDS" as="h1" intensity="low" className="text-3xl font-bold tracking-widest" color={ACCENT} />
         </div>
@@ -92,12 +92,12 @@ export default function LeaksPasswordsPage() {
               <div style={{ flex: 1, minWidth: 120 }}>
                 <div style={{ fontSize: 12, fontFamily: "var(--font-mono)", color: "#e0e0e0", fontWeight: 600, marginBottom: 4 }}>
                   {pw.username}
-                  {pw.changed && <span style={{ marginLeft: 8, fontSize: 8, color: ACCENT, border: `1px solid ${ACCENT}40`, padding: "1px 5px" }}>CHANGED</span>}
+                  {pw.changed && <span style={{ marginLeft: 8, fontSize: 9, color: ACCENT, border: `1px solid ${ACCENT}40`, padding: "1px 5px" }}>CHANGED</span>}
                 </div>
-                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#555" }}>{pw.email}</div>
+                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090" }}>{pw.email}</div>
               </div>
               <div style={{ flex: 1, minWidth: 100 }}>
-                <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: ROLE_COLORS[pw.role], border: `1px solid ${ROLE_COLORS[pw.role]}30`, padding: "2px 8px" }}>
+                <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: ROLE_COLORS[pw.role], border: `1px solid ${ROLE_COLORS[pw.role]}30`, padding: "2px 8px" }}>
                   {pw.role}
                 </span>
               </div>
@@ -114,15 +114,15 @@ export default function LeaksPasswordsPage() {
               </div>
               <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
                 <button onClick={() => setRevealed((r) => isRevealed ? r.filter((x) => x !== pw.id) : [...r, pw.id])}
-                  style={{ padding: "3px 10px", fontSize: 8, fontFamily: "var(--font-mono)", background: "#0d0d0d", color: "#666", border: "1px solid #1e1e1e", cursor: "pointer" }}>
+                  style={{ padding: "3px 10px", fontSize: 9, fontFamily: "var(--font-mono)", background: "#0d0d0d", color: "#999999", border: "1px solid #1e1e1e", cursor: "pointer" }}>
                   {isRevealed ? "HIDE" : "REVEAL"}
                 </button>
                 <button onClick={() => handleSave(pw, "credentials", `${pw.username} / ${pw.password} — ${pw.email} [${pw.role}]${pw.changed ? " ⚠ PASSWORD CHANGED" : ""}`, pw.changed ? 5 : 3)}
-                  style={{ padding: "3px 10px", fontSize: 8, fontFamily: "var(--font-mono)", background: isSaved ? `${ACCENT}18` : "#0d0d0d", color: isSaved ? ACCENT : "#666", border: `1px solid ${isSaved ? ACCENT + "40" : "#1e1e1e"}`, cursor: "pointer" }}>
+                  style={{ padding: "3px 10px", fontSize: 9, fontFamily: "var(--font-mono)", background: isSaved ? `${ACCENT}18` : "#0d0d0d", color: isSaved ? ACCENT : "#999999", border: `1px solid ${isSaved ? ACCENT + "40" : "#1e1e1e"}`, cursor: "pointer" }}>
                   {isSaved ? "✓" : "SAVE"}
                 </button>
               </div>
-              <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#333", flexShrink: 0 }}>{pw.lastLogin}</div>
+              <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333", flexShrink: 0 }}>{pw.lastLogin}</div>
             </div>
           )
         })}

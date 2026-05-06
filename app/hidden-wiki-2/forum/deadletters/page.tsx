@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState } from "react"
 import Link from "next/link"
@@ -111,7 +111,7 @@ export default function ForumDeadLettersPage() {
 
       {/* ORDER PUZZLE */}
       <div style={{ padding: "14px 16px", border: `1px solid ${orderSolved ? `${ACCENT}40` : "#181818"}`, background: "#030803", marginBottom: 20 }}>
-        <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.15em", marginBottom: 10 }}>
+        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.15em", marginBottom: 10 }}>
           PUZZLE: ПОДРЕДИ ПИСМАТА
         </div>
         <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333", marginBottom: 10 }}>
@@ -156,18 +156,18 @@ export default function ForumDeadLettersPage() {
                 onClick={() => setExpanded(isExp ? null : dl.id)}
                 style={{ padding: "12px 14px", background: isExp ? `${ACCENT}06` : "#040404", border: `1px solid ${isExp ? `${ACCENT}28` : dl.hasClue ? `${ACCENT}10` : "#0e0e0e"}`, cursor: "pointer" }}>
                 <div style={{ fontSize: 7, fontFamily: "var(--font-mono)", color: dl.hasClue ? `${ACCENT}50` : "#2a2a2a", marginBottom: 4 }}>{dl.id} // {dl.date}</div>
-                <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: isExp ? ACCENT : "#888", fontWeight: dl.hasClue ? 700 : 400, marginBottom: 3 }}>{dl.subject}</div>
-                <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#333" }}>TO: {dl.to} / FROM: {dl.from}</div>
+                <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: isExp ? ACCENT : "#bbbbbb", fontWeight: dl.hasClue ? 700 : 400, marginBottom: 3 }}>{dl.subject}</div>
+                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333" }}>TO: {dl.to} / FROM: {dl.from}</div>
               </motion.div>
               <AnimatePresence>
                 {isExp && (
                   <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.17 }} style={{ overflow: "hidden" }}>
                     <div style={{ padding: "12px 16px", background: "#030903", border: `1px solid ${ACCENT}16`, borderTop: "none" }}>
-                      <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#666", lineHeight: 1.8, marginBottom: dl.clue ? 12 : 0 }}>{dl.body}</div>
+                      <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#999999", lineHeight: 1.8, marginBottom: dl.clue ? 12 : 0 }}>{dl.body}</div>
                       {dl.clue && (
                         <>
                           <div style={{ padding: "7px 12px", background: "#040c05", border: `1px solid ${ACCENT}20`, marginBottom: 8 }}>
-                            <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#1a3a1a", marginBottom: 3 }}>УЛИКА</div>
+                            <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#1a3a1a", marginBottom: 3 }}>УЛИКА</div>
                             <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: ACCENT }}>{dl.clue}</div>
                           </div>
                           <button onClick={(e) => { e.stopPropagation(); handleSave(dl) }} disabled={isSaved}

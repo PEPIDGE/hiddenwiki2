@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
@@ -54,7 +54,7 @@ export default function HiddenWiki2Page() {
             }}
           >
             <div style={{
-              fontSize: 8, fontFamily: "var(--font-mono)", color: "#1a2a1a",
+              fontSize: 9, fontFamily: "var(--font-mono)", color: "#1a2a1a",
               letterSpacing: "0.25em", marginBottom: 14,
             }}>
               TERMINAL — BOOT SEQUENCE
@@ -117,7 +117,7 @@ export default function HiddenWiki2Page() {
 
               <div
                 style={{
-                  fontSize: 8,
+                  fontSize: 9,
                   fontFamily: "var(--font-mono)",
                   color: "#2a2a2a",
                   letterSpacing: "0.35em",
@@ -141,24 +141,6 @@ export default function HiddenWiki2Page() {
                 <div style={{ height: 1, flex: 1, background: "#181818" }} />
                 <div style={{ height: 2, width: 12, background: "#FF0033", opacity: 0.6, marginLeft: 2 }} />
               </div>
-            </div>
-
-            {/* Description */}
-            <div
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: 11,
-                color: "#444444",
-                lineHeight: 2,
-                maxWidth: 580,
-                marginBottom: 36,
-                paddingLeft: 12,
-                borderLeft: "2px solid #181818",
-              }}
-            >
-              Портал с <span style={{ color: "#d0d0d0" }}>8 независими сайта</span>. Всеки носи улики.
-              Само <span style={{ color: "#00FF41" }}>3 потвърдени доказателства</span> отключват
-              финалния TRACE-NODE.
             </div>
 
             {/* Site grid */}
@@ -221,7 +203,7 @@ export default function HiddenWiki2Page() {
                         style={{
                           position: "absolute",
                           top: 8, right: 10,
-                          fontSize: 8,
+                          fontSize: 9,
                           fontFamily: "var(--font-mono)",
                           color: "#181818",
                         }}
@@ -264,7 +246,7 @@ export default function HiddenWiki2Page() {
                       {/* Sublinks count */}
                       <div
                         style={{
-                          fontSize: 8,
+                          fontSize: 9,
                           fontFamily: "var(--font-mono)",
                           color: "#282828",
                         }}
@@ -308,7 +290,7 @@ export default function HiddenWiki2Page() {
                   borderTop: "2px solid #00FF4130",
                 }}
               >
-                <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.22em", marginBottom: 10 }}>
+                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.22em", marginBottom: 10 }}>
                   АКТИВНО РАЗСЛЕДВАНЕ
                 </div>
                 <div style={{ display: "flex", gap: 22, flexWrap: "wrap" }}>
@@ -333,7 +315,7 @@ export default function HiddenWiki2Page() {
 function StatItem({ label, value, color }: { label: string; value: string | number; color: string }) {
   return (
     <div>
-      <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.18em", marginBottom: 2 }}>
+      <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.18em", marginBottom: 2 }}>
         {label}
       </div>
       <div

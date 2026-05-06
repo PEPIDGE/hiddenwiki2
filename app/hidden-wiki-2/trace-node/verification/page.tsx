@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
@@ -45,7 +45,7 @@ export default function TraceVerificationPage() {
   return (
     <div style={{ maxWidth: 760, margin: "0 auto" }}>
       <div style={{ marginBottom: 24 }}>
-        <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.35em", marginBottom: 8 }}>
+        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.35em", marginBottom: 8 }}>
           TRACE-NODE // FINAL VERIFICATION
         </div>
         <GlitchText text="VERIFICATION" as="h1" intensity="medium" color={ACCENT} className="text-2xl font-bold tracking-widest" />
@@ -56,7 +56,7 @@ export default function TraceVerificationPage() {
         {submitted ? (
           <motion.div key="done" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
             <div style={{ padding: "28px 24px", border: `1px solid ${ACCENT}40`, background: "#020a02" }}>
-              <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.3em", marginBottom: 12 }}>
+              <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.3em", marginBottom: 12 }}>
                 ВЕРИФИКАЦИЯ УСПЕШНА
               </div>
               <GlitchText text="CASE CLOSED" intensity="high" color={ACCENT} className="text-3xl font-bold tracking-widest" />
@@ -81,7 +81,7 @@ export default function TraceVerificationPage() {
           </motion.div>
         ) : (
           <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#555", lineHeight: 1.8, marginBottom: 24, borderLeft: "2px solid #1a3a1a", paddingLeft: 14 }}>
+            <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#909090", lineHeight: 1.8, marginBottom: 24, borderLeft: "2px solid #1a3a1a", paddingLeft: 14 }}>
               Въведи координатите, намерени в TRACE TERMINAL, и твоя финален вердикт.
               Трябват ти резултатите от командата <span style={{ color: ACCENT }}>'verify coords'</span>.
             </div>
@@ -89,7 +89,7 @@ export default function TraceVerificationPage() {
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
               {/* Lat */}
               <div>
-                <label style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#333", letterSpacing: "0.2em", display: "block", marginBottom: 6 }}>
+                <label style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333", letterSpacing: "0.2em", display: "block", marginBottom: 6 }}>
                   ГЕОГРАФСКА ШИРИНА (LAT)
                 </label>
                 <input
@@ -109,7 +109,7 @@ export default function TraceVerificationPage() {
 
               {/* Lon */}
               <div>
-                <label style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#333", letterSpacing: "0.2em", display: "block", marginBottom: 6 }}>
+                <label style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333", letterSpacing: "0.2em", display: "block", marginBottom: 6 }}>
                   ГЕОГРАФСКА ДЪЛЖИНА (LON)
                 </label>
                 <input
@@ -129,7 +129,7 @@ export default function TraceVerificationPage() {
 
               {/* Verdict */}
               <div>
-                <label style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#333", letterSpacing: "0.2em", display: "block", marginBottom: 6 }}>
+                <label style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333", letterSpacing: "0.2em", display: "block", marginBottom: 6 }}>
                   ФИНАЛЕН ВЕРДИКТ
                 </label>
                 <textarea
@@ -174,7 +174,7 @@ export default function TraceVerificationPage() {
             </div>
 
             <div style={{ marginTop: 20, padding: "12px 16px", border: "1px solid #141414", background: "#020202" }}>
-              <Link href="/hidden-wiki-2/trace-node/terminal" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#555", textDecoration: "none", letterSpacing: "0.1em" }}>
+              <Link href="/hidden-wiki-2/trace-node/terminal" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", textDecoration: "none", letterSpacing: "0.1em" }}>
                 → Отиди в TRACE TERMINAL за командите 'crack' и 'verify coords'
               </Link>
             </div>

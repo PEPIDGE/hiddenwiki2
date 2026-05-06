@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -25,7 +25,7 @@ const VEHICLES = [
 
 const STATUS_COLORS: Record<string, string> = {
   AVAILABLE: "#00FF41",
-  SOLD: "#555",
+  SOLD: "#909090",
 }
 
 export default function LeaksVehiclesPage() {
@@ -74,7 +74,7 @@ export default function LeaksVehiclesPage() {
     return (
       <div style={{ maxWidth: 480, margin: "60px auto" }}>
         <div style={{ marginBottom: 20 }}>
-          <Link href="/hidden-wiki-2/leaks" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#555", letterSpacing: "0.15em", textDecoration: "none" }}>← LEAKS</Link>
+          <Link href="/hidden-wiki-2/leaks" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.15em", textDecoration: "none" }}>← LEAKS</Link>
           <div style={{ marginTop: 10 }}>
             <GlitchText text="VEHICLES" as="h1" intensity="low" className="text-3xl font-bold tracking-widest" color={ACCENT} />
           </div>
@@ -84,7 +84,7 @@ export default function LeaksVehiclesPage() {
           <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.2em", marginBottom: 14 }}>
             ANTI-BOT VERIFICATION
           </div>
-          <p style={{ fontSize: 11, color: "#aaa", margin: "0 0 20px", fontFamily: "var(--font-mono)", lineHeight: 1.7 }}>
+          <p style={{ fontSize: 11, color: "#cccccc", margin: "0 0 20px", fontFamily: "var(--font-mono)", lineHeight: 1.7 }}>
             Въведи кода по-долу за да получиш достъп до базата данни с превозни средства.
           </p>
           <div style={{ padding: "12px 16px", background: "#0d0d0d", border: `1px solid #2a2a2a`, marginBottom: 16, textAlign: "center" }}>
@@ -113,10 +113,10 @@ export default function LeaksVehiclesPage() {
   return (
     <div style={{ maxWidth: 1000, margin: "0 auto" }}>
       <div style={{ marginBottom: 20 }}>
-        <Link href="/hidden-wiki-2/leaks" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#555", letterSpacing: "0.15em", textDecoration: "none" }}>← LEAKS</Link>
+        <Link href="/hidden-wiki-2/leaks" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.15em", textDecoration: "none" }}>← LEAKS</Link>
         <div style={{ marginTop: 10, display: "flex", alignItems: "center", gap: 12 }}>
           <GlitchText text="VEHICLES" as="h1" intensity="low" className="text-3xl font-bold tracking-widest" color={ACCENT} />
-          <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#555", marginLeft: "auto" }}>{VEHICLES.length} ЗАПИСА</span>
+          <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", marginLeft: "auto" }}>{VEHICLES.length} ЗАПИСА</span>
         </div>
         <div style={{ height: 1, background: `linear-gradient(90deg, ${ACCENT}, transparent)`, marginTop: 8 }} />
       </div>
@@ -129,7 +129,7 @@ export default function LeaksVehiclesPage() {
 
       <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
         <button onClick={() => setFilterMatch(!filterMatch)}
-          style={{ padding: "5px 14px", fontSize: 8, fontFamily: "var(--font-mono)", background: filterMatch ? `${ACCENT}22` : "#0d0d0d", color: filterMatch ? ACCENT : "#666", border: `1px solid ${filterMatch ? ACCENT + "50" : "#1e1e1e"}`, cursor: "pointer", letterSpacing: "0.1em" }}>
+          style={{ padding: "5px 14px", fontSize: 9, fontFamily: "var(--font-mono)", background: filterMatch ? `${ACCENT}22` : "#0d0d0d", color: filterMatch ? ACCENT : "#999999", border: `1px solid ${filterMatch ? ACCENT + "50" : "#1e1e1e"}`, cursor: "pointer", letterSpacing: "0.1em" }}>
           {filterMatch ? "★ САМО СЪВПАДЕНИЯ" : "САМО СЪВПАДЕНИЯ"}
         </button>
       </div>
@@ -140,7 +140,7 @@ export default function LeaksVehiclesPage() {
             <thead>
               <tr style={{ borderBottom: "1px solid #222" }}>
                 {["МАРКА/МОДЕЛ", "ГОДИНА", "ЦВЯТ", "РЕГ. №", "ТЕЛЕФОН", "СТАТУС", ""].map((h) => (
-                  <th key={h} style={{ padding: "7px 10px", fontSize: 8, fontFamily: "var(--font-mono)", color: "#555", letterSpacing: "0.12em", textAlign: "left", whiteSpace: "nowrap" }}>{h}</th>
+                  <th key={h} style={{ padding: "7px 10px", fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.12em", textAlign: "left", whiteSpace: "nowrap" }}>{h}</th>
                 ))}
               </tr>
             </thead>
@@ -157,18 +157,18 @@ export default function LeaksVehiclesPage() {
                       </span>
                       {v.match && <span style={{ marginLeft: 6, fontSize: 7, color: ACCENT, border: `1px solid ${ACCENT}40`, padding: "1px 5px" }}>MATCH</span>}
                     </td>
-                    <td style={{ padding: "8px 10px", fontSize: 11, color: "#aaa", fontFamily: "var(--font-mono)" }}>{v.year}</td>
-                    <td style={{ padding: "8px 10px", fontSize: 11, color: "#aaa", fontFamily: "var(--font-mono)" }}>{v.color}</td>
-                    <td style={{ padding: "8px 10px", fontSize: 10, color: "#777", fontFamily: "var(--font-mono)" }}>{v.reg}</td>
-                    <td style={{ padding: "8px 10px", fontSize: 10, color: isRepeatPhone ? "#CC44FF" : "#666", fontFamily: "var(--font-mono)" }}>
+                    <td style={{ padding: "8px 10px", fontSize: 11, color: "#cccccc", fontFamily: "var(--font-mono)" }}>{v.year}</td>
+                    <td style={{ padding: "8px 10px", fontSize: 11, color: "#cccccc", fontFamily: "var(--font-mono)" }}>{v.color}</td>
+                    <td style={{ padding: "8px 10px", fontSize: 10, color: "#aaaaaa", fontFamily: "var(--font-mono)" }}>{v.reg}</td>
+                    <td style={{ padding: "8px 10px", fontSize: 10, color: isRepeatPhone ? "#CC44FF" : "#999999", fontFamily: "var(--font-mono)" }}>
                       {v.phone}{isRepeatPhone && <span style={{ marginLeft: 4, fontSize: 7, color: "#CC44FF" }}>×REP</span>}
                     </td>
                     <td style={{ padding: "8px 10px" }}>
-                      <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: STATUS_COLORS[v.status] }}>{v.status}</span>
+                      <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: STATUS_COLORS[v.status] }}>{v.status}</span>
                     </td>
                     <td style={{ padding: "8px 10px" }}>
                       <button onClick={(e) => { e.stopPropagation(); handleSave(v, "row", `${v.brand} ${v.model} ${v.year} ${v.color} — ${v.reg} — ${v.phone}`) }}
-                        style={{ padding: "2px 7px", fontSize: 7, fontFamily: "var(--font-mono)", background: savedClues.includes(`vehicles-${v.id}-row`) ? `${ACCENT}18` : "#0d0d0d", color: savedClues.includes(`vehicles-${v.id}-row`) ? ACCENT : "#555", border: `1px solid ${savedClues.includes(`vehicles-${v.id}-row`) ? ACCENT + "40" : "#1e1e1e"}`, cursor: "pointer" }}>
+                        style={{ padding: "2px 7px", fontSize: 7, fontFamily: "var(--font-mono)", background: savedClues.includes(`vehicles-${v.id}-row`) ? `${ACCENT}18` : "#0d0d0d", color: savedClues.includes(`vehicles-${v.id}-row`) ? ACCENT : "#909090", border: `1px solid ${savedClues.includes(`vehicles-${v.id}-row`) ? ACCENT + "40" : "#1e1e1e"}`, cursor: "pointer" }}>
                         {savedClues.includes(`vehicles-${v.id}-row`) ? "✓" : "SAVE"}
                       </button>
                     </td>
@@ -183,7 +183,7 @@ export default function LeaksVehiclesPage() {
         <div style={{ background: "#080808", border: "1px solid #1e1e1e", padding: 16, height: "fit-content" }}>
           {selectedV ? (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} key={selectedV.id}>
-              <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#444", letterSpacing: "0.2em", marginBottom: 12 }}>VEHICLE DETAIL</div>
+              <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", letterSpacing: "0.2em", marginBottom: 12 }}>VEHICLE DETAIL</div>
               <div style={{ fontSize: 18, fontFamily: "var(--font-mono)", color: selectedV.match ? ACCENT : "#e0e0e0", fontWeight: 700, marginBottom: 14 }}>
                 {selectedV.brand} {selectedV.model} {selectedV.year}
               </div>
@@ -196,8 +196,8 @@ export default function LeaksVehiclesPage() {
                 { label: "СТАТУС", value: selectedV.status, color: STATUS_COLORS[selectedV.status] },
               ].map((row) => (
                 <div key={row.label} style={{ display: "flex", justifyContent: "space-between", marginBottom: 8, paddingBottom: 8, borderBottom: "1px solid #111" }}>
-                  <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#555", letterSpacing: "0.1em" }}>{row.label}</span>
-                  <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: row.color ?? "#aaa" }}>{row.value}</span>
+                  <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.1em" }}>{row.label}</span>
+                  <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: row.color ?? "#cccccc" }}>{row.value}</span>
                 </div>
               ))}
               {selectedV.note && (
@@ -212,7 +212,7 @@ export default function LeaksVehiclesPage() {
                   { field: "note", text: `Бележка: ${selectedV.note || "—"}` },
                 ].map((a) => (
                   <button key={a.field} onClick={() => handleSave(selectedV, a.field, a.text)}
-                    style={{ padding: "4px 10px", fontSize: 8, fontFamily: "var(--font-mono)", background: savedClues.includes(`vehicles-${selectedV.id}-${a.field}`) ? `${ACCENT}18` : "#0d0d0d", color: savedClues.includes(`vehicles-${selectedV.id}-${a.field}`) ? ACCENT : "#777", border: `1px solid ${savedClues.includes(`vehicles-${selectedV.id}-${a.field}`) ? ACCENT + "40" : "#222"}`, cursor: "pointer", textAlign: "left" }}>
+                    style={{ padding: "4px 10px", fontSize: 9, fontFamily: "var(--font-mono)", background: savedClues.includes(`vehicles-${selectedV.id}-${a.field}`) ? `${ACCENT}18` : "#0d0d0d", color: savedClues.includes(`vehicles-${selectedV.id}-${a.field}`) ? ACCENT : "#aaaaaa", border: `1px solid ${savedClues.includes(`vehicles-${selectedV.id}-${a.field}`) ? ACCENT + "40" : "#222"}`, cursor: "pointer", textAlign: "left" }}>
                     {savedClues.includes(`vehicles-${selectedV.id}-${a.field}`) ? "✓ " : ""}{a.text.split(":")[0]} → SAVE
                   </button>
                 ))}

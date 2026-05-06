@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -62,7 +62,7 @@ export default function LeaksPhonesPage() {
   return (
     <div style={{ maxWidth: 960, margin: "0 auto" }}>
       <div style={{ marginBottom: 20 }}>
-        <Link href="/hidden-wiki-2/leaks" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#555", letterSpacing: "0.15em", textDecoration: "none" }}>← LEAKS</Link>
+        <Link href="/hidden-wiki-2/leaks" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.15em", textDecoration: "none" }}>← LEAKS</Link>
         <div style={{ marginTop: 10 }}>
           <GlitchText text="PHONES" as="h1" intensity="low" className="text-3xl font-bold tracking-widest" color={ACCENT} />
         </div>
@@ -80,7 +80,7 @@ export default function LeaksPhonesPage() {
           placeholder="Търси по номер, лице или организация..."
           style={{ flex: 1, minWidth: 200, padding: "6px 12px", background: "#0d0d0d", border: "1px solid #1e1e1e", color: "#e0e0e0", fontSize: 11, fontFamily: "var(--font-mono)", outline: "none" }} />
         <button onClick={() => setFilterSus(!filterSus)}
-          style={{ padding: "5px 14px", fontSize: 8, fontFamily: "var(--font-mono)", background: filterSus ? "#1a000010" : "#0d0d0d", color: filterSus ? "#FF0033" : "#666", border: `1px solid ${filterSus ? "#FF003340" : "#1e1e1e"}`, cursor: "pointer", letterSpacing: "0.1em" }}>
+          style={{ padding: "5px 14px", fontSize: 9, fontFamily: "var(--font-mono)", background: filterSus ? "#1a000010" : "#0d0d0d", color: filterSus ? "#FF0033" : "#999999", border: `1px solid ${filterSus ? "#FF003340" : "#1e1e1e"}`, cursor: "pointer", letterSpacing: "0.1em" }}>
           {filterSus ? "⚠ САМО ПОДОЗРИТЕЛНИ" : "САМО ПОДОЗРИТЕЛНИ"}
         </button>
       </div>
@@ -97,12 +97,12 @@ export default function LeaksPhonesPage() {
                     <span style={{ fontSize: 12, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.04em" }}>{ph.number}</span>
                     {ph.suspicious && <span style={{ fontSize: 7, color: "#FF0033", border: "1px solid #FF003330", padding: "1px 5px", fontFamily: "var(--font-mono)" }}>⚠ SUSPICIOUS</span>}
                   </div>
-                  <div style={{ fontSize: 10, color: "#888", fontFamily: "var(--font-mono)" }}>
+                  <div style={{ fontSize: 10, color: "#bbbbbb", fontFamily: "var(--font-mono)" }}>
                     {ph.label} <span style={{ color: "#444", marginLeft: 8 }}>· {ph.org}</span>
                   </div>
                 </div>
                 <button onClick={(e) => { e.stopPropagation(); handleSave(ph) }}
-                  style={{ padding: "3px 10px", fontSize: 8, fontFamily: "var(--font-mono)", background: isSaved ? `${ACCENT}18` : "#0d0d0d", color: isSaved ? ACCENT : "#555", border: `1px solid ${isSaved ? ACCENT + "40" : "#1e1e1e"}`, cursor: "pointer", flexShrink: 0 }}>
+                  style={{ padding: "3px 10px", fontSize: 9, fontFamily: "var(--font-mono)", background: isSaved ? `${ACCENT}18` : "#0d0d0d", color: isSaved ? ACCENT : "#909090", border: `1px solid ${isSaved ? ACCENT + "40" : "#1e1e1e"}`, cursor: "pointer", flexShrink: 0 }}>
                   {isSaved ? "✓" : "SAVE"}
                 </button>
               </div>
@@ -114,28 +114,28 @@ export default function LeaksPhonesPage() {
         <div style={{ background: "#080808", border: "1px solid #1a1a1a", padding: 16, height: "fit-content" }}>
           {selected ? (
             <motion.div key={selected.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#444", letterSpacing: "0.2em", marginBottom: 12 }}>PHONE DETAIL</div>
+              <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", letterSpacing: "0.2em", marginBottom: 12 }}>PHONE DETAIL</div>
               <div style={{ fontSize: 16, fontFamily: "var(--font-mono)", color: ACCENT, fontWeight: 700, marginBottom: 8 }}>{selected.number}</div>
               {[
                 { label: "ЛИЦЕ/ЛИНИЯ", value: selected.label },
                 { label: "ОРГАНИЗАЦИЯ", value: selected.org },
-                { label: "СТАТУС", value: selected.suspicious ? "⚠ SUSPICIOUS" : "—", color: selected.suspicious ? "#FF0033" : "#555" },
+                { label: "СТАТУС", value: selected.suspicious ? "⚠ SUSPICIOUS" : "—", color: selected.suspicious ? "#FF0033" : "#909090" },
               ].map((row) => (
                 <div key={row.label} style={{ display: "flex", justifyContent: "space-between", marginBottom: 8, paddingBottom: 8, borderBottom: "1px solid #111" }}>
-                  <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#555", letterSpacing: "0.1em" }}>{row.label}</span>
-                  <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: row.color ?? "#aaa" }}>{row.value}</span>
+                  <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.1em" }}>{row.label}</span>
+                  <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: row.color ?? "#cccccc" }}>{row.value}</span>
                 </div>
               ))}
               <div style={{ padding: "8px 10px", background: "#0d0d0d", border: "1px solid #1a1a1a", marginBottom: 12 }}>
-                <div style={{ fontSize: 8, color: "#444", fontFamily: "var(--font-mono)", marginBottom: 4 }}>БЕЛЕЖКИ</div>
+                <div style={{ fontSize: 9, color: "#444", fontFamily: "var(--font-mono)", marginBottom: 4 }}>БЕЛЕЖКИ</div>
                 <div style={{ fontSize: 10, color: "#c0c0c0", fontFamily: "var(--font-mono)", lineHeight: 1.6 }}>{selected.notes}</div>
               </div>
               <div style={{ marginBottom: 12, padding: "8px 10px", background: "#0a0005", border: `1px solid ${ACCENT}20` }}>
-                <div style={{ fontSize: 8, color: ACCENT, fontFamily: "var(--font-mono)", marginBottom: 4 }}>CELLTRACE LOOKUP</div>
-                <div style={{ fontSize: 9, color: "#888", fontFamily: "var(--font-mono)", lineHeight: 1.6 }}>Подай този номер в /blackmarket → CellTrace за IP и GPS данни (10 HC).</div>
+                <div style={{ fontSize: 9, color: ACCENT, fontFamily: "var(--font-mono)", marginBottom: 4 }}>CELLTRACE LOOKUP</div>
+                <div style={{ fontSize: 9, color: "#bbbbbb", fontFamily: "var(--font-mono)", lineHeight: 1.6 }}>Подай този номер в /blackmarket → CellTrace за IP и GPS данни (10 HC).</div>
               </div>
               <button onClick={() => handleSave(selected)}
-                style={{ width: "100%", padding: "5px 0", fontSize: 8, fontFamily: "var(--font-mono)", letterSpacing: "0.12em", background: savedClues.includes(`phones-${selected.id}`) ? `${ACCENT}18` : "#0d0d0d", color: savedClues.includes(`phones-${selected.id}`) ? ACCENT : "#777", border: `1px solid ${savedClues.includes(`phones-${selected.id}`) ? ACCENT + "50" : "#222"}`, cursor: "pointer" }}>
+                style={{ width: "100%", padding: "5px 0", fontSize: 9, fontFamily: "var(--font-mono)", letterSpacing: "0.12em", background: savedClues.includes(`phones-${selected.id}`) ? `${ACCENT}18` : "#0d0d0d", color: savedClues.includes(`phones-${selected.id}`) ? ACCENT : "#aaaaaa", border: `1px solid ${savedClues.includes(`phones-${selected.id}`) ? ACCENT + "50" : "#222"}`, cursor: "pointer" }}>
                 {savedClues.includes(`phones-${selected.id}`) ? "✓ SAVED" : "SAVE CLUE"}
               </button>
             </motion.div>

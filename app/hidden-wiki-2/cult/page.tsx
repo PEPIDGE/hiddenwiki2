@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -116,7 +116,7 @@ export default function CultPage() {
   return (
     <div style={{ maxWidth: 920, margin: "0 auto" }}>
       <div style={{ marginBottom: 20 }}>
-        <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#333", letterSpacing: "0.3em", marginBottom: 8 }}>
+        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333", letterSpacing: "0.3em", marginBottom: 8 }}>
           CULT DATABASE — ОРГАНИЗАЦИИ И СЕКТИ
         </div>
         <GlitchText text="CULT" as="h1" intensity="low" className="text-3xl font-bold tracking-widest" color={ACCENT} />
@@ -129,9 +129,9 @@ export default function CultPage() {
           { label: "CHAT SYSTEM", href: "/hidden-wiki-2/cult/chat-system" },
         ].map((link) => (
           <Link key={link.href} href={link.href}
-            style={{ padding: "6px 14px", fontSize: 9, fontFamily: "var(--font-mono)", color: "#888", border: "1px solid #222", textDecoration: "none", letterSpacing: "0.12em" }}
+            style={{ padding: "6px 14px", fontSize: 9, fontFamily: "var(--font-mono)", color: "#bbbbbb", border: "1px solid #222", textDecoration: "none", letterSpacing: "0.12em" }}
             onMouseEnter={(e) => { e.currentTarget.style.color = ACCENT; e.currentTarget.style.borderColor = ACCENT + "50" }}
-            onMouseLeave={(e) => { e.currentTarget.style.color = "#888"; e.currentTarget.style.borderColor = "#222" }}>
+            onMouseLeave={(e) => { e.currentTarget.style.color = "#bbbbbb"; e.currentTarget.style.borderColor = "#222" }}>
             /{link.label} →
           </Link>
         ))}
@@ -154,15 +154,15 @@ export default function CultPage() {
                 onClick={() => setExpanded(isExpanded ? null : cult.id)}>
                 <div style={{ flex: 1 }}>
                   <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 6 }}>
-                    <span style={{ fontSize: 7, fontFamily: "var(--font-mono)", color: cult.warning ? "#FF0033" : "#555", border: `1px solid ${cult.warning ? "#FF003340" : "#222"}`, padding: "1px 6px", letterSpacing: "0.12em" }}>
+                    <span style={{ fontSize: 7, fontFamily: "var(--font-mono)", color: cult.warning ? "#FF0033" : "#909090", border: `1px solid ${cult.warning ? "#FF003340" : "#222"}`, padding: "1px 6px", letterSpacing: "0.12em" }}>
                       {cult.level}
                     </span>
-                    <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#444" }}>{cult.members} членa</span>
+                    <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444" }}>{cult.members} членa</span>
                   </div>
                   <div style={{ fontSize: 14, fontFamily: "var(--font-mono)", color: cult.warning ? "#e0c0e0" : "#c0c0c0", fontWeight: 600, marginBottom: 4 }}>
                     {cult.name}
                   </div>
-                  <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#666" }}>
+                  <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#999999" }}>
                     <span style={{ color: "#444" }}>Публичен front: </span>{cult.front}
                   </div>
                 </div>
@@ -173,30 +173,30 @@ export default function CultPage() {
                   style={{ borderTop: "1px solid #141414", padding: "14px 18px" }}>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
                     <div>
-                      <div style={{ fontSize: 8, color: "#444", fontFamily: "var(--font-mono)", marginBottom: 4, letterSpacing: "0.1em" }}>ЛИДЕР</div>
+                      <div style={{ fontSize: 9, color: "#444", fontFamily: "var(--font-mono)", marginBottom: 4, letterSpacing: "0.1em" }}>ЛИДЕР</div>
                       {cult.leaders.map((l) => <div key={l} style={{ fontSize: 11, color: "#d0d0d0", fontFamily: "var(--font-mono)" }}>{l}</div>)}
                     </div>
                     <div>
-                      <div style={{ fontSize: 8, color: "#444", fontFamily: "var(--font-mono)", marginBottom: 4, letterSpacing: "0.1em" }}>ОПЕРАТОРИ</div>
+                      <div style={{ fontSize: 9, color: "#444", fontFamily: "var(--font-mono)", marginBottom: 4, letterSpacing: "0.1em" }}>ОПЕРАТОРИ</div>
                       {cult.operators.length > 0
-                        ? cult.operators.map((op) => <div key={op} style={{ fontSize: 11, color: "#aaa", fontFamily: "var(--font-mono)" }}>{op}</div>)
+                        ? cult.operators.map((op) => <div key={op} style={{ fontSize: 11, color: "#cccccc", fontFamily: "var(--font-mono)" }}>{op}</div>)
                         : <div style={{ fontSize: 11, color: "#333", fontFamily: "var(--font-mono)" }}>—</div>
                       }
                     </div>
                     <div>
-                      <div style={{ fontSize: 8, color: "#444", fontFamily: "var(--font-mono)", marginBottom: 4, letterSpacing: "0.1em" }}>ЛОКАЦИЯ</div>
-                      <div style={{ fontSize: 11, color: "#aaa", fontFamily: "var(--font-mono)" }}>{cult.location}</div>
+                      <div style={{ fontSize: 9, color: "#444", fontFamily: "var(--font-mono)", marginBottom: 4, letterSpacing: "0.1em" }}>ЛОКАЦИЯ</div>
+                      <div style={{ fontSize: 11, color: "#cccccc", fontFamily: "var(--font-mono)" }}>{cult.location}</div>
                     </div>
                     <div>
-                      <div style={{ fontSize: 8, color: "#444", fontFamily: "var(--font-mono)", marginBottom: 4, letterSpacing: "0.1em" }}>ID</div>
-                      <div style={{ fontSize: 10, color: "#555", fontFamily: "var(--font-mono)" }}>{cult.id}</div>
+                      <div style={{ fontSize: 9, color: "#444", fontFamily: "var(--font-mono)", marginBottom: 4, letterSpacing: "0.1em" }}>ID</div>
+                      <div style={{ fontSize: 10, color: "#909090", fontFamily: "var(--font-mono)" }}>{cult.id}</div>
                     </div>
                   </div>
                   <div style={{ padding: "8px 12px", background: "#0a000a", border: `1px solid ${ACCENT}15`, marginBottom: 10, fontSize: 10, color: "#c0c0c0", fontFamily: "var(--font-mono)", lineHeight: 1.6 }}>
                     {cult.clue}
                   </div>
                   <button onClick={() => handleSave(cult)}
-                    style={{ padding: "4px 14px", fontSize: 8, fontFamily: "var(--font-mono)", letterSpacing: "0.1em", background: isSaved ? `${ACCENT}18` : "#111", color: isSaved ? ACCENT : "#777", border: `1px solid ${isSaved ? ACCENT + "50" : "#222"}`, cursor: "pointer" }}>
+                    style={{ padding: "4px 14px", fontSize: 9, fontFamily: "var(--font-mono)", letterSpacing: "0.1em", background: isSaved ? `${ACCENT}18` : "#111", color: isSaved ? ACCENT : "#aaaaaa", border: `1px solid ${isSaved ? ACCENT + "50" : "#222"}`, cursor: "pointer" }}>
                     {isSaved ? "✓ SAVED" : "SAVE CLUE"}
                   </button>
                 </motion.div>

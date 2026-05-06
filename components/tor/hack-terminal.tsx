@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useRef, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
@@ -168,7 +168,7 @@ export function HackTerminal({
   }
 
   const typeColor = {
-    output: "#555555",
+    output: "#909090",
     input: accentColor,
     error: "#FF3333",
     success: accentColor,
@@ -237,7 +237,7 @@ export function HackTerminal({
             key={i}
             style={{
               fontSize: 11,
-              color: typeColor[line.type] || "#555",
+              color: typeColor[line.type] || "#909090",
               lineHeight: 1.7,
               letterSpacing: "0.04em",
               fontWeight: line.type === "success" ? 700 : 400,
