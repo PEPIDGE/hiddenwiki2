@@ -118,7 +118,7 @@ export const ROUTES_CONFIG = [
     label: "TRACE-NODE",
     accentColor: "#00FF41",
     status: "FINAL",
-    locked: true,
+    locked: false,
     sublinks: ["/terminal", "/nodes", "/trace", "/verification", "/output"],
   },
 ]
