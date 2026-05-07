@@ -37,6 +37,32 @@ export const INITIAL_STATE: GameState = {
     "/hidden-wiki-2/forum",
     "/hidden-wiki-2/finance",
     "/hidden-wiki-2/getrich",
+    "/hidden-wiki-2/trace-node",
+    "/hidden-wiki-2/trace-node/terminal",
+    "/hidden-wiki-2/trace-node/nodes",
+    "/hidden-wiki-2/trace-node/trace",
+    "/hidden-wiki-2/trace-node/output",
+    "/hidden-wiki-2/trace-node/verification",
+    "/hidden-wiki-2/red-room/full-truth",
+    "/hidden-wiki-2/red-room/donors",
+    "/hidden-wiki-2/red-room/chat-replay",
+    "/hidden-wiki-2/red-room/signal-log",
+    "/hidden-wiki-2/leaks/docs",
+    "/hidden-wiki-2/leaks/archive",
+    "/hidden-wiki-2/leaks/vehicles",
+    "/hidden-wiki-2/leaks/cards",
+    "/hidden-wiki-2/leaks/passwords",
+    "/hidden-wiki-2/cult/operators",
+    "/hidden-wiki-2/cult/chat-system",
+    "/hidden-wiki-2/events/calendar",
+    "/hidden-wiki-2/events/albums",
+    "/hidden-wiki-2/events/guestbook",
+    "/hidden-wiki-2/forum/threads",
+    "/hidden-wiki-2/forum/confessions",
+    "/hidden-wiki-2/forum/deadletters",
+    "/hidden-wiki-2/finance/transactions",
+    "/hidden-wiki-2/finance/anomalies",
+    "/hidden-wiki-2/finance/beneficiaries",
   ],
   visitedRoutes: [],
   solvedPuzzles: [],
@@ -147,8 +173,8 @@ export function saveGameState(state: GameState): void {
   localStorage.setItem("torshell_state", JSON.stringify(state))
 }
 
-export function isRouteUnlocked(path: string, state: GameState): boolean {
-  return state.unlockedRoutes.includes(path)
+export function isRouteUnlocked(_path: string, _state: GameState): boolean {
+  return true
 }
 
 export function hasCooldown(puzzleId: string, state: GameState): number {
