@@ -1,11 +1,10 @@
 "use client"
 
 import { type ReactNode, useEffect } from "react"
+import dynamic from "next/dynamic"
 import { motion, AnimatePresence } from "framer-motion"
 import { TorNav } from "@/components/tor/tor-nav"
 import { TorTopBar } from "@/components/tor/tor-top-bar"
-import { EvidenceBoard } from "@/components/tor/evidence-board"
-import { CursorTrail } from "@/components/tor/cursor-trail"
 import { usePathname } from "next/navigation"
 import { addVisitedRoute } from "@/lib/game-state"
 
@@ -20,6 +19,30 @@ const PAGE_VARIANTS = {
   animate: { opacity: 1, y: 0, filter: "blur(0px)" },
   exit: { opacity: 0, y: -8, filter: "blur(1px)" },
 }
+
+const CursorTrail = dynamic(
+  () => import("@/components/tor/cursor-trail").then((mod) => mod.CursorTrail),
+  { ssr: false }
+)
+
+const EvidenceBoard = dynamic(
+  () => import("@/components/tor/evidence-board").then((mod) => mod.EvidenceBoard),
+  {
+    ssr: false,
+    loading: () => (
+      <aside
+        style={{
+          width: 230,
+          minWidth: 230,
+          background: "var(--panel-bg)",
+          borderLeft: "1px solid var(--panel-border)",
+          height: "100%",
+          flexShrink: 0,
+        }}
+      />
+    ),
+  }
+)
 
 export function TorShell({ children, currentSite, siteColor = "#00FF41" }: TorShellProps) {
   const pathname = usePathname()

@@ -1,5 +1,12 @@
-import { redirect } from "next/navigation"
+"use client"
+
+import HiddenWiki2Page from "@/app/hidden-wiki-2/page"
+import { TorShell } from "@/components/tor/tor-shell"
 
 export default function RootPage() {
-  redirect("/hidden-wiki-2")
+  return (
+    <TorShell siteColor="#00FF41">
+      <HiddenWiki2Page />
+    </TorShell>
+  )
 }
