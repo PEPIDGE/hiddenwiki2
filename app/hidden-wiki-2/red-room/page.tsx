@@ -191,7 +191,7 @@ export default function RedRoomPage() {
         })}
       </div>
 
-      {/* LIVE STREAM — YouTube embed styled as surveillance livestream */}
+      {/* LIVE STREAM — direct video styled as surveillance livestream */}
       <div style={{ marginBottom: 28, border: `2px solid ${ACCENT}50`, background: "#000", position: "relative" }}>
         {/* Top bar */}
         <div style={{
@@ -208,13 +208,15 @@ export default function RedRoomPage() {
           <div style={{ marginLeft: "auto", fontSize: 10, fontFamily: "var(--font-mono)", color: "#bbbbbb" }}>1,247 зрители</div>
         </div>
 
-        {/* YouTube iframe container */}
+        {/* Video container */}
         <div style={{ position: "relative", aspectRatio: "16/9" }}>
-          <iframe
-            src="https://www.youtube.com/embed/jNQXAC9IVRw?autoplay=0&mute=1&controls=1&rel=0&modestbranding=1"
+          <video
+            src="https://pub-8b860d446af44b4ba4c3681a0af03bcf.r2.dev/FINAL-low-res.mp4"
             style={{ width: "100%", height: "100%", border: "none", display: "block", filter: "brightness(0.85) contrast(1.1) saturate(0.7)" }}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
+            controls
+            muted
+            playsInline
+            preload="metadata"
             title="RED ROOM LIVE FEED"
           />
           {/* Scanlines overlay */}
