@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import { useRouter, usePathname } from "next/navigation"
-import { GlitchText } from "@/components/tor/glitch-text"
 import { motion } from "framer-motion"
 
 interface TopBarProps {
@@ -74,93 +73,97 @@ export function TorTopBar({ currentSite, siteColor = "#00FF41" }: TopBarProps) {
       <button
         onClick={goUp}
         disabled={atRoot}
-        title="Назад / нагоре по йерархията"
+        title="Назад"
         style={{
           display: "flex",
           alignItems: "center",
-          gap: 6,
-          height: 26,
-          padding: "0 11px",
-          background: "transparent",
-          border: "1px solid var(--panel-border)",
-          color: atRoot ? "#444" : "#d0d0d0",
-          fontSize: 11,
+          height: 28,
+          padding: 0,
+          background: atRoot ? "transparent" : "rgba(255,255,255,0.02)",
+          border: `1px solid ${atRoot ? "#1c1c1c" : "var(--panel-border)"}`,
+          color: atRoot ? "#3a3a3a" : "#dcdcdc",
           fontFamily: "var(--font-mono)",
-          letterSpacing: "0.1em",
           cursor: atRoot ? "not-allowed" : "pointer",
           flexShrink: 0,
-          transition: "all 0.12s",
+          overflow: "hidden",
+          transition: "all 0.14s ease",
         }}
         onMouseEnter={(e) => {
           if (atRoot) return
-          e.currentTarget.style.borderColor = `${siteColor}80`
+          e.currentTarget.style.borderColor = siteColor
           e.currentTarget.style.color = siteColor
+          e.currentTarget.style.boxShadow = `0 0 10px ${siteColor}30`
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.borderColor = "var(--panel-border)"
-          e.currentTarget.style.color = atRoot ? "#444" : "#d0d0d0"
+          e.currentTarget.style.borderColor = atRoot ? "#1c1c1c" : "var(--panel-border)"
+          e.currentTarget.style.color = atRoot ? "#3a3a3a" : "#dcdcdc"
+          e.currentTarget.style.boxShadow = "none"
         }}
       >
-        <span style={{ fontSize: 13, lineHeight: 1 }}>←</span>
-        НАЗАД
-      </button>
-
-      {/* Logo mark */}
-      <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
-        <div
+        {/* Chevron cell */}
+        <span
           style={{
-            width: 22,
-            height: 22,
-            border: `1px solid ${siteColor}60`,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            position: "relative",
+            width: 26,
+            height: "100%",
+            fontSize: 15,
+            lineHeight: 1,
+            borderRight: `1px solid ${atRoot ? "#1c1c1c" : "var(--panel-border)"}`,
           }}
         >
-          <div
-            style={{
-              width: 10,
-              height: 10,
-              background: siteColor,
-              animation: "pulse-glow 2s infinite",
-              boxShadow: `0 0 8px ${siteColor}`,
-            }}
-          />
-        </div>
-
-        <GlitchText
-          text="HIDDEN WIKI 2"
-          as="span"
-          intensity="low"
-          className="text-xs tracking-widest font-bold"
-          color={siteColor}
-        />
-      </div>
-
-      {/* Current site label */}
-      {currentSite && (
-        <div
+          ‹
+        </span>
+        {/* Label cell */}
+        <span
           style={{
-            fontSize: 11,
-            color: "#aaaaaa",
-            letterSpacing: "0.14em",
-            display: "flex",
-            alignItems: "center",
-            gap: 6,
+            padding: "0 12px",
+            fontSize: 10,
+            letterSpacing: "0.18em",
+            fontWeight: 700,
           }}
         >
-          <span style={{ color: "#555555" }}>/</span>
-          <motion.span
-            key={currentSite}
-            initial={{ opacity: 0, x: -6 }}
-            animate={{ opacity: 1, x: 0 }}
-            style={{ color: siteColor, fontWeight: 700 }}
-          >
-            {currentSite.toUpperCase()}
-          </motion.span>
-        </div>
-      )}
+          НАЗАД
+        </span>
+      </button>
+
+      {/* Brand + current site — single aligned baseline, equal sizing */}
+      <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
+        <span
+          style={{
+            fontSize: 13,
+            fontFamily: "var(--font-mono)",
+            fontWeight: 700,
+            letterSpacing: "0.16em",
+            color: "#e8e8e8",
+            lineHeight: 1,
+          }}
+        >
+          HIDDEN WIKI 2
+        </span>
+
+        {currentSite && (
+          <>
+            <span style={{ color: "#3a3a3a", fontSize: 14, lineHeight: 1, fontWeight: 300 }}>/</span>
+            <motion.span
+              key={currentSite}
+              initial={{ opacity: 0, x: -6 }}
+              animate={{ opacity: 1, x: 0 }}
+              style={{
+                fontSize: 13,
+                fontFamily: "var(--font-mono)",
+                fontWeight: 700,
+                letterSpacing: "0.16em",
+                color: siteColor,
+                lineHeight: 1,
+              }}
+            >
+              {currentSite.toUpperCase()}
+            </motion.span>
+          </>
+        )}
+      </div>
 
       {/* Spacer */}
       <div style={{ flex: 1 }} />

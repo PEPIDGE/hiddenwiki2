@@ -1,7 +1,8 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import Link from "next/link"
+import { useRouter, useSearchParams } from "next/navigation"
 import { GlitchText } from "@/components/tor/glitch-text"
 import { AnimatePresence, motion } from "framer-motion"
 import { ArrowLeft, Folder, FolderOpen } from "lucide-react"
@@ -262,12 +263,12 @@ const CATEGORY_ICONS: Record<DocCategory, string> = {
 }
 
 const EXT_COLOR: Record<string, string> = {
-  JPG:  "#4488FF",
-  PDF:  "#FF4444",
-  XLSX: "#44CC44",
-  PPTX: "#FF8800",
-  ZIP:  "#AAAAAA",
-  MP4:  "#AA44FF",
+  JPG:  "#FFB000",
+  PDF:  "#FF0033",
+  XLSX: "#00FF41",
+  PPTX: "#FFB000",
+  ZIP:  "#9a9a9a",
+  MP4:  "#9a9a9a",
 }
 
 const CATEGORIES = Array.from(new Set(BASE_DOCS.map((d) => d.category))) as DocCategory[]
@@ -418,56 +419,56 @@ function FolderCard({ folder, onOpen }: { folder: DocFolder; onOpen: () => void 
       onMouseLeave={() => setHovered(false)}
       style={{
         width: "100%",
-        minHeight: 154,
-        background: hovered ? `${ACCENT}08` : "#090909",
-        border: `1px solid ${hovered ? ACCENT + "45" : "#1b1b1b"}`,
+        minHeight: 160,
+        background: hovered ? `${ACCENT}0a` : "#0a0a0a",
+        border: `1px solid ${hovered ? ACCENT + "55" : "#202020"}`,
         color: "inherit",
         cursor: "pointer",
         padding: "18px 16px",
         textAlign: "left",
         display: "flex",
         flexDirection: "column",
-        gap: 12,
+        gap: 14,
         transition: "background 150ms ease, border-color 150ms ease, box-shadow 150ms ease",
-        boxShadow: hovered ? `0 0 18px ${ACCENT}12` : "none",
+        boxShadow: hovered ? `0 0 18px ${ACCENT}18` : "none",
       }}
     >
       <div style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
         <div
           style={{
-            width: 36,
-            height: 32,
+            width: 40,
+            height: 36,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             flexShrink: 0,
-            background: `${ACCENT}10`,
-            border: `1px solid ${ACCENT}30`,
+            background: `${ACCENT}12`,
+            border: `1px solid ${ACCENT}40`,
           }}
         >
-          <Icon size={19} strokeWidth={1.5} color={hovered ? ACCENT : "#777"} />
+          <Icon size={20} strokeWidth={1.5} color={hovered ? ACCENT : "#cfcfcf"} />
         </div>
 
         <div style={{ minWidth: 0 }}>
-          <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#555", letterSpacing: "0.16em", marginBottom: 5 }}>
-            [{CATEGORY_ICONS[folder.category]}] {folder.docs.length} DOCS
+          <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.12em", marginBottom: 6, fontWeight: 700 }}>
+            [{CATEGORY_ICONS[folder.category]}] \u00b7 {folder.docs.length} \u0424\u0410\u0419\u041b\u0410
           </div>
-          <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: hovered ? ACCENT : "#cfcfcf", letterSpacing: "0.1em", lineHeight: 1.5, overflowWrap: "anywhere" }}>
+          <div style={{ fontSize: 13, fontFamily: "var(--font-mono)", color: hovered ? "#ffffff" : "#e2e2e2", letterSpacing: "0.04em", lineHeight: 1.45, overflowWrap: "anywhere", fontWeight: 600 }}>
             {folder.category}
           </div>
         </div>
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 4, marginTop: "auto" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 5, marginTop: "auto", borderTop: "1px solid #181818", paddingTop: 10 }}>
         {folder.docs.slice(0, 3).map((doc) => {
-          const extColor = EXT_COLOR[doc.ext] ?? "#888"
+          const extColor = EXT_COLOR[doc.ext] ?? "#9a9a9a"
 
           return (
-            <div key={doc.id} style={{ display: "flex", alignItems: "center", gap: 6, minWidth: 0 }}>
-              <span style={{ width: 26, flexShrink: 0, fontSize: 7, fontFamily: "var(--font-mono)", color: extColor, letterSpacing: "0.08em" }}>
+            <div key={doc.id} style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
+              <span style={{ width: 32, flexShrink: 0, fontSize: 9, fontFamily: "var(--font-mono)", color: extColor, letterSpacing: "0.06em", fontWeight: 700 }}>
                 {doc.ext}
               </span>
-              <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#555", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+              <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#9a9a9a", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                 {doc.name}
               </span>
             </div>
@@ -478,14 +479,24 @@ function FolderCard({ folder, onOpen }: { folder: DocFolder; onOpen: () => void 
   )
 }
 
-export default function LeaksDocsPage() {
+const DOCS_PATH = "/hidden-wiki-2/leaks/docs"
+const CAT_BY_SLUG = new Map(DOC_FOLDERS.map((f) => [f.id, f.category]))
+
+function LeaksDocsInner() {
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const [savedClues, setSavedClues] = useState<string[]>([])
   const [expanded, setExpanded] = useState<string | null>(null)
-  const [openFolder, setOpenFolder] = useState<DocCategory | null>(null)
+
+  const catSlug = searchParams.get("cat")
+  const openFolder = catSlug ? CAT_BY_SLUG.get(catSlug) ?? null : null
 
   useEffect(() => {
     setSavedClues(getGameState().clues.map((c) => c.id))
   }, [])
+
+  // reset expanded doc whenever the category changes
+  useEffect(() => { setExpanded(null) }, [catSlug])
 
   const handleSave = (doc: Doc) => {
     const id = `leaks-docs-noise-${doc.id}`
@@ -506,39 +517,31 @@ export default function LeaksDocsPage() {
   const activeFolder = DOC_FOLDERS.find((folder) => folder.category === openFolder) ?? null
   const visibleDocs = activeFolder?.docs ?? []
 
-  const openDocFolder = (category: DocCategory) => {
-    setOpenFolder(category)
-    setExpanded(null)
-  }
+  const openDocFolder = (folder: DocFolder) => router.push(`${DOCS_PATH}?cat=${folder.id}`)
+  const closeDocFolder = () => router.push(DOCS_PATH)
 
-  const closeDocFolder = () => {
-    setOpenFolder(null)
-    setExpanded(null)
-  }
+  const crumbStyle = {
+    fontSize: 11, fontFamily: "var(--font-mono)", color: "#bdbdbd",
+    letterSpacing: "0.1em", textDecoration: "none", background: "none",
+    border: "none", cursor: "pointer", padding: 0,
+  } as const
 
   return (
-    <div style={{ maxWidth: 960, margin: "0 auto" }}>
+    <div style={{ maxWidth: 980, margin: "0 auto" }}>
 
       <div style={{ marginBottom: 20 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-          <Link
-            href="/hidden-wiki-2/leaks"
-            style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.15em", textDecoration: "none" }}
-          >
-            {"<- LEAKS"}
-          </Link>
+          <Link href="/hidden-wiki-2/leaks" style={crumbStyle}>\u2190 LEAKS</Link>
+          <span style={{ fontSize: 11, color: "#555", fontFamily: "var(--font-mono)" }}>/</span>
+          {activeFolder ? (
+            <button type="button" onClick={closeDocFolder} style={crumbStyle}>DOCS</button>
+          ) : (
+            <span style={{ ...crumbStyle, color: ACCENT, cursor: "default" }}>DOCS</span>
+          )}
           {activeFolder && (
             <>
-              <span style={{ fontSize: 9, color: "#333", fontFamily: "var(--font-mono)" }}>/</span>
-              <button
-                type="button"
-                onClick={closeDocFolder}
-                style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.15em", background: "none", border: "none", cursor: "pointer", padding: 0 }}
-              >
-                DOCS
-              </button>
-              <span style={{ fontSize: 9, color: "#333", fontFamily: "var(--font-mono)" }}>/</span>
-              <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.15em" }}>
+              <span style={{ fontSize: 11, color: "#555", fontFamily: "var(--font-mono)" }}>/</span>
+              <span style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.1em" }}>
                 {activeFolder.category}
               </span>
             </>
@@ -547,7 +550,12 @@ export default function LeaksDocsPage() {
         <div style={{ marginTop: 10 }}>
           <GlitchText text="DOCS" as="h1" intensity="low" className="text-3xl font-bold tracking-widest" color={ACCENT} />
         </div>
-        <div style={{ height: 1, background: `linear-gradient(90deg, ${ACCENT}, transparent)`, marginTop: 8, opacity: 0.5 }} />
+        <div style={{ height: 2, background: `linear-gradient(90deg, ${ACCENT}, transparent)`, marginTop: 10 }} />
+        {!activeFolder && (
+          <div style={{ fontSize: 12, fontFamily: "var(--font-mono)", color: "#c4c4c4", marginTop: 12, letterSpacing: "0.04em", lineHeight: 1.6 }}>
+            {DOC_FOLDERS.length} \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u0438 \u00b7 {DOCS.length} \u0438\u0437\u0442\u0435\u043a\u043b\u0438 \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430. \u0418\u0437\u0431\u0435\u0440\u0438 \u043f\u0430\u043f\u043a\u0430, \u0437\u0430 \u0434\u0430 \u0440\u0430\u0437\u0433\u043b\u0435\u0434\u0430\u0448 \u0444\u0430\u0439\u043b\u043e\u0432\u0435\u0442\u0435.
+          </div>
+        )}
       </div>
 
       <AnimatePresence mode="wait">
@@ -558,10 +566,10 @@ export default function LeaksDocsPage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
             transition={{ duration: 0.16 }}
-            style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 8 }}
+            style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 10 }}
           >
             {DOC_FOLDERS.map((folder) => (
-              <FolderCard key={folder.id} folder={folder} onOpen={() => openDocFolder(folder.category)} />
+              <FolderCard key={folder.id} folder={folder} onOpen={() => openDocFolder(folder)} />
             ))}
           </motion.div>
         ) : (
@@ -576,38 +584,29 @@ export default function LeaksDocsPage() {
               type="button"
               onClick={closeDocFolder}
               style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 7,
-                marginBottom: 14,
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                padding: 0,
-                fontSize: 9,
-                fontFamily: "var(--font-mono)",
-                color: "#666",
-                letterSpacing: "0.12em",
+                display: "flex", alignItems: "center", gap: 7, marginBottom: 14,
+                background: "none", border: "none", cursor: "pointer", padding: 0,
+                fontSize: 11, fontFamily: "var(--font-mono)", color: "#bdbdbd", letterSpacing: "0.1em",
               }}
             >
-              <ArrowLeft size={12} strokeWidth={1.5} />
-              BACK TO FOLDERS
+              <ArrowLeft size={13} strokeWidth={1.5} />
+              \u041d\u0410\u0417\u0410\u0414 \u041a\u042a\u041c \u041f\u0410\u041f\u041a\u0418\u0422\u0415
             </button>
 
-            <div style={{ marginBottom: 10, padding: "10px 14px", background: "#080800", border: `1px solid ${ACCENT}20`, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
-              <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.1em", lineHeight: 1.5 }}>
+            <div style={{ marginBottom: 12, padding: "12px 16px", background: `${ACCENT}0a`, border: `1px solid ${ACCENT}40`, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+              <div style={{ fontSize: 13, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.06em", lineHeight: 1.5, fontWeight: 700 }}>
                 [{CATEGORY_ICONS[activeFolder.category]}] {activeFolder.category}
               </div>
-              <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#555", letterSpacing: "0.12em", flexShrink: 0 }}>
-                {visibleDocs.length} DOCS
+              <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#b0b0b0", letterSpacing: "0.1em", flexShrink: 0 }}>
+                {visibleDocs.length} \u0424\u0410\u0419\u041b\u0410
               </div>
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
               {visibleDocs.map((doc) => {
                 const isExpanded = expanded === doc.id
                 const isSaved = savedClues.includes(`leaks-docs-noise-${doc.id}`)
-                const extColor = EXT_COLOR[doc.ext] ?? "#888"
+                const extColor = EXT_COLOR[doc.ext] ?? "#9a9a9a"
 
                 return (
                   <motion.div
@@ -615,43 +614,42 @@ export default function LeaksDocsPage() {
                     initial={{ opacity: 0, y: 4 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.15 }}
-                    style={{ background: "#090909", border: "1px solid #141414" }}
+                    style={{ background: "#0a0a0a", border: `1px solid ${isExpanded ? ACCENT + "44" : "#1a1a1a"}` }}
                   >
                     <div
                       onClick={() => setExpanded(isExpanded ? null : doc.id)}
-                      style={{ padding: "10px 16px", display: "flex", alignItems: "flex-start", gap: 14, cursor: "pointer" }}
+                      style={{ padding: "12px 16px", display: "flex", alignItems: "flex-start", gap: 14, cursor: "pointer" }}
                     >
                       <div style={{
-                        flexShrink: 0, width: 38, height: 38,
-                        background: `${extColor}12`, border: `1px solid ${extColor}30`,
+                        flexShrink: 0, width: 42, height: 42,
+                        background: `${extColor}14`, border: `1px solid ${extColor}44`,
                         display: "flex", alignItems: "center", justifyContent: "center", marginTop: 2,
                       }}>
-                        <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: extColor, letterSpacing: "0.05em" }}>{doc.ext}</span>
+                        <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: extColor, letterSpacing: "0.04em", fontWeight: 700 }}>{doc.ext}</span>
                       </div>
 
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 3, flexWrap: "wrap" }}>
-                          <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#444", letterSpacing: "0.12em" }}>{doc.id}</span>
-                          <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#333", background: "#111", padding: "1px 6px", border: "1px solid #1e1e1e", letterSpacing: "0.05em" }}>
-                            [{CATEGORY_ICONS[doc.category]}] {doc.category}
+                        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 5, flexWrap: "wrap" }}>
+                          <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#9a9a9a", letterSpacing: "0.1em" }}>{doc.id}</span>
+                          <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#c0c0c0", background: "#161616", padding: "2px 7px", border: "1px solid #2a2a2a", letterSpacing: "0.04em" }}>
+                            {doc.date} \u00b7 {doc.size}
                           </span>
-                          <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#404040" }}>{doc.date} -- {doc.size}</span>
                         </div>
-                        <div style={{ fontSize: 12, fontFamily: "var(--font-mono)", color: "#cccccc", letterSpacing: "0.03em", marginBottom: 4, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                        <div style={{ fontSize: 13, fontFamily: "var(--font-mono)", color: "#ececec", letterSpacing: "0.02em", marginBottom: 6, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontWeight: 600 }}>
                           {doc.name}
                         </div>
-                        <div style={{ display: "flex", flexWrap: "wrap", gap: 4, alignItems: "center" }}>
-                          <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#404040" }}>
-                            src: <span style={{ color: "#555" }}>{doc.source}</span>
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: 5, alignItems: "center" }}>
+                          <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#8a8a8a" }}>
+                            src: <span style={{ color: "#b0b0b0" }}>{doc.source}</span>
                           </span>
                           {doc.tags.map((t) => (
-                            <span key={t} style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#383838", padding: "0 4px", border: "1px solid #1c1c1c" }}>#{t}</span>
+                            <span key={t} style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#9a9a9a", padding: "1px 6px", border: "1px solid #2a2a2a" }}>#{t}</span>
                           ))}
                         </div>
                       </div>
 
-                      <span style={{ fontSize: 9, color: "#333", fontFamily: "var(--font-mono)", flexShrink: 0, marginTop: 2 }}>
-                        {isExpanded ? "[^]" : "[v]"}
+                      <span style={{ fontSize: 12, color: isExpanded ? ACCENT : "#8a8a8a", fontFamily: "var(--font-mono)", flexShrink: 0, marginTop: 2 }}>
+                        {isExpanded ? "\u25b2" : "\u25bc"}
                       </span>
                     </div>
 
@@ -659,26 +657,26 @@ export default function LeaksDocsPage() {
                       <motion.div
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
-                        style={{ borderTop: "1px solid #141414", padding: "12px 16px" }}
+                        style={{ borderTop: `1px solid ${ACCENT}22`, padding: "14px 16px", background: "#060606" }}
                       >
-                        <p style={{ fontSize: 11, color: "#b0b0b0", margin: "0 0 12px", fontFamily: "var(--font-mono)", lineHeight: 1.8 }}>
+                        <p style={{ fontSize: 13, color: "#d4d4d4", margin: "0 0 14px", fontFamily: "var(--font-mono)", lineHeight: 1.8 }}>
                           {doc.preview}
                         </p>
-                        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
                           <button
                             onClick={(e) => { e.stopPropagation(); handleSave(doc) }}
                             style={{
-                              padding: "4px 14px", fontSize: 9, fontFamily: "var(--font-mono)", letterSpacing: "0.1em",
-                              background: isSaved ? `${ACCENT}14` : "#0f0f0f",
-                              color: isSaved ? ACCENT : "#666",
-                              border: `1px solid ${isSaved ? ACCENT + "40" : "#202020"}`,
+                              padding: "7px 16px", fontSize: 11, fontFamily: "var(--font-mono)", letterSpacing: "0.1em", fontWeight: 700,
+                              background: isSaved ? `${ACCENT}1a` : "#141414",
+                              color: isSaved ? ACCENT : "#dcdcdc",
+                              border: `1px solid ${isSaved ? ACCENT + "60" : "#3a3a3a"}`,
                               cursor: isSaved ? "default" : "pointer", transition: "all 0.2s",
                             }}>
-                            {isSaved ? "\u0417\u0410\u041f\u0410\u0417\u0415\u041d\u041e" : "\u0417\u0410\u041f\u0410\u0417\u0418 \u0421\u041b\u0415\u0414\u0410"}
+                            {isSaved ? "\u2713 \u0417\u0410\u041f\u0410\u0417\u0415\u041d\u041e" : "\u0417\u0410\u041f\u0410\u0417\u0418 \u0421\u041b\u0415\u0414\u0410"}
                           </button>
                           {isSaved && (
-                            <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#444", letterSpacing: "0.1em" }}>
-                              {"\u0434\u043e\u0441\u0442\u043e\u0432\u0435\u0440\u043d\u043e\u0441\u0442: \u043d\u0438\u0441\u043a\u0430 -- \u0441\u0442\u0430\u0442\u0443\u0441: \u043d\u0435\u043f\u043e\u0442\u0432\u044a\u0440\u0434\u0435\u043d\u043e"}
+                            <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#9a9a9a", letterSpacing: "0.06em" }}>
+                              \u0434\u043e\u0441\u0442\u043e\u0432\u0435\u0440\u043d\u043e\u0441\u0442: \u043d\u0438\u0441\u043a\u0430 \u00b7 \u0441\u0442\u0430\u0442\u0443\u0441: \u043d\u0435\u043f\u043e\u0442\u0432\u044a\u0440\u0434\u0435\u043d\u043e
                             </span>
                           )}
                         </div>
@@ -692,17 +690,21 @@ export default function LeaksDocsPage() {
         )}
       </AnimatePresence>
 
-      <div style={{ marginTop: 20, paddingTop: 10, borderTop: "1px solid #111", fontSize: 9, fontFamily: "var(--font-mono)", color: "#333", letterSpacing: "0.1em" }}>
+      <div style={{ marginTop: 20, paddingTop: 10, borderTop: "1px solid #1a1a1a", fontSize: 10, fontFamily: "var(--font-mono)", color: "#8a8a8a", letterSpacing: "0.08em" }}>
         {activeFolder ? (
-          <>
-            {"\u041f\u041e\u041a\u0410\u0417\u0410\u041d\u0418"} {visibleDocs.length} / {DOCS.length} {"\u0414\u041e\u041a\u0423\u041c\u0415\u041d\u0422\u0410"}
-          </>
+          <>\u041f\u041e\u041a\u0410\u0417\u0410\u041d\u0418 {visibleDocs.length} / {DOCS.length} \u0414\u041e\u041a\u0423\u041c\u0415\u041d\u0422\u0410</>
         ) : (
-          <>
-            {DOC_FOLDERS.length} FOLDERS / {DOCS.length} DOCS
-          </>
+          <>{DOC_FOLDERS.length} \u041f\u0410\u041f\u041a\u0418 / {DOCS.length} \u0414\u041e\u041a\u0423\u041c\u0415\u041d\u0422\u0410</>
         )}
       </div>
     </div>
+  )
+}
+
+export default function LeaksDocsPage() {
+  return (
+    <Suspense fallback={null}>
+      <LeaksDocsInner />
+    </Suspense>
   )
 }

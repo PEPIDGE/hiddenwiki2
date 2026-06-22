@@ -130,101 +130,94 @@ export default function LeaksCardsPage() {
     : CARDS
 
   return (
-    <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+    <div style={{ maxWidth: 1040, margin: "0 auto" }}>
       <div style={{ marginBottom: 20 }}>
-        <Link href="/hidden-wiki-2/leaks" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.15em", textDecoration: "none" }}>← LEAKS</Link>
-        <div style={{ marginTop: 10 }}>
+        <Link href="/hidden-wiki-2/leaks" style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#bdbdbd", letterSpacing: "0.12em", textDecoration: "none" }}>← LEAKS</Link>
+        <div style={{ marginTop: 12 }}>
           <GlitchText text="CARDS" as="h1" intensity="low" className="text-3xl font-bold tracking-widest" color={ACCENT} />
         </div>
-        <div style={{ height: 1, background: `linear-gradient(90deg, ${ACCENT}, transparent)`, marginTop: 8 }} />
+        <div style={{ height: 2, background: `linear-gradient(90deg, ${ACCENT}, transparent)`, marginTop: 10 }} />
       </div>
 
-      <div style={{ padding: "10px 14px", background: "#000d00", border: `1px solid ${ACCENT}20`, marginBottom: 16 }}>
-        <p style={{ fontSize: 11, color: "#c0c0c0", margin: 0, fontFamily: "var(--font-mono)", lineHeight: 1.7 }}>
-          {CARDS.length} дебитни карти — изтеглени от базата. Цъкни карта за история на транзакции. Търси по <span style={{ color: ACCENT }}>Алексиев</span> за ключова покупка.
+      <div style={{ padding: "12px 16px", background: "#0a0a06", border: `1px solid ${ACCENT}33`, marginBottom: 16 }}>
+        <p style={{ fontSize: 12, color: "#d6d6d6", margin: 0, fontFamily: "var(--font-mono)", lineHeight: 1.7 }}>
+          {CARDS.length} дебитни карти, изтеглени от базата. Цъкни карта за история на транзакции. Търси по <span style={{ color: ACCENT, fontWeight: 700 }}>Алексиев</span> за ключова покупка.
         </p>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 360px", gap: 16 }}>
+      <div style={{ display: "grid", gridTemplateColumns: selected ? "1fr 380px" : "1fr", gap: 16, transition: "grid-template-columns 0.2s" }}>
         <div>
           <input value={search} onChange={(e) => setSearch(e.target.value)}
             placeholder="Търси по притежател, банка или последни 4 цифри..."
-            style={{ width: "100%", padding: "7px 12px", background: "#0d0d0d", border: "1px solid #1e1e1e", color: "#e0e0e0", fontSize: 11, fontFamily: "var(--font-mono)", marginBottom: 12, outline: "none" }} />
+            style={{ width: "100%", padding: "10px 14px", background: "#0d0d0d", border: "1px solid #2a2a2a", color: "#e8e8e8", fontSize: 13, fontFamily: "var(--font-mono)", marginBottom: 12, outline: "none" }} />
 
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr style={{ borderBottom: "1px solid #222" }}>
-                {["ПРИТЕЖАТЕЛ", "БАНКА", "КАРТА", "ВАЛУТА", "СТАТУС", ""].map((h) => (
-                  <th key={h} style={{ padding: "6px 10px", fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.12em", textAlign: "left" }}>{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((card) => {
-                const isSelected = selected?.id === card.id
-                return (
-                  <tr key={card.id} onClick={() => setSelected(isSelected ? null : card)}
-                    style={{ borderBottom: "1px solid #131313", cursor: "pointer", background: isSelected ? `${ACCENT}08` : "transparent" }}>
-                    <td style={{ padding: "8px 10px" }}>
-                      <span style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#d0d0d0", fontWeight: 400 }}>
-                        {card.holder}
-                      </span>
-                    </td>
-                    <td style={{ padding: "8px 10px", fontSize: 10, color: "#bbbbbb", fontFamily: "var(--font-mono)" }}>{card.bank}</td>
-                    <td style={{ padding: "8px 10px", fontSize: 10, color: "#999999", fontFamily: "var(--font-mono)" }}>**** {card.last4}</td>
-                    <td style={{ padding: "8px 10px", fontSize: 9, color: "#909090", fontFamily: "var(--font-mono)" }}>{card.currency}</td>
-                    <td style={{ padding: "8px 10px" }}>
-                      <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: STATUS_COLORS[card.status] }}>{card.status}</span>
-                    </td>
-                    <td style={{ padding: "8px 10px" }}>
-                      <button onClick={(e) => { e.stopPropagation(); handleSave(card, "holder", `${card.holder} — ${card.bank} **** ${card.last4}`, 2) }}
-                        style={{ padding: "2px 7px", fontSize: 7, fontFamily: "var(--font-mono)", background: savedClues.includes(`cards-${card.id}-holder`) ? `${ACCENT}18` : "#0d0d0d", color: savedClues.includes(`cards-${card.id}-holder`) ? ACCENT : "#909090", border: `1px solid ${savedClues.includes(`cards-${card.id}-holder`) ? ACCENT + "40" : "#1e1e1e"}`, cursor: "pointer" }}>
-                        {savedClues.includes(`cards-${card.id}-holder`) ? "✓" : "SAVE"}
-                      </button>
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
+          <div style={{ border: "1px solid #161616" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead>
+                <tr style={{ borderBottom: `1px solid ${ACCENT}33`, background: "#0a0a06" }}>
+                  {["ПРИТЕЖАТЕЛ", "БАНКА", "КАРТА", "ВАЛУТА", "СТАТУС", ""].map((h) => (
+                    <th key={h} style={{ padding: "11px 12px", fontSize: 11, fontFamily: "var(--font-mono)", color: "#b0b0b0", letterSpacing: "0.1em", textAlign: "left", fontWeight: 700 }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.map((card) => {
+                  const isSelected = selected?.id === card.id
+                  return (
+                    <tr key={card.id} onClick={() => setSelected(isSelected ? null : card)}
+                      style={{ borderBottom: "1px solid #161616", cursor: "pointer", background: isSelected ? `${ACCENT}12` : "transparent" }}>
+                      <td style={{ padding: "11px 12px" }}>
+                        <span style={{ fontSize: 13, fontFamily: "var(--font-mono)", color: "#e8e8e8" }}>
+                          {card.holder}
+                        </span>
+                      </td>
+                      <td style={{ padding: "11px 12px", fontSize: 12, color: "#c4c4c4", fontFamily: "var(--font-mono)" }}>{card.bank}</td>
+                      <td style={{ padding: "11px 12px", fontSize: 12, color: "#c0c0c0", fontFamily: "var(--font-mono)" }}>**** {card.last4}</td>
+                      <td style={{ padding: "11px 12px", fontSize: 11, color: "#b0b0b0", fontFamily: "var(--font-mono)" }}>{card.currency}</td>
+                      <td style={{ padding: "11px 12px" }}>
+                        <span style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: STATUS_COLORS[card.status], fontWeight: 700 }}>{card.status}</span>
+                      </td>
+                      <td style={{ padding: "11px 12px" }}>
+                        <button onClick={(e) => { e.stopPropagation(); handleSave(card, "holder", `${card.holder} — ${card.bank} **** ${card.last4}`, 2) }}
+                          style={{ padding: "5px 12px", fontSize: 10, fontFamily: "var(--font-mono)", letterSpacing: "0.06em", background: savedClues.includes(`cards-${card.id}-holder`) ? `${ACCENT}18` : "#111", color: savedClues.includes(`cards-${card.id}-holder`) ? ACCENT : "#cccccc", border: `1px solid ${savedClues.includes(`cards-${card.id}-holder`) ? ACCENT + "55" : "#333"}`, cursor: "pointer" }}>
+                          {savedClues.includes(`cards-${card.id}-holder`) ? "✓" : "SAVE"}
+                        </button>
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
 
-        {/* Detail panel */}
-        <div style={{ background: "#080808", border: "1px solid #1a1a1a", padding: 16, height: "fit-content" }}>
-          {selected ? (
-            <motion.div key={selected.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", letterSpacing: "0.2em", marginBottom: 12 }}>CARD DETAIL</div>
-              <div style={{ fontSize: 16, fontFamily: "var(--font-mono)", color: "#e0e0e0", fontWeight: 700, marginBottom: 4 }}>{selected.holder}</div>
-              <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#999999", marginBottom: 14 }}>{selected.bank} · **** {selected.last4} · {selected.currency}</div>
-
-              {selected.history ? (
-                <div>
-                  <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.15em", marginBottom: 10 }}>TRANSACTION HISTORY</div>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                    {selected.history.map((tx, i) => (
-                      <div key={i} style={{ padding: "8px 10px", background: "#0d0d0d", border: "1px solid #1a1a1a" }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-                          <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#aaaaaa" }}>{tx.date}</span>
-                          <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#dddddd", fontWeight: 600 }}>{tx.amount}</span>
-                        </div>
-                        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#bbbbbb", marginBottom: 4 }}>{tx.merchant}</div>
-                        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", lineHeight: 1.5 }}>{tx.note}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#333", textAlign: "center", padding: "20px 0" }}>
-                  Няма достъпна история
-                </div>
-              )}
-            </motion.div>
-          ) : (
-            <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#333", textAlign: "center", padding: "30px 0" }}>
-              Цъкни карта за история
+        {/* Detail panel — only when a card is selected */}
+        {selected && (
+          <motion.div key={selected.id} initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }}
+            style={{ background: "#0a0a0a", border: `1px solid ${ACCENT}33`, padding: 16, height: "fit-content", position: "sticky", top: 0 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+              <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#9a9a9a", letterSpacing: "0.18em" }}>CARD DETAIL</span>
+              <button onClick={() => setSelected(null)} aria-label="Затвори"
+                style={{ background: "none", border: "none", color: "#888", cursor: "pointer", fontSize: 16, lineHeight: 1, padding: 0 }}>×</button>
             </div>
-          )}
-        </div>
+            <div style={{ fontSize: 17, fontFamily: "var(--font-mono)", color: "#f0f0f0", fontWeight: 700, marginBottom: 5 }}>{selected.holder}</div>
+            <div style={{ fontSize: 12, fontFamily: "var(--font-mono)", color: "#b0b0b0", marginBottom: 16 }}>{selected.bank} · **** {selected.last4} · {selected.currency}</div>
+
+            <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.12em", marginBottom: 10, fontWeight: 700 }}>ИСТОРИЯ НА ТРАНЗАКЦИИТЕ</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+              {selected.history.map((tx, i) => (
+                <div key={i} style={{ padding: "10px 12px", background: "#0d0d0d", border: "1px solid #1e1e1e" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 8, marginBottom: 5 }}>
+                    <span style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#b0b0b0" }}>{tx.date}</span>
+                    <span style={{ fontSize: 12, fontFamily: "var(--font-mono)", color: "#f0f0f0", fontWeight: 700 }}>{tx.amount}</span>
+                  </div>
+                  <div style={{ fontSize: 12, fontFamily: "var(--font-mono)", color: "#dcdcdc", marginBottom: 4 }}>{tx.merchant}</div>
+                  <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#a8a8a8", lineHeight: 1.5 }}>{tx.note}</div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
       </div>
     </div>
   )

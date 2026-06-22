@@ -169,7 +169,7 @@ export function CursorTrail({
           top: 0,
           left: 0,
           pointerEvents: "none",
-          zIndex: 9993,
+          zIndex: 2147483647,
           transition: "transform 0.03s linear",
         }}
       >

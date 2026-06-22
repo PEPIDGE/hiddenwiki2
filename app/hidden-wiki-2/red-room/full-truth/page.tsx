@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
 
 const ACCENT = "#FF0033"
+const AMBER = "#FFB000"
 
 const TRUTH_FRAGMENTS = [
   {
@@ -91,39 +92,55 @@ export default function FullTruthPage() {
     }
   }
 
+  const savedCount = TRUTH_FRAGMENTS.filter((f) => savedClues.includes(`ft-${f.id}`)).length
+
   return (
-    <div style={{ maxWidth: 760, margin: "0 auto" }}>
+    <div style={{ maxWidth: 780, margin: "0 auto" }}>
       {/* Header */}
-      <div style={{ marginBottom: 24 }}>
-        <Link href="/hidden-wiki-2/red-room" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.15em", textDecoration: "none" }}>
+      <div style={{ marginBottom: 22 }}>
+        <Link href="/hidden-wiki-2/red-room" style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#bdbdbd", letterSpacing: "0.12em", textDecoration: "none" }}>
           ← RED ROOM
         </Link>
-        <div style={{ marginTop: 10 }}>
+        <div style={{ marginTop: 12, display: "flex", alignItems: "baseline", gap: 14, flexWrap: "wrap" }}>
           <GlitchText text="ПЪЛНАТА ИСТИНА" as="h1" intensity="low" className="text-3xl font-bold tracking-widest" color={ACCENT} />
+          <span style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#9a9a9a", letterSpacing: "0.1em" }}>
+            {savedCount}/3 ФРАГМЕНТА
+          </span>
         </div>
-        <div style={{ height: 1, background: `linear-gradient(90deg, ${ACCENT}, transparent)`, marginTop: 8 }} />
+        <div style={{ height: 2, background: `linear-gradient(90deg, ${ACCENT}, transparent)`, marginTop: 10 }} />
       </div>
 
       {/* Warning banner */}
-      <div style={{ padding: "12px 16px", background: "#0d0000", border: `1px solid ${ACCENT}30`, marginBottom: 28 }}>
-        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.12em", marginBottom: 6 }}>
-          ⚠ СИСТЕМНО ПРЕДУПРЕЖДЕНИЕ
+      <div style={{ display: "flex", gap: 12, padding: "14px 16px", background: `${ACCENT}0a`, border: `1px solid ${ACCENT}40`, marginBottom: 26 }}>
+        <div style={{ flexShrink: 0, fontSize: 18, color: ACCENT, lineHeight: 1.2 }}>⚠</div>
+        <div>
+          <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.16em", marginBottom: 6, fontWeight: 700 }}>
+            СИСТЕМНО ПРЕДУПРЕЖДЕНИЕ
+          </div>
+          <p style={{ fontSize: 12, color: "#d6d6d6", margin: 0, lineHeight: 1.7, fontFamily: "var(--font-mono)" }}>
+            Страницата съдържа <span style={{ color: ACCENT, fontWeight: 700 }}>truth fragments</span>, които се отключват последователно. Събери и трите, за да получиш token. Не всичко тук е истина.
+          </p>
         </div>
-        <p style={{ fontSize: 11, color: "#c0c0c0", margin: 0, lineHeight: 1.7, fontFamily: "var(--font-mono)" }}>
-          Тази страница съдържа <span style={{ color: ACCENT }}>truth fragments</span> — отключват се последователно. Събери и трите, за да получиш token. Внимавай: не всичко тук е истина.
-        </p>
       </div>
 
-      {/* Bait intro text */}
-      <div style={{ padding: "16px 18px", background: "#080808", border: "1px solid #1e1e1e", marginBottom: 24 }}>
-        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", letterSpacing: "0.2em", marginBottom: 10 }}>
-          АНАЛИЗ // ВЕРСИЯ 1.0
+      {/* Bait / system analysis card */}
+      <div style={{ background: "#0a0807", border: `1px solid ${AMBER}33`, marginBottom: 26 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "9px 14px", borderBottom: `1px solid ${AMBER}22`, background: `${AMBER}0a` }}>
+          <span style={{ width: 6, height: 6, background: AMBER, boxShadow: `0 0 6px ${AMBER}` }} />
+          <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: AMBER, letterSpacing: "0.2em", fontWeight: 700 }}>
+            АНАЛИЗ // ВЕРСИЯ 1.0
+          </span>
+          <span style={{ marginLeft: "auto", fontSize: 9, fontFamily: "var(--font-mono)", color: `${AMBER}aa`, letterSpacing: "0.12em" }}>
+            UNVERIFIED
+          </span>
         </div>
-        <p style={{ fontSize: 12, color: "#d0d0d0", lineHeight: 1.8, margin: 0, fontFamily: "var(--font-mono)" }}>
-          „Истината не е сложна — шофьорът е и похитителят. Търси човека, който я е качил в колата, не този, който стои зад него. Лора е в стаята, защото NightKiller я е завел там."
-        </p>
-        <div style={{ marginTop: 10, fontSize: 9, fontFamily: "var(--font-mono)", color: "#444" }}>
-          — автоматично генерирано от SYSTEM // NODE-7
+        <div style={{ padding: "16px 18px" }}>
+          <p style={{ fontSize: 13, color: "#e6e6e6", lineHeight: 1.85, margin: 0, fontFamily: "var(--font-mono)", fontStyle: "italic" }}>
+            „Истината не е сложна — шофьорът е и похитителят. Търси човека, който я е качил в колата, не този, който стои зад него. Лора е в стаята, защото NightKiller я е завел там."
+          </p>
+          <div style={{ marginTop: 12, fontSize: 10, fontFamily: "var(--font-mono)", color: "#8a8a8a", letterSpacing: "0.05em" }}>
+            — автоматично генерирано от SYSTEM // NODE-7
+          </div>
         </div>
       </div>
 
@@ -132,49 +149,71 @@ export default function FullTruthPage() {
         {TRUTH_FRAGMENTS.map((frag, idx) => {
           const isUnlocked = unlockedFragments.includes(frag.id)
           const isSaved = savedClues.includes(`ft-${frag.id}`)
+          const edgeColor = !isUnlocked ? "#1c1c1c" : frag.isBait ? AMBER : ACCENT
           return (
             <div key={frag.id} style={{
-              border: `1px solid ${isUnlocked ? (frag.isBait ? "#FF880030" : "#333") : "#1a1a1a"}`,
-              background: isUnlocked ? "#090909" : "#050505",
+              border: `1px solid ${isUnlocked ? edgeColor + "44" : "#181818"}`,
+              borderLeft: `3px solid ${isUnlocked ? edgeColor : "#181818"}`,
+              background: isUnlocked ? "#0a0a0a" : "#060606",
               position: "relative", overflow: "hidden",
             }}>
-              {frag.isBait && isUnlocked && (
-                <div style={{ position: "absolute", top: 0, right: 0, padding: "3px 8px", background: "#FF880020", fontSize: 7, fontFamily: "var(--font-mono)", color: "#FF880090", letterSpacing: "0.15em" }}>
-                  UNVERIFIED
+              <div style={{ display: "flex", alignItems: "stretch" }}>
+                {/* Index badge */}
+                <div style={{
+                  flexShrink: 0, width: 52,
+                  display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+                  borderRight: `1px solid ${isUnlocked ? edgeColor + "22" : "#141414"}`,
+                  background: isUnlocked ? `${edgeColor}0a` : "transparent",
+                  gap: 3,
+                }}>
+                  <span style={{ fontSize: 18, fontFamily: "var(--font-mono)", fontWeight: 700, color: isUnlocked ? edgeColor : "#2e2e2e" }}>
+                    {String(idx + 1).padStart(2, "0")}
+                  </span>
+                  <span style={{ fontSize: 12, color: isUnlocked ? edgeColor : "#2e2e2e" }}>
+                    {isUnlocked ? "🔓" : "🔒"}
+                  </span>
                 </div>
-              )}
-              <div style={{ padding: "14px 16px" }}>
-                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: isUnlocked ? "#999999" : "#333", letterSpacing: "0.15em", marginBottom: 8 }}>
-                  FRAGMENT {String(idx + 1).padStart(2, "0")} / {isUnlocked ? "DECRYPTED" : "LOCKED"}
-                </div>
-                <div style={{ fontSize: 13, fontFamily: "var(--font-mono)", color: isUnlocked ? "#e0e0e0" : "#2a2a2a", fontWeight: 700, marginBottom: isUnlocked ? 10 : 0, letterSpacing: "0.06em" }}>
-                  {frag.title}
-                </div>
-                {isUnlocked && (
-                  <AnimatePresence>
+
+                {/* Body */}
+                <div style={{ flex: 1, padding: "14px 16px", minWidth: 0 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+                    <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: isUnlocked ? "#a8a8a8" : "#444", letterSpacing: "0.16em" }}>
+                      FRAGMENT {String(idx + 1).padStart(2, "0")} / {isUnlocked ? "DECRYPTED" : "LOCKED"}
+                    </span>
+                    {frag.isBait && isUnlocked && (
+                      <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: AMBER, border: `1px solid ${AMBER}55`, padding: "1px 7px", letterSpacing: "0.12em" }}>
+                        UNVERIFIED
+                      </span>
+                    )}
+                  </div>
+                  <div style={{ fontSize: 15, fontFamily: "var(--font-mono)", color: isUnlocked ? "#f0f0f0" : "#3a3a3a", fontWeight: 700, marginBottom: isUnlocked ? 10 : 0, letterSpacing: "0.04em" }}>
+                    {isUnlocked ? frag.title : "████████████"}
+                  </div>
+                  {isUnlocked ? (
                     <motion.div initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
-                      <p style={{ fontSize: 11, color: "#b0b0b0", lineHeight: 1.8, margin: "0 0 12px", fontFamily: "var(--font-mono)", whiteSpace: "pre-line" }}>
+                      <p style={{ fontSize: 13, color: "#cfcfcf", lineHeight: 1.8, margin: "0 0 14px", fontFamily: "var(--font-mono)", whiteSpace: "pre-line" }}>
                         {frag.content}
                       </p>
                       <div style={{ display: "flex", justifyContent: "flex-end" }}>
                         <button onClick={() => handleSave(frag)}
                           style={{
-                            padding: "5px 12px", fontSize: 9, fontFamily: "var(--font-mono)", letterSpacing: "0.1em",
-                            background: isSaved ? `${ACCENT}18` : "#111",
-                            color: isSaved ? ACCENT : "#aaaaaa",
-                            border: `1px solid ${isSaved ? ACCENT + "50" : "#282828"}`,
+                            padding: "7px 16px", fontSize: 11, fontFamily: "var(--font-mono)", letterSpacing: "0.1em", fontWeight: 700,
+                            background: isSaved ? `${ACCENT}1a` : "#141414",
+                            color: isSaved ? ACCENT : "#dcdcdc",
+                            border: `1px solid ${isSaved ? ACCENT + "60" : "#3a3a3a"}`,
+                            cursor: isSaved ? "default" : "pointer",
+                            transition: "all 0.12s",
                           }}>
-                          {isSaved ? "✓ SAVED" : "SAVE CLUE"}
+                          {isSaved ? "✓ ЗАПАЗЕНА" : "ЗАПАЗИ УЛИКА"}
                         </button>
                       </div>
                     </motion.div>
-                  </AnimatePresence>
-                )}
-                {!isUnlocked && (
-                  <div style={{ fontSize: 10, color: "#2a2a2a", fontFamily: "var(--font-mono)", marginTop: 4 }}>
-                    [Отключва се след предишен fragment]
-                  </div>
-                )}
+                  ) : (
+                    <div style={{ fontSize: 11, color: "#555", fontFamily: "var(--font-mono)", marginTop: 4, letterSpacing: "0.04em" }}>
+                      [Отключва се след предишния фрагмент]
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           )
@@ -185,19 +224,24 @@ export default function FullTruthPage() {
       <AnimatePresence>
         {tokenRevealed && (
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}
-            style={{ marginTop: 24, padding: "16px 18px", background: "#0a0000", border: `2px solid ${ACCENT}40` }}>
-            <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.2em", marginBottom: 10 }}>
-              TOKEN ГЕНЕРИРАН
+            style={{ marginTop: 24, background: `${ACCENT}08`, border: `1px solid ${ACCENT}55`, boxShadow: `0 0 22px ${ACCENT}1a` }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 16px", borderBottom: `1px solid ${ACCENT}33`, background: `${ACCENT}0d` }}>
+              <span style={{ width: 7, height: 7, background: ACCENT, boxShadow: `0 0 8px ${ACCENT}`, animation: "pulse-glow 2s infinite" }} />
+              <span style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.22em", fontWeight: 700 }}>
+                TOKEN ГЕНЕРИРАН
+              </span>
             </div>
-            <div style={{ fontSize: 14, fontFamily: "var(--font-mono)", color: "#e0e0e0", letterSpacing: "0.1em", marginBottom: 8 }}>
-              red-room-route-token
+            <div style={{ padding: "16px 18px" }}>
+              <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#9a9a9a", letterSpacing: "0.12em", marginBottom: 8 }}>
+                red-room-route-token
+              </div>
+              <div style={{ fontSize: 15, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.08em", padding: "10px 14px", background: "#120000", border: `1px solid ${ACCENT}40`, fontWeight: 700 }}>
+                route-17-night
+              </div>
+              <p style={{ fontSize: 12, color: "#cccccc", margin: "12px 0 0", fontFamily: "var(--font-mono)", lineHeight: 1.7 }}>
+                Използвай този token в <Link href="/hidden-wiki-2/trace-node/terminal" style={{ color: ACCENT, fontWeight: 700 }}>TRACE-NODE /terminal</Link>. Внимание: резултатът може да не е правилен.
+              </p>
             </div>
-            <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.06em", padding: "6px 10px", background: "#120000", border: `1px solid ${ACCENT}30` }}>
-              route-17-night
-            </div>
-            <p style={{ fontSize: 10, color: "#bbbbbb", margin: "10px 0 0", fontFamily: "var(--font-mono)", lineHeight: 1.7 }}>
-              Използвай този token в <Link href="/hidden-wiki-2/trace-node/terminal" style={{ color: ACCENT }}>TRACE-NODE /terminal</Link>. Внимание: резултатът може да не е правилен.
-            </p>
           </motion.div>
         )}
       </AnimatePresence>
