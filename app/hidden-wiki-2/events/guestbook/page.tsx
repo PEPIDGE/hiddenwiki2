@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -6,7 +6,7 @@ import { GlitchText } from "@/components/tor/glitch-text"
 import { motion } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
 
-const ACCENT = "#FF6B00"
+const ACCENT = "#00FF41"
 
 // Guest list showing 3 cults at Ogledalen Prehod event
 const EVENTS_GUESTS = [
@@ -58,7 +58,7 @@ const EVENTS_GUESTS = [
 
 const ORG_COLORS: Record<string, string> = {
   "Братство на третото пробуждане": "#FF0033",
-  "Кръг на лунното затъмнение": "#CC44FF",
+  "Кръг на лунното затъмнение": "#00FF41",
   "Нощен сигнал": ACCENT,
   "Братство / Нощен сигнал": "#FF6B33",
   "Братство на третото пробуждане / Нощен сигнал": ACCENT,

@@ -1,11 +1,11 @@
-﻿"use client"
+"use client"
 
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { GlitchText } from "@/components/tor/glitch-text"
 import { SortableTable } from "@/components/tor/sortable-table"
 
-const ACCENT = "#FF3366"
+const ACCENT = "#00FF41"
 
 const TRANSACTIONS = [
   { id: "TX-2501", amount: "€250",    from: "Р. Алексиев",              to: "Аптека Витал",           time: "05.09 14:30", method: "CARD",   flag: "HIGH" },

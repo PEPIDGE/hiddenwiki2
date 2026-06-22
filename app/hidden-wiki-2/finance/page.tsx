@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -6,7 +6,7 @@ import { GlitchText } from "@/components/tor/glitch-text"
 import { motion, AnimatePresence } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
 
-const ACCENT = "#FF3366"
+const ACCENT = "#00FF41"
 
 const TRANSACTIONS = [
   {
@@ -144,7 +144,7 @@ export default function FinancePage() {
           </div>
           <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#444444", lineHeight: 1.7, marginBottom: 24 }}>
             Тази секция изисква токен. Намери го в{" "}
-            <Link href="/hidden-wiki-2/cult" style={{ color: "#CC44FF", textDecoration: "none" }}>CULT</Link>.
+            <Link href="/hidden-wiki-2/cult" style={{ color: "#00FF41", textDecoration: "none" }}>CULT</Link>.
           </div>
           <div style={{ display: "flex", gap: 0, marginBottom: 10 }}>
             <input

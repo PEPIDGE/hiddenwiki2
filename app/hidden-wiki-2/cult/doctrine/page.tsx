@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useState } from "react"
 import Link from "next/link"
@@ -6,7 +6,7 @@ import { GlitchText } from "@/components/tor/glitch-text"
 import { motion, AnimatePresence } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
 
-const ACCENT = "#CC44FF"
+const ACCENT = "#00FF41"
 
 const DOCTRINES = [
   { id: "D-01", title: "Закон на Огледалото", text: "Всеки участник поддържа огледална идентичност. Реалното и отражението са равнозначни.", clue: null },

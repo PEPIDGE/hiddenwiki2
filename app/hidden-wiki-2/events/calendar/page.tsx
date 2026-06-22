@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useState } from "react"
 import Link from "next/link"
@@ -6,7 +6,7 @@ import { GlitchText } from "@/components/tor/glitch-text"
 import { motion, AnimatePresence } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
 
-const ACCENT = "#FF6B00"
+const ACCENT = "#00FF41"
 
 const CALENDAR_EVENTS = [
   { date: "2025-09-01", time: "22:00", title: "Братство — вътрешна среща", note: "Ритуална. Локация неизвестна.", highlight: false, clue: null },

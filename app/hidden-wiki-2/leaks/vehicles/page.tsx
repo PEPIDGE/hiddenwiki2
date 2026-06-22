@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -6,7 +6,7 @@ import { GlitchText } from "@/components/tor/glitch-text"
 import { motion, AnimatePresence } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
 
-const ACCENT = "#FF0033"
+const ACCENT = "#FFB000"
 
 const VEHICLES = [
   { id: "V-001", brand: "Audi", model: "A3", year: 2005, color: "Черен", reg: "СА ○○○○ ХВ", phone: "+359 88 *** 1221", note: "Продава се срочно. Кожен салон.", city: "София", status: "AVAILABLE", match: true },
@@ -296,8 +296,8 @@ export default function LeaksVehiclesPage() {
                     <td style={{ padding: "8px 10px", fontSize: 11, color: "#cccccc", fontFamily: "var(--font-mono)" }}>{v.year}</td>
                     <td style={{ padding: "8px 10px", fontSize: 11, color: "#cccccc", fontFamily: "var(--font-mono)" }}>{v.color}</td>
                     <td style={{ padding: "8px 10px", fontSize: 10, color: "#aaaaaa", fontFamily: "var(--font-mono)" }}>{v.reg}</td>
-                    <td style={{ padding: "8px 10px", fontSize: 10, color: isRepeatPhone ? "#CC44FF" : "#999999", fontFamily: "var(--font-mono)" }}>
-                      {v.phone}{isRepeatPhone && <span style={{ marginLeft: 4, fontSize: 7, color: "#CC44FF" }}>×REP</span>}
+                    <td style={{ padding: "8px 10px", fontSize: 10, color: isRepeatPhone ? "#FFB000" : "#999999", fontFamily: "var(--font-mono)" }}>
+                      {v.phone}{isRepeatPhone && <span style={{ marginLeft: 4, fontSize: 7, color: "#FFB000" }}>×REP</span>}
                     </td>
                     <td style={{ padding: "8px 10px" }}>
                       <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: STATUS_COLORS[v.status] }}>{v.status}</span>
@@ -337,7 +337,7 @@ export default function LeaksVehiclesPage() {
                 </div>
               ))}
               {selectedV.note && (
-                <div style={{ marginBottom: 12, padding: "8px 10px", background: "#0d0d0d", border: "1px solid #1e1e1e", fontSize: 10, color: "#FFD700", fontFamily: "var(--font-mono)" }}>
+                <div style={{ marginBottom: 12, padding: "8px 10px", background: "#0d0d0d", border: "1px solid #1e1e1e", fontSize: 10, color: "#FFB000", fontFamily: "var(--font-mono)" }}>
                   {selectedV.note}
                 </div>
               )}

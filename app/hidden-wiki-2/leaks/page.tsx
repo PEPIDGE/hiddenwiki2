@@ -5,7 +5,7 @@ import Link from "next/link"
 import { GlitchText } from "@/components/tor/glitch-text"
 import { motion } from "framer-motion"
 
-const ACCENT = "#FFD700"
+const ACCENT = "#FFB000"
 
 const PAGES = [
   { label: "DOCS",      href: "/hidden-wiki-2/leaks/docs",      desc: "Изтекли документи, организационни файлове" },

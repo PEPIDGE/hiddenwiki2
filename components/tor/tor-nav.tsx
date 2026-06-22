@@ -83,7 +83,7 @@ export function TorNav() {
 
       {/* Header */}
       <div style={{ padding: "10px 14px", borderBottom: "1px solid var(--panel-border)", display: "flex", flexDirection: "column", gap: 6 }}>
-        <div style={{ fontSize: 8, color: "#383838", letterSpacing: "0.25em", fontFamily: "var(--font-mono)" }}>
+        <div style={{ fontSize: 9, color: "#8a8a8a", letterSpacing: "0.25em", fontFamily: "var(--font-mono)" }}>
           NODE INDEX
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
@@ -114,7 +114,7 @@ export function TorNav() {
                 }}
               >
                 {/* Index */}
-                <span style={{ fontSize: 8, color: "#282828", fontFamily: "var(--font-mono)", paddingLeft: 10, minWidth: 26, flexShrink: 0 }}>
+                <span style={{ fontSize: 9, color: "#6a6a6a", fontFamily: "var(--font-mono)", paddingLeft: 10, minWidth: 26, flexShrink: 0 }}>
                   {String(idx + 1).padStart(2, "0")}
                 </span>
 
@@ -158,8 +158,8 @@ export function TorNav() {
                     onClick={() => setExpandedRoute(expanded ? null : route.id)}
                     style={{
                       background: "none", border: "none", padding: "7px 10px",
-                      color: expanded ? route.accentColor : "#383838",
-                      fontSize: 8, fontFamily: "var(--font-mono)",
+                      color: expanded ? route.accentColor : "#888888",
+                      fontSize: 9, fontFamily: "var(--font-mono)",
                       transition: "color 0.12s",
                     }}
                     aria-label={expanded ? "Collapse" : "Expand"}
@@ -235,10 +235,10 @@ export function TorNav() {
 
       {/* Footer */}
       <div style={{ padding: "9px 14px", borderTop: "1px solid var(--panel-border)" }}>
-        <div style={{ fontSize: 8, color: "#2a2a2a", fontFamily: "var(--font-mono)", letterSpacing: "0.1em" }}>
+        <div style={{ fontSize: 9, color: "#7a7a7a", fontFamily: "var(--font-mono)", letterSpacing: "0.1em" }}>
           HW2 v2.4.1
         </div>
-        <div style={{ fontSize: 8, color: "#222", fontFamily: "var(--font-mono)" }} suppressHydrationWarning>
+        <div style={{ fontSize: 9, color: "#5a5a5a", fontFamily: "var(--font-mono)" }} suppressHydrationWarning>
           SID: {sessionId}
         </div>
       </div>

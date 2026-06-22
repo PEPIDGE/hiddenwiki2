@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
@@ -6,7 +6,7 @@ import { GlitchText } from "@/components/tor/glitch-text"
 import { motion, AnimatePresence } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
 
-const ACCENT = "#CC44FF"
+const ACCENT = "#00FF41"
 
 // RITUAL PUZZLE: 5-step ritual — must click in correct sequence (2,4,1,5,3) to unlock
 const STEPS = [

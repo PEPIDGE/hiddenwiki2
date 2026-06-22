@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import { ArrowLeft, Folder, FolderOpen } from "lucide-react"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
 
-const ACCENT = "#FFD700"
+const ACCENT = "#FFB000"
 
 type DocCategory =
   | "\u041b\u0418\u0427\u041d\u0418 \u041a\u0410\u0420\u0422\u0418 / \u041f\u0410\u0421\u041f\u041e\u0420\u0422\u0418"

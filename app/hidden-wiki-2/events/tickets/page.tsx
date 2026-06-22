@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useState } from "react"
 import Link from "next/link"
@@ -6,7 +6,7 @@ import { GlitchText } from "@/components/tor/glitch-text"
 import { motion, AnimatePresence } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
 
-const ACCENT = "#FF6B00"
+const ACCENT = "#00FF41"
 
 const TICKETS = [
   { id: "TK-9901", event: "Огледална нощ", seat: "VIP-13B", issued: "2024-11-28", holder: "[REDACTED]", status: "USED", anomaly: true, clue: "Билет TK-9901: VIP-13B — директна връзка с апартамент 13B" },

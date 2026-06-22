@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -6,7 +6,7 @@ import { GlitchText } from "@/components/tor/glitch-text"
 import { motion } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
 
-const ACCENT = "#FF6B00"
+const ACCENT = "#FFB000"
 
 // GothGirl / joko1132 is the key entry — password recently changed
 const PASSWORDS = [
@@ -27,7 +27,7 @@ const PASSWORDS = [
 const ROLE_COLORS: Record<string, string> = {
   ADMIN: "#FF0033",
   OPERATOR: ACCENT,
-  ANALYST: "#FFD700",
+  ANALYST: "#FFB000",
   GUEST: "#909090",
   SERVICE: "#00A8FF",
 }

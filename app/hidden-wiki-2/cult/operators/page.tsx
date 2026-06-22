@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -6,7 +6,7 @@ import { GlitchText } from "@/components/tor/glitch-text"
 import { motion, AnimatePresence } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
 
-const ACCENT = "#CC44FF"
+const ACCENT = "#00FF41"
 
 const OPERATORS = [
   { id: "OP-001", callsign: "RedFox", realName: "Р.Ф.", level: "АРХИТЕКТ", cult: "Братство на третото пробуждане", status: "ACTIVE", lastSeen: "2025-10-16 03:14", relay: "HOPS=3", note: "Лидер и основател. Отговорен за ритуалите. Последна активност след изчезването.", anomaly: true, clue: "RedFox — АРХИТЕКТ на Братството. Активен в 03:14 на 16.10.2025 — след изчезването на Лора" },

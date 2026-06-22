@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -6,7 +6,7 @@ import { GlitchText } from "@/components/tor/glitch-text"
 import { motion, AnimatePresence } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
 
-const ACCENT = "#CC44FF"
+const ACCENT = "#00FF41"
 
 // Chat logs visible once logged in as someone else — GothGirl's password is changed
 // Correct credentials are ANY operator except GothGirl (whose password was changed)

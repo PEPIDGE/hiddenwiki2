@@ -1,11 +1,11 @@
-﻿"use client"
+"use client"
 
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { GlitchText } from "@/components/tor/glitch-text"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
 
-const ACCENT = "#FF3366"
+const ACCENT = "#00FF41"
 
 const ANOMALIES = [
   {

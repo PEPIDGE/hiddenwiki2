@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -7,7 +7,7 @@ import { GlitchText } from "@/components/tor/glitch-text"
 import { motion, AnimatePresence } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
 
-const ACCENT = "#00FF9F"
+const ACCENT = "#00FF41"
 
 const SUBLINKS = [
   { label: "/ THREADS", href: "/hidden-wiki-2/forum/threads" },

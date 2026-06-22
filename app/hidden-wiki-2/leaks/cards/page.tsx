@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -6,7 +6,7 @@ import { GlitchText } from "@/components/tor/glitch-text"
 import { motion } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
 
-const ACCENT = "#00FF41"
+const ACCENT = "#FFB000"
 
 const CARDS = [
   { id: "C-0001", holder: "А. Петров", bank: "DSK", last4: "4421", currency: "EUR", status: "ACTIVE", history: [

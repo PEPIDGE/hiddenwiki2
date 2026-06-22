@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useState } from "react"
 import Link from "next/link"
@@ -6,7 +6,7 @@ import { GlitchText } from "@/components/tor/glitch-text"
 import { motion } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
 
-const ACCENT = "#FF6B00"
+const ACCENT = "#00FF41"
 
 const VENUES = [
   { id: "VEN-01", name: "Апартамент 13B, Виена", type: "RESIDENTIAL", access: "PRIVATE", visits: 3, lat: "48.2082", lon: "16.3738", anomaly: true, clue: "VEN-01: Апартамент 13B Виена — 3 посещения, последно 2024-11-30 18:30" },

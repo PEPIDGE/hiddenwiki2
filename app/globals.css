@@ -16,7 +16,7 @@
   --secondary: #111111;
   --secondary-foreground: #d0d0d0;
   --muted: #111111;
-  --muted-foreground: #c0c0c0;
+  --muted-foreground: #c8c8c8;
   --accent: #00FF41;
   --accent-foreground: #030303;
   --destructive: #ff1a1a;
@@ -26,13 +26,13 @@
   --ring: #00FF41;
   --radius: 0rem;
 
-  /* TorShell site accent colors */
+  /* TorShell — three-color palette: green (system), amber (leaks), red (danger) */
   --site-red-room: #FF0033;
-  --site-leaks: #FFD700;
-  --site-events: #FF6B00;
-  --site-cult: #CC44FF;
-  --site-forum: #00FF9F;
-  --site-finance: #FF3366;
+  --site-leaks: #FFB000;
+  --site-events: #00FF41;
+  --site-cult: #00FF41;
+  --site-forum: #00FF41;
+  --site-finance: #00FF41;
   --site-trace: #00FF41;
 
   --panel-bg: #080808;
@@ -105,8 +105,11 @@
   td { color: var(--foreground); font-size: 0.85rem; }
 
   /* Minimum contrast for tiny mono labels — the dark #444/#555/#2a2a2a used throughout */
-  .text-dim { color: #888 !important; }
-  .label-dim { color: #999 !important; font-size: 0.7rem; }
+  .text-dim { color: #999 !important; }
+  .label-dim { color: #aaa !important; font-size: 0.72rem; }
+
+  /* Floor for readability: never let mono labels drop below ~7px equivalent */
+  small { color: #b0b0b0; }
 
   ::-webkit-scrollbar {
     width: 3px;

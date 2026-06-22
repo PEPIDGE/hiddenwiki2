@@ -74,12 +74,24 @@ export const INITIAL_STATE: GameState = {
   hiddenCoins: 1000000,
 }
 
+// ============================================================
+// PALETTE — three colors only.
+//   GREEN  = system / most sections
+//   AMBER  = leaks family + highlights
+//   RED    = red-room / danger / destructive
+// ============================================================
+export const PALETTE = {
+  green: "#00FF41",
+  amber: "#FFB000",
+  red: "#FF0033",
+} as const
+
 export const ROUTES_CONFIG = [
   {
     id: "red-room",
     path: "/hidden-wiki-2/red-room",
     label: "RED ROOM",
-    accentColor: "#FF0033",
+    accentColor: PALETTE.red,
     status: "ENTRY",
     locked: false,
     sublinks: ["/full-truth", "/donors", "/chat-replay", "/signal-log"],
@@ -88,7 +100,7 @@ export const ROUTES_CONFIG = [
     id: "leaks",
     path: "/hidden-wiki-2/leaks",
     label: "LEAKS",
-    accentColor: "#FFD700",
+    accentColor: PALETTE.amber,
     status: "ACTIVE",
     locked: false,
     sublinks: ["/docs", "/archive", "/vehicles", "/cards", "/passwords"],
@@ -97,7 +109,7 @@ export const ROUTES_CONFIG = [
     id: "cult",
     path: "/hidden-wiki-2/cult",
     label: "CULT",
-    accentColor: "#CC44FF",
+    accentColor: PALETTE.green,
     status: "ACTIVE",
     locked: false,
     sublinks: ["/operators", "/chat-system"],
@@ -106,7 +118,7 @@ export const ROUTES_CONFIG = [
     id: "events",
     path: "/hidden-wiki-2/events",
     label: "EVENTS",
-    accentColor: "#FF6B00",
+    accentColor: PALETTE.green,
     status: "ACTIVE",
     locked: false,
     sublinks: ["/calendar", "/albums", "/guestbook"],
@@ -115,7 +127,7 @@ export const ROUTES_CONFIG = [
     id: "forum",
     path: "/hidden-wiki-2/forum",
     label: "FORUM",
-    accentColor: "#00FF9F",
+    accentColor: PALETTE.green,
     status: "ACTIVE",
     locked: false,
     sublinks: ["/threads", "/confessions", "/deadletters"],
@@ -124,7 +136,7 @@ export const ROUTES_CONFIG = [
     id: "finance",
     path: "/hidden-wiki-2/finance",
     label: "FINANCE",
-    accentColor: "#FF3366",
+    accentColor: PALETTE.green,
     status: "ACTIVE",
     locked: false,
     sublinks: ["/transactions", "/anomalies", "/beneficiaries"],
@@ -133,7 +145,7 @@ export const ROUTES_CONFIG = [
     id: "getrich",
     path: "/hidden-wiki-2/getrich",
     label: "GETRICH",
-    accentColor: "#00FF41",
+    accentColor: PALETTE.green,
     status: "ACTIVE",
     locked: false,
     sublinks: [],
@@ -142,12 +154,26 @@ export const ROUTES_CONFIG = [
     id: "trace-node",
     path: "/hidden-wiki-2/trace-node",
     label: "TRACE-NODE",
-    accentColor: "#00FF41",
+    accentColor: PALETTE.green,
     status: "FINAL",
     locked: false,
     sublinks: ["/terminal", "/nodes", "/trace", "/verification", "/output"],
   },
 ]
+
+// Map any clue sourceRoute to one of the three palette colors.
+export function routeColor(route: string): string {
+  if (route.includes("red-room")) return PALETTE.red
+  if (route.includes("leaks")) return PALETTE.amber
+  return PALETTE.green
+}
+
+// Clues store routes inconsistently ("/leaks/archive" vs "/hidden-wiki-2/finance").
+// Normalize so navigation always lands on a real page.
+export function resolveClueRoute(route: string): string {
+  if (!route) return "/hidden-wiki-2"
+  return route.startsWith("/hidden-wiki-2") ? route : `/hidden-wiki-2${route}`
+}
 
 export const CANON_ANCHORS = [
   { id: "anchor-1", label: "22:09", description: "Черен Audi A3 пред бл. 14" },
@@ -200,6 +226,16 @@ export function addClue(state: GameState, clue: Clue): GameState {
     clues: [...state.clues, { ...clue, timestamp: Date.now() }],
   }
   newState.progress = calculateProgress(newState)
+  return newState
+}
+
+export function removeClue(state: GameState, clueId: string): GameState {
+  const newState = {
+    ...state,
+    clues: state.clues.filter((c) => c.id !== clueId),
+  }
+  newState.progress = calculateProgress(newState)
+  saveGameState(newState)
   return newState
 }
 
