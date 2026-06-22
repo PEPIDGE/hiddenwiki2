@@ -29,7 +29,7 @@ type Folder = {
 const FOLDERS: Folder[] = [
   {
     id: "folder-lora",
-    label: "ЛОРА КОСТОВА",
+    label: "Улични общински камери",
     count: 3,
     color: "#CC44FF",
     photos: [
@@ -40,7 +40,7 @@ const FOLDERS: Folder[] = [
   },
   {
     id: "folder-zahar",
-    label: "ЗАХАРНА ФАБРИКА",
+    label: "Частни охранителни камери",
     count: 4,
     color: "#FF6644",
     photos: [
@@ -52,7 +52,7 @@ const FOLDERS: Folder[] = [
   },
   {
     id: "folder-bratstvo",
-    label: "БРАТСТВО",
+    label: "Камери на жилищни кооперации и етажна собственост",
     count: 2,
     color: "#44AAFF",
     photos: [
@@ -62,7 +62,7 @@ const FOLDERS: Folder[] = [
   },
   {
     id: "folder-vehicle",
-    label: "ПРЕВОЗНИ СРЕДСТВА",
+    label: "Търговски и бизнес камери",
     count: 2,
     color: "#FFAA22",
     photos: [
@@ -72,7 +72,7 @@ const FOLDERS: Folder[] = [
   },
   {
     id: "folder-evidence",
-    label: "ДОКАЗАТЕЛСТВА",
+    label: "Камери в обществен транспорт",
     count: 1,
     color: "#44FF88",
     photos: [
@@ -87,6 +87,70 @@ const FOLDERS: Folder[] = [
     photos: [],
   },
 ]
+
+const TARGET_PHOTO_COUNTS: Record<string, number> = {
+  "folder-lora": 14,
+  "folder-zahar": 15,
+  "folder-bratstvo": 16,
+  "folder-vehicle": 17,
+  "folder-evidence": 18,
+  "folder-classified": 19,
+}
+
+const GENERATED_CAMERA_LABELS = [
+  "северен вход",
+  "южен вход",
+  "паркинг зона",
+  "автобусна спирка",
+  "страничен коридор",
+  "товарна рампа",
+  "кръстовище",
+  "подлез",
+  "фоайе",
+  "асансьорна площадка",
+  "касова зона",
+  "служебен вход",
+  "перон",
+  "стълбище",
+  "заден двор",
+  "локален запис",
+  "резервен feed",
+  "нощен кадър",
+  "архивен фрагмент",
+]
+
+function makeGeneratedPhoto(folder: Folder, folderIndex: number, index: number): Photo {
+  const cameraLabel = GENERATED_CAMERA_LABELS[index % GENERATED_CAMERA_LABELS.length]
+  const idSuffix = `${folderIndex + 1}${String(index + 1).padStart(2, "0")}`
+  const hour = String(21 + (index % 4)).padStart(2, "0")
+  const minute = String((index * 7 + folderIndex * 3) % 60).padStart(2, "0")
+  const day = String(10 + ((index + folderIndex) % 8)).padStart(2, "0")
+  const shade = 9 + ((index + folderIndex) % 6)
+
+  return {
+    id: `P-${idSuffix}`,
+    bg: `#0${shade.toString(16)}0${((shade + 2) % 16).toString(16)}10`,
+    lines: ["#202030", "#151520", "#0b0b12"],
+    caption: `${folder.label} — ${cameraLabel}`,
+    date: `2025-10-${day} ${hour}:${minute}`,
+    location: `${folder.label}, ${cameraLabel}`,
+    clue: `Кадър от ${folder.label.toLowerCase()} — ${cameraLabel}, 2025-10-${day} ${hour}:${minute}.`,
+  }
+}
+
+const ARCHIVE_FOLDERS: Folder[] = FOLDERS.map((folder, folderIndex) => {
+  const targetCount = TARGET_PHOTO_COUNTS[folder.id] ?? folder.photos.length
+  const generatedCount = Math.max(0, targetCount - folder.photos.length)
+  const generatedPhotos = Array.from({ length: generatedCount }, (_, index) =>
+    makeGeneratedPhoto(folder, folderIndex, index),
+  )
+
+  return {
+    ...folder,
+    count: targetCount,
+    photos: [...folder.photos, ...generatedPhotos],
+  }
+})
 
 function PhotoCard({ photo, isSaved, onSave }: {
   photo: Photo
@@ -185,13 +249,13 @@ function FolderCard({ folder, onClick }: { folder: Folder; onClick: () => void }
     >
       {/* Folder icon */}
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-        <svg width="28" height="24" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="28" height="24" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
           <path d="M2 4C2 2.9 2.9 2 4 2H11L13 5H24C25.1 5 26 5.9 26 7V20C26 21.1 25.1 22 24 22H4C2.9 22 2 21.1 2 20V4Z"
             fill={folder.color + "18"} stroke={folder.color + "60"} strokeWidth="1" />
           <path d="M2 8H26" stroke={folder.color + "40"} strokeWidth="0.5" />
         </svg>
-        <div>
-          <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: folder.color, letterSpacing: "0.15em", fontWeight: 600 }}>{folder.label}</div>
+        <div style={{ minWidth: 0 }}>
+          <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: folder.color, letterSpacing: "0.08em", fontWeight: 600, lineHeight: 1.45, overflowWrap: "anywhere" }}>{folder.label}</div>
           <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#444", marginTop: 2 }}>
             {isEmpty ? "LOCKED" : `${folder.photos.length} ФАЙЛ${folder.photos.length !== 1 ? "А" : ""}`}
           </div>
@@ -242,7 +306,7 @@ export default function LeaksArchivePage() {
     setSavedClues((prev) => [...prev, id])
   }
 
-  const activeFolder = FOLDERS.find((f) => f.id === openFolder) ?? null
+  const activeFolder = ARCHIVE_FOLDERS.find((f) => f.id === openFolder) ?? null
 
   return (
     <div style={{ maxWidth: 1100, margin: "0 auto" }}>
@@ -280,7 +344,7 @@ export default function LeaksArchivePage() {
             transition={{ duration: 0.15 }}
             style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 8 }}
           >
-            {FOLDERS.map((folder) => (
+            {ARCHIVE_FOLDERS.map((folder) => (
               <FolderCard key={folder.id} folder={folder} onClick={() => setOpenFolder(folder.id)} />
             ))}
           </motion.div>

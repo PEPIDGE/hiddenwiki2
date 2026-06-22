@@ -65,11 +65,8 @@ export default function LeaksPage() {
               }}
             >
               <div>
-                <div style={{ fontSize: 14, fontFamily: "var(--font-mono)", fontWeight: 700, color: ACCENT, letterSpacing: "0.12em", marginBottom: 4 }}>
+                <div style={{ fontSize: 14, fontFamily: "var(--font-mono)", fontWeight: 700, color: ACCENT, letterSpacing: "0.12em" }}>
                   {page.label}
-                </div>
-                <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#707070", letterSpacing: "0.04em" }}>
-                  {page.desc}
                 </div>
               </div>
               <span style={{ fontSize: 16, color: `${ACCENT}60`, fontFamily: "var(--font-mono)" }}>→</span>
