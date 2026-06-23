@@ -278,57 +278,9 @@ export default function HiddenWiki2Page() {
                 )
               })}
             </div>
-
-            {/* Progress summary */}
-            {gameState && gameState.clues.length > 0 && (
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                style={{
-                  padding: "14px 16px",
-                  border: "1px solid #181818",
-                  borderTop: "2px solid #00FF4130",
-                }}
-              >
-                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.22em", marginBottom: 10 }}>
-                  АКТИВНО РАЗСЛЕДВАНЕ
-                </div>
-                <div style={{ display: "flex", gap: 22, flexWrap: "wrap" }}>
-                  <StatItem label="УЛИКИ" value={gameState.clues.length} color="#00FF41" />
-                  <StatItem
-                    label="ПОТВЪРДЕНИ"
-                    value={gameState.clues.filter((c) => c.status === "confirmed").length}
-                    color="#00FF41"
-                  />
-                  <StatItem label="ПЪЗЕЛИ" value={gameState.solvedPuzzles.length} color="#00BFFF" />
-                  <StatItem label="ПРОГРЕС" value={`${gameState.progress}%`} color="#FFD700" />
-                </div>
-              </motion.div>
-            )}
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
-  )
-}
-
-function StatItem({ label, value, color }: { label: string; value: string | number; color: string }) {
-  return (
-    <div>
-      <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.18em", marginBottom: 2 }}>
-        {label}
-      </div>
-      <div
-        style={{
-          fontSize: 24,
-          fontFamily: "var(--font-mono)",
-          fontWeight: 700,
-          color,
-          textShadow: `0 0 12px ${color}30`,
-        }}
-      >
-        {value}
-      </div>
     </div>
   )
 }
