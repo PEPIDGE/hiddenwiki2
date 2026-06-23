@@ -110,7 +110,7 @@ export function EvidenceBoard() {
                 fontFamily: "var(--font-mono)",
               }}
             >
-              {state?.clues.length ?? 0} запазени · {state?.progress ?? 0}% разкрито
+              {state?.clues.length ?? 0} запазени
             </div>
           </div>
 
