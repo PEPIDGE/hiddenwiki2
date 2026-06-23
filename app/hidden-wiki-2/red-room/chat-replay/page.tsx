@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { GlitchText } from "@/components/tor/glitch-text"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
 
 const ACCENT = "#FF0033"
@@ -27,15 +27,17 @@ const CHAT_MESSAGES = [
   { id: "M-014", user: "anon_patron", time: "2025-10-15 09:00", text: "Благодаря за снощи", edited: false, removed: false, replies: [], replyTo: null, important: false, original: null },
 ]
 
+const AMBER = "#FFB000"
 const USERS = ["NightKiller", "GothGirl", "ToxicBabe", "Black-Voyvoda", "RedFox", "DataCracker6", "OutsiderX"]
+// Palette only: red = core perpetrators, amber = involved, green/gray = peripheral
 const USER_COLORS: Record<string, string> = {
   "NightKiller": "#FF0033",
-  "GothGirl": "#CC44FF",
-  "ToxicBabe": "#FF6B00",
+  "RedFox": "#FF0033",
+  "GothGirl": AMBER,
+  "ToxicBabe": AMBER,
+  "DataCracker6": AMBER,
+  "OutsiderX": "#00FF41",
   "Black-Voyvoda": "#bbbbbb",
-  "RedFox": "#FF3366",
-  "DataCracker6": "#00BFFF",
-  "OutsiderX": "#00FF9F",
 }
 
 export default function ChatReplayPage() {
@@ -75,36 +77,36 @@ export default function ChatReplayPage() {
   return (
     <div style={{ maxWidth: 980, margin: "0 auto" }}>
       <div style={{ marginBottom: 20 }}>
-        <Link href="/hidden-wiki-2/red-room" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.15em", textDecoration: "none" }}>
+        <Link href="/hidden-wiki-2/red-room" style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#bdbdbd", letterSpacing: "0.12em", textDecoration: "none" }}>
           ← RED ROOM
         </Link>
-        <div style={{ marginTop: 10 }}>
+        <div style={{ marginTop: 12 }}>
           <GlitchText text="CHAT REPLAY" as="h1" intensity="low" className="text-3xl font-bold tracking-widest" color={ACCENT} />
         </div>
-        <div style={{ height: 1, background: `linear-gradient(90deg, ${ACCENT}, transparent)`, marginTop: 8 }} />
+        <div style={{ height: 2, background: `linear-gradient(90deg, ${ACCENT}, transparent)`, marginTop: 10 }} />
       </div>
 
       {/* Filters */}
-      <div style={{ display: "flex", gap: 4, marginBottom: 16, flexWrap: "wrap", alignItems: "center" }}>
+      <div style={{ display: "flex", gap: 5, marginBottom: 16, flexWrap: "wrap", alignItems: "center" }}>
         {(["ALL", "EDITED", "REMOVED", "REPLIES", "USERS"] as FilterType[]).map((f) => (
           <button key={f} onClick={() => { setFilter(f); setUserFilter(null) }}
-            style={{ padding: "5px 12px", fontSize: 9, fontFamily: "var(--font-mono)", letterSpacing: "0.1em", background: filter === f ? `${ACCENT}22` : "#0d0d0d", color: filter === f ? ACCENT : "#999999", border: `1px solid ${filter === f ? ACCENT + "50" : "#1e1e1e"}`, cursor: "pointer" }}>
+            style={{ padding: "6px 14px", fontSize: 10, fontFamily: "var(--font-mono)", letterSpacing: "0.1em", background: filter === f ? `${ACCENT}22` : "#111", color: filter === f ? ACCENT : "#c0c0c0", border: `1px solid ${filter === f ? ACCENT + "55" : "#2a2a2a"}`, cursor: "pointer", fontWeight: 700 }}>
             {f}
           </button>
         ))}
-        <div style={{ marginLeft: 8, display: "flex", gap: 4, flexWrap: "wrap" }}>
+        <div style={{ marginLeft: 8, display: "flex", gap: 5, flexWrap: "wrap" }}>
           {USERS.map((u) => (
             <button key={u} onClick={() => { setUserFilter(userFilter === u ? null : u); setFilter("ALL") }}
-              style={{ padding: "4px 8px", fontSize: 7, fontFamily: "var(--font-mono)", background: userFilter === u ? `${USER_COLORS[u]}22` : "#0a0a0a", color: userFilter === u ? USER_COLORS[u] : "#909090", border: `1px solid ${userFilter === u ? USER_COLORS[u] + "40" : "#1a1a1a"}`, cursor: "pointer" }}>
+              style={{ padding: "5px 10px", fontSize: 9, fontFamily: "var(--font-mono)", background: userFilter === u ? `${USER_COLORS[u]}22` : "#0d0d0d", color: userFilter === u ? USER_COLORS[u] : "#b0b0b0", border: `1px solid ${userFilter === u ? USER_COLORS[u] + "55" : "#222"}`, cursor: "pointer" }}>
               {u}
             </button>
           ))}
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 16 }}>
+      <div style={{ display: "grid", gridTemplateColumns: selectedMsg ? "1fr 340px" : "1fr", gap: 16, transition: "grid-template-columns 0.2s" }}>
         {/* Messages list */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
           {filtered.map((msg) => {
             const isSelected = selected === msg.id
             const userColor = USER_COLORS[msg.user] ?? "#bbbbbb"
@@ -113,41 +115,41 @@ export default function ChatReplayPage() {
               <div key={msg.id}
                 onClick={() => setSelected(isSelected ? null : msg.id)}
                 style={{
-                  padding: "10px 14px", background: isSelected ? "#0e0a0a" : msg.important ? "#0a0808" : "#080808",
-                  border: `1px solid ${isSelected ? ACCENT + "30" : msg.important ? "#2a1a1a" : "#111"}`,
+                  padding: "12px 16px", background: isSelected ? "#100a0a" : msg.important ? "#0b0808" : "#0a0a0a",
+                  border: `1px solid ${isSelected ? ACCENT + "44" : msg.important ? "#2e1a1a" : "#181818"}`,
                   cursor: "pointer", position: "relative",
                 }}>
                 {msg.removed && (
-                  <div style={{ position: "absolute", top: 0, right: 0, padding: "2px 7px", background: "#1a0000", fontSize: 7, fontFamily: "var(--font-mono)", color: ACCENT + "80", letterSpacing: "0.1em" }}>
+                  <div style={{ position: "absolute", top: 0, right: 0, padding: "3px 9px", background: `${ACCENT}1a`, fontSize: 9, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.1em" }}>
                     REMOVED
                   </div>
                 )}
                 {msg.edited && !msg.removed && (
-                  <div style={{ position: "absolute", top: 0, right: 0, padding: "2px 7px", background: "#1a0d00", fontSize: 7, fontFamily: "var(--font-mono)", color: "#FF6B00", letterSpacing: "0.1em" }}>
+                  <div style={{ position: "absolute", top: 0, right: 0, padding: "3px 9px", background: `${AMBER}1a`, fontSize: 9, fontFamily: "var(--font-mono)", color: AMBER, letterSpacing: "0.1em" }}>
                     EDITED
                   </div>
                 )}
                 {msg.replyTo && (
-                  <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", marginBottom: 4, letterSpacing: "0.08em" }}>
+                  <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#8a8a8a", marginBottom: 5, letterSpacing: "0.06em" }}>
                     ↳ reply to {CHAT_MESSAGES.find((m) => m.id === msg.replyTo)?.user ?? "?"}
                   </div>
                 )}
-                <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 5 }}>
-                  <span style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: userColor, fontWeight: 700, letterSpacing: "0.05em" }}>
+                <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 6 }}>
+                  <span style={{ fontSize: 13, fontFamily: "var(--font-mono)", color: userColor, fontWeight: 700, letterSpacing: "0.04em" }}>
                     {msg.user}
                   </span>
-                  <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444" }}>{msg.time}</span>
+                  <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#8a8a8a" }}>{msg.time}</span>
                 </div>
-                <p style={{ margin: 0, fontSize: 11, color: msg.removed ? "#444" : "#c0c0c0", fontFamily: "var(--font-mono)", lineHeight: 1.6 }}>
+                <p style={{ margin: 0, fontSize: 13, color: msg.removed ? "#888" : "#d4d4d4", fontFamily: "var(--font-mono)", lineHeight: 1.65 }}>
                   {msg.removed && showOrig && msg.original ? (
-                    <span style={{ color: "#FF6B00" }}>[RESTORED]: {msg.original}</span>
+                    <span style={{ color: AMBER }}>[RESTORED]: {msg.original}</span>
                   ) : msg.edited && showOrig && msg.original ? (
-                    <span style={{ color: "#FFD700" }}>[ORIGINAL]: {msg.original}</span>
+                    <span style={{ color: AMBER }}>[ORIGINAL]: {msg.original}</span>
                   ) : msg.text}
                 </p>
                 {(msg.removed || msg.edited) && msg.original && (
                   <button onClick={(e) => { e.stopPropagation(); setShowOriginal((s) => ({ ...s, [msg.id]: !s[msg.id] })) }}
-                    style={{ marginTop: 6, padding: "2px 8px", fontSize: 7, fontFamily: "var(--font-mono)", background: "none", color: msg.removed ? ACCENT : "#FF6B00", border: `1px solid ${msg.removed ? ACCENT + "30" : "#FF6B0030"}`, cursor: "pointer" }}>
+                    style={{ marginTop: 8, padding: "4px 10px", fontSize: 10, fontFamily: "var(--font-mono)", background: "none", color: msg.removed ? ACCENT : AMBER, border: `1px solid ${msg.removed ? ACCENT + "44" : AMBER + "44"}`, cursor: "pointer", letterSpacing: "0.06em" }}>
                     {showOrig ? "СКРИЙ ОРИГИНАЛ" : "ПОКАЖИ ОРИГИНАЛ"}
                   </button>
                 )}
@@ -156,52 +158,51 @@ export default function ChatReplayPage() {
           })}
         </div>
 
-        {/* Detail panel */}
-        <div style={{ background: "#080808", border: "1px solid #1e1e1e", padding: 16, height: "fit-content", position: "sticky", top: 0 }}>
-          {selectedMsg ? (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} key={selectedMsg.id}>
-              <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", letterSpacing: "0.2em", marginBottom: 12 }}>MESSAGE DETAIL</div>
-              <div style={{ fontSize: 14, fontFamily: "var(--font-mono)", color: USER_COLORS[selectedMsg.user] ?? "#e0e0e0", fontWeight: 700, marginBottom: 6 }}>{selectedMsg.user}</div>
-              <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", marginBottom: 14 }}>{selectedMsg.time}</div>
-              <p style={{ fontSize: 11, color: "#c0c0c0", lineHeight: 1.7, fontFamily: "var(--font-mono)", marginBottom: 12 }}>
-                {showOriginal[selectedMsg.id] && selectedMsg.original ? selectedMsg.original : selectedMsg.text}
-              </p>
-              {selectedMsg.original && (
-                <div style={{ padding: "8px 10px", background: "#0d0d0d", border: "1px solid #222", marginBottom: 12 }}>
-                  <div style={{ fontSize: 9, color: "#909090", fontFamily: "var(--font-mono)", marginBottom: 4 }}>ОРИГИНАЛ:</div>
-                  <p style={{ fontSize: 10, color: "#FF6B00", margin: 0, fontFamily: "var(--font-mono)", lineHeight: 1.6 }}>{selectedMsg.original}</p>
-                </div>
-              )}
-              {selectedMsg.replies.length > 0 && (
-                <div style={{ marginBottom: 12 }}>
-                  <div style={{ fontSize: 9, color: "#444", fontFamily: "var(--font-mono)", letterSpacing: "0.1em", marginBottom: 6 }}>REPLIES: {selectedMsg.replies.length}</div>
-                  {selectedMsg.replies.map((rid: string) => {
-                    const reply = CHAT_MESSAGES.find((m) => m.id === rid)
-                    return reply ? (
-                      <div key={rid} style={{ padding: "4px 8px", background: "#0a0a0a", border: "1px solid #161616", marginBottom: 4, fontSize: 10, color: "#bbbbbb", fontFamily: "var(--font-mono)" }}>
-                        <span style={{ color: USER_COLORS[reply.user] ?? "#999999" }}>{reply.user}:</span> {reply.text}
-                      </div>
-                    ) : null
-                  })}
-                </div>
-              )}
-              <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
-                <button onClick={() => handleSave(selectedMsg, "msg", `${selectedMsg.user} @ ${selectedMsg.time}: ${selectedMsg.original ?? selectedMsg.text}`)}
-                  style={{ padding: "5px 10px", fontSize: 9, fontFamily: "var(--font-mono)", background: savedClues.includes(`chat-${selectedMsg.id}-msg`) ? `${ACCENT}18` : "#0d0d0d", color: savedClues.includes(`chat-${selectedMsg.id}-msg`) ? ACCENT : "#aaaaaa", border: `1px solid ${savedClues.includes(`chat-${selectedMsg.id}-msg`) ? ACCENT + "40" : "#222"}`, cursor: "pointer", textAlign: "left" }}>
-                  {savedClues.includes(`chat-${selectedMsg.id}-msg`) ? "✓ SAVED" : "SAVE MESSAGE"}
-                </button>
-                <button onClick={() => handleSave(selectedMsg, "user", `User in chat: ${selectedMsg.user}`)}
-                  style={{ padding: "5px 10px", fontSize: 9, fontFamily: "var(--font-mono)", background: savedClues.includes(`chat-${selectedMsg.id}-user`) ? `${ACCENT}18` : "#0d0d0d", color: savedClues.includes(`chat-${selectedMsg.id}-user`) ? ACCENT : "#aaaaaa", border: `1px solid ${savedClues.includes(`chat-${selectedMsg.id}-user`) ? ACCENT + "40" : "#222"}`, cursor: "pointer", textAlign: "left" }}>
-                  {savedClues.includes(`chat-${selectedMsg.id}-user`) ? "✓ SAVED" : "SAVE USER"}
-                </button>
-              </div>
-            </motion.div>
-          ) : (
-            <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#333", textAlign: "center", padding: "30px 0" }}>
-              Цъкни съобщение за детайли
+        {/* Detail panel — only when a message is selected */}
+        {selectedMsg && (
+          <motion.div initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} key={selectedMsg.id}
+            style={{ background: "#0a0a0a", border: `1px solid ${ACCENT}33`, padding: 16, height: "fit-content", position: "sticky", top: 0 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+              <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#9a9a9a", letterSpacing: "0.18em" }}>MESSAGE DETAIL</span>
+              <button onClick={() => setSelected(null)} aria-label="Затвори"
+                style={{ background: "none", border: "none", color: "#888", cursor: "pointer", fontSize: 16, lineHeight: 1, padding: 0 }}>×</button>
             </div>
-          )}
-        </div>
+            <div style={{ fontSize: 15, fontFamily: "var(--font-mono)", color: USER_COLORS[selectedMsg.user] ?? "#e0e0e0", fontWeight: 700, marginBottom: 6 }}>{selectedMsg.user}</div>
+            <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#9a9a9a", marginBottom: 14 }}>{selectedMsg.time}</div>
+            <p style={{ fontSize: 13, color: "#d4d4d4", lineHeight: 1.7, fontFamily: "var(--font-mono)", marginBottom: 12 }}>
+              {showOriginal[selectedMsg.id] && selectedMsg.original ? selectedMsg.original : selectedMsg.text}
+            </p>
+            {selectedMsg.original && (
+              <div style={{ padding: "9px 11px", background: `${AMBER}0d`, border: `1px solid ${AMBER}33`, marginBottom: 12 }}>
+                <div style={{ fontSize: 10, color: "#b0b0b0", fontFamily: "var(--font-mono)", marginBottom: 5, letterSpacing: "0.08em" }}>ОРИГИНАЛ:</div>
+                <p style={{ fontSize: 12, color: AMBER, margin: 0, fontFamily: "var(--font-mono)", lineHeight: 1.6 }}>{selectedMsg.original}</p>
+              </div>
+            )}
+            {selectedMsg.replies.length > 0 && (
+              <div style={{ marginBottom: 12 }}>
+                <div style={{ fontSize: 10, color: "#9a9a9a", fontFamily: "var(--font-mono)", letterSpacing: "0.1em", marginBottom: 6 }}>REPLIES: {selectedMsg.replies.length}</div>
+                {selectedMsg.replies.map((rid: string) => {
+                  const reply = CHAT_MESSAGES.find((m) => m.id === rid)
+                  return reply ? (
+                    <div key={rid} style={{ padding: "6px 9px", background: "#0d0d0d", border: "1px solid #1c1c1c", marginBottom: 4, fontSize: 12, color: "#cccccc", fontFamily: "var(--font-mono)" }}>
+                      <span style={{ color: USER_COLORS[reply.user] ?? "#bbbbbb" }}>{reply.user}:</span> {reply.text}
+                    </div>
+                  ) : null
+                })}
+              </div>
+            )}
+            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+              <button onClick={() => handleSave(selectedMsg, "msg", `${selectedMsg.user} @ ${selectedMsg.time}: ${selectedMsg.original ?? selectedMsg.text}`)}
+                style={{ padding: "7px 11px", fontSize: 11, fontFamily: "var(--font-mono)", background: savedClues.includes(`chat-${selectedMsg.id}-msg`) ? `${ACCENT}18` : "#111", color: savedClues.includes(`chat-${selectedMsg.id}-msg`) ? ACCENT : "#cccccc", border: `1px solid ${savedClues.includes(`chat-${selectedMsg.id}-msg`) ? ACCENT + "55" : "#333"}`, cursor: "pointer", textAlign: "left", letterSpacing: "0.06em" }}>
+                {savedClues.includes(`chat-${selectedMsg.id}-msg`) ? "✓ ЗАПАЗЕНО" : "ЗАПАЗИ СЪОБЩЕНИЕ"}
+              </button>
+              <button onClick={() => handleSave(selectedMsg, "user", `User in chat: ${selectedMsg.user}`)}
+                style={{ padding: "7px 11px", fontSize: 11, fontFamily: "var(--font-mono)", background: savedClues.includes(`chat-${selectedMsg.id}-user`) ? `${ACCENT}18` : "#111", color: savedClues.includes(`chat-${selectedMsg.id}-user`) ? ACCENT : "#cccccc", border: `1px solid ${savedClues.includes(`chat-${selectedMsg.id}-user`) ? ACCENT + "55" : "#333"}`, cursor: "pointer", textAlign: "left", letterSpacing: "0.06em" }}>
+                {savedClues.includes(`chat-${selectedMsg.id}-user`) ? "✓ ЗАПАЗЕН" : "ЗАПАЗИ ПОТРЕБИТЕЛ"}
+              </button>
+            </div>
+          </motion.div>
+        )}
       </div>
     </div>
   )

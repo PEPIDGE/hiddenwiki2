@@ -27,9 +27,9 @@ const PASSWORDS = [
 const ROLE_COLORS: Record<string, string> = {
   ADMIN: "#FF0033",
   OPERATOR: ACCENT,
-  ANALYST: "#FFB000",
-  GUEST: "#909090",
-  SERVICE: "#00A8FF",
+  ANALYST: ACCENT,
+  GUEST: "#9a9a9a",
+  SERVICE: "#00FF41",
 }
 
 export default function LeaksPasswordsPage() {
@@ -61,68 +61,68 @@ export default function LeaksPasswordsPage() {
   return (
     <div style={{ maxWidth: 960, margin: "0 auto" }}>
       <div style={{ marginBottom: 20 }}>
-        <Link href="/hidden-wiki-2/leaks" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.15em", textDecoration: "none" }}>← LEAKS</Link>
-        <div style={{ marginTop: 10 }}>
+        <Link href="/hidden-wiki-2/leaks" style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#bdbdbd", letterSpacing: "0.12em", textDecoration: "none" }}>← LEAKS</Link>
+        <div style={{ marginTop: 12 }}>
           <GlitchText text="PASSWORDS" as="h1" intensity="low" className="text-3xl font-bold tracking-widest" color={ACCENT} />
         </div>
-        <div style={{ height: 1, background: `linear-gradient(90deg, ${ACCENT}, transparent)`, marginTop: 8 }} />
+        <div style={{ height: 2, background: `linear-gradient(90deg, ${ACCENT}, transparent)`, marginTop: 10 }} />
       </div>
 
-      <div style={{ padding: "10px 14px", background: "#0d0500", border: `1px solid ${ACCENT}20`, marginBottom: 16 }}>
-        <p style={{ fontSize: 11, color: "#c0c0c0", margin: 0, fontFamily: "var(--font-mono)", lineHeight: 1.7 }}>
-          {PASSWORDS.length} акаунта. Паролите са хеширани (показани за demo). Открий <span style={{ color: ACCENT }}>GothGirl</span> — нейните данни са ключови за /cult/chat-system.
+      <div style={{ padding: "12px 16px", background: "#0a0a06", border: `1px solid ${ACCENT}33`, marginBottom: 16 }}>
+        <p style={{ fontSize: 12, color: "#d6d6d6", margin: 0, fontFamily: "var(--font-mono)", lineHeight: 1.7 }}>
+          {PASSWORDS.length} акаунта. Паролите са показани за demo. Открий <span style={{ color: ACCENT, fontWeight: 700 }}>GothGirl</span> — данните ѝ са ключови за /cult/chat-system.
         </p>
       </div>
 
       <input value={search} onChange={(e) => setSearch(e.target.value)}
         placeholder="Търси по username или роля..."
-        style={{ width: "100%", padding: "7px 12px", background: "#0d0d0d", border: "1px solid #1e1e1e", color: "#e0e0e0", fontSize: 11, fontFamily: "var(--font-mono)", marginBottom: 12, outline: "none" }} />
+        style={{ width: "100%", padding: "10px 14px", background: "#0d0d0d", border: "1px solid #2a2a2a", color: "#e8e8e8", fontSize: 13, fontFamily: "var(--font-mono)", marginBottom: 12, outline: "none" }} />
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
         {filtered.map((pw) => {
           const isRevealed = revealed.includes(pw.id)
           const isSaved = savedClues.includes(`passwords-${pw.id}-credentials`)
           return (
-            <div key={pw.id} style={{ padding: "10px 14px", background: pw.changed ? "#0d0600" : "#090909", border: `1px solid ${pw.changed ? ACCENT + "30" : "#141414"}`, display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
-              {pw.changed && (
-                <div style={{ width: "100%", padding: "4px 10px", background: `${ACCENT}15`, fontSize: 9, color: ACCENT, fontFamily: "var(--font-mono)", marginBottom: 6 }}>
+            <div key={pw.id} style={{ padding: "12px 14px", background: pw.changed ? "#0d0a04" : "#0a0a0a", border: `1px solid ${pw.changed ? ACCENT + "44" : "#1a1a1a"}`, display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
+              {pw.changed && pw.note && (
+                <div style={{ width: "100%", padding: "6px 11px", background: `${ACCENT}14`, border: `1px solid ${ACCENT}33`, fontSize: 11, color: ACCENT, fontFamily: "var(--font-mono)", marginBottom: 4, lineHeight: 1.5 }}>
                   ⚠ {pw.note}
                 </div>
               )}
-              <div style={{ flex: 1, minWidth: 120 }}>
-                <div style={{ fontSize: 12, fontFamily: "var(--font-mono)", color: "#e0e0e0", fontWeight: 600, marginBottom: 4 }}>
+              <div style={{ flex: 1, minWidth: 130 }}>
+                <div style={{ fontSize: 14, fontFamily: "var(--font-mono)", color: "#f0f0f0", fontWeight: 700, marginBottom: 4 }}>
                   {pw.username}
-                  {pw.changed && <span style={{ marginLeft: 8, fontSize: 9, color: ACCENT, border: `1px solid ${ACCENT}40`, padding: "1px 5px" }}>CHANGED</span>}
+                  {pw.changed && <span style={{ marginLeft: 8, fontSize: 9, color: ACCENT, border: `1px solid ${ACCENT}55`, padding: "1px 6px", letterSpacing: "0.08em" }}>CHANGED</span>}
                 </div>
-                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090" }}>{pw.email}</div>
+                <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#a8a8a8" }}>{pw.email}</div>
               </div>
               <div style={{ flex: 1, minWidth: 100 }}>
-                <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: ROLE_COLORS[pw.role], border: `1px solid ${ROLE_COLORS[pw.role]}30`, padding: "2px 8px" }}>
+                <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: ROLE_COLORS[pw.role], border: `1px solid ${ROLE_COLORS[pw.role]}55`, padding: "3px 9px", letterSpacing: "0.06em", fontWeight: 700 }}>
                   {pw.role}
                 </span>
               </div>
-              <div style={{ flex: 1, minWidth: 140 }}>
-                <span style={{ fontSize: 9, color: "#444", fontFamily: "var(--font-mono)", marginRight: 6 }}>PASS:</span>
+              <div style={{ flex: 1, minWidth: 150 }}>
+                <span style={{ fontSize: 10, color: "#8a8a8a", fontFamily: "var(--font-mono)", marginRight: 7 }}>PASS:</span>
                 {isRevealed ? (
                   <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                    style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: pw.changed ? ACCENT : "#c0c0c0", letterSpacing: "0.05em" }}>
+                    style={{ fontSize: 13, fontFamily: "var(--font-mono)", color: pw.changed ? ACCENT : "#e0e0e0", letterSpacing: "0.05em", fontWeight: 600 }}>
                     {pw.password}
                   </motion.span>
                 ) : (
-                  <span style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#333", letterSpacing: "0.2em" }}>{"•".repeat(pw.password.length)}</span>
+                  <span style={{ fontSize: 13, fontFamily: "var(--font-mono)", color: "#555", letterSpacing: "0.2em" }}>{"•".repeat(pw.password.length)}</span>
                 )}
               </div>
               <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
                 <button onClick={() => setRevealed((r) => isRevealed ? r.filter((x) => x !== pw.id) : [...r, pw.id])}
-                  style={{ padding: "3px 10px", fontSize: 9, fontFamily: "var(--font-mono)", background: "#0d0d0d", color: "#999999", border: "1px solid #1e1e1e", cursor: "pointer" }}>
-                  {isRevealed ? "HIDE" : "REVEAL"}
+                  style={{ padding: "5px 12px", fontSize: 10, fontFamily: "var(--font-mono)", background: "#111", color: "#cccccc", border: "1px solid #333", cursor: "pointer", letterSpacing: "0.06em" }}>
+                  {isRevealed ? "СКРИЙ" : "ПОКАЖИ"}
                 </button>
                 <button onClick={() => handleSave(pw, "credentials", `${pw.username} / ${pw.password} — ${pw.email} [${pw.role}]${pw.changed ? " ⚠ PASSWORD CHANGED" : ""}`, pw.changed ? 5 : 3)}
-                  style={{ padding: "3px 10px", fontSize: 9, fontFamily: "var(--font-mono)", background: isSaved ? `${ACCENT}18` : "#0d0d0d", color: isSaved ? ACCENT : "#999999", border: `1px solid ${isSaved ? ACCENT + "40" : "#1e1e1e"}`, cursor: "pointer" }}>
+                  style={{ padding: "5px 12px", fontSize: 10, fontFamily: "var(--font-mono)", background: isSaved ? `${ACCENT}18` : "#111", color: isSaved ? ACCENT : "#cccccc", border: `1px solid ${isSaved ? ACCENT + "55" : "#333"}`, cursor: "pointer", letterSpacing: "0.06em" }}>
                   {isSaved ? "✓" : "SAVE"}
                 </button>
               </div>
-              <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333", flexShrink: 0 }}>{pw.lastLogin}</div>
+              <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#8a8a8a", flexShrink: 0 }}>{pw.lastLogin}</div>
             </div>
           )
         })}
