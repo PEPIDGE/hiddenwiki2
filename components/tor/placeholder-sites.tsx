@@ -6,7 +6,7 @@ import { GlitchText } from "@/components/tor/glitch-text"
 const SITES = [
   { id: "leaks", label: "LEAKS", color: "#FFD700", sublinks: ["/vault", "/docs", "/hash-lab", "/members"], step: 4 },
   { id: "events", label: "EVENTS", color: "#FF6B00", sublinks: ["/calendar", "/albums", "/tickets", "/venues"], step: 4 },
-  { id: "cult", label: "CULT", color: "#CC44FF", sublinks: ["/doctrine", "/ritual", "/status", "/operators", "/forum"], step: 4 },
+  { id: "cult", label: "CULT", color: "#CC44FF", sublinks: ["/doctrine", "/ritual", "/status", "/forum"], step: 4 },
   { id: "forum", label: "FORUM", color: "#00FF9F", sublinks: ["/threads", "/confessions", "/deadletters"], step: 5 },
   { id: "finance", label: "FINANCE", color: "#FF3366", sublinks: ["/transactions", "/anomalies", "/beneficiaries"], step: 5, locked: true },
   { id: "trace-node", label: "TRACE-NODE", color: "#00FF41", sublinks: ["/terminal", "/nodes", "/trace", "/verification", "/output"], step: 6, locked: true },

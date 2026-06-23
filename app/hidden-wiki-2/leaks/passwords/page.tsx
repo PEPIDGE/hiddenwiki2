@@ -70,7 +70,7 @@ export default function LeaksPasswordsPage() {
 
       <div style={{ padding: "12px 16px", background: "#0a0a06", border: `1px solid ${ACCENT}33`, marginBottom: 16 }}>
         <p style={{ fontSize: 12, color: "#d6d6d6", margin: 0, fontFamily: "var(--font-mono)", lineHeight: 1.7 }}>
-          {PASSWORDS.length} акаунта. Паролите са показани за demo. Открий <span style={{ color: ACCENT, fontWeight: 700 }}>GothGirl</span> — данните ѝ са ключови за /cult/chat-system.
+          {PASSWORDS.length} акаунта. Паролите са показани за demo. Открий <span style={{ color: ACCENT, fontWeight: 700 }}>GothGirl</span> — данните ѝ са ключови за CHAT SYSTEM секцията в култовите досиета.
         </p>
       </div>
 

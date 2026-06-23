@@ -112,7 +112,7 @@ export const ROUTES_CONFIG = [
     accentColor: PALETTE.green,
     status: "ACTIVE",
     locked: false,
-    sublinks: ["/operators", "/chat-system"],
+    sublinks: [],
   },
   {
     id: "events",

@@ -33,7 +33,7 @@ const THREADS = [
   {
     id: "T-003", author: "NullSyn_watcher", title: "NullSyn дава фалшиви координати", replies: 0, flagged: false,
     posts: [
-      { id: "P1", author: "NullSyn_watcher", time: "17:30", text: "NullSyn е компрометиран (HOPS=2 в /cult/operators). Документите от него са фалшиви. route-17-night = decoy. Не следвай." },
+      { id: "P1", author: "NullSyn_watcher", time: "17:30", text: "NullSyn е компрометиран (HOPS=2 в OPERATORS секцията на култовите досиета). Документите от него са фалшиви. route-17-night = decoy. Не следвай." },
     ],
     clue: null,
   },
