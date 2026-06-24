@@ -1,5 +1,7 @@
-import { redirect } from "next/navigation"
+import { CultChatSystemClient } from "./chat-system-client"
 
-export default function CultChatSystemRedirectPage() {
-  redirect("/hidden-wiki-2/cult/bratstvoto-na-tretoto-probuzhdane#chat-system")
+export const dynamic = "force-dynamic"
+
+export default function CultChatSystemPage() {
+  return <CultChatSystemClient />
 }

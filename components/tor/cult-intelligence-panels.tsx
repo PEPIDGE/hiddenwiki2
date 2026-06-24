@@ -1,9 +1,15 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import Link from "next/link"
 import { AnimatePresence, motion } from "framer-motion"
 import { GlitchText } from "@/components/tor/glitch-text"
+import {
+  getCultChatArchive,
+  getCultChatMembers,
+  type CultChatConversation,
+  type CultChatMember,
+  type CultChatMessage,
+} from "@/lib/cult-chats"
 import { addClue, getGameState, saveGameState } from "@/lib/game-state"
 
 const ACCENT = "#00FF41"
@@ -107,27 +113,6 @@ const OPERATORS = [
   },
 ]
 
-const VALID_CREDENTIALS: Record<string, { pass: string; role: string; displayName: string }> = {
-  RedFox: { pass: "r3dfox!2025", role: "АРХИТЕКТ", displayName: "RedFox [ARCHITECT]" },
-  NightKiller: { pass: "n1ght_k1ll", role: "ОПЕРАТОР", displayName: "NightKiller" },
-  ToxicBabe: { pass: "t0x1c_b@be", role: "ОПЕРАТОР", displayName: "ToxicBabe" },
-  "Black-Voyvoda": { pass: "Bl@ck_V0jv0da", role: "ОПЕРАТОР", displayName: "Black-Voyvoda" },
-  DataCracker6: { pass: "d4t@cr4ck6r", role: "АНАЛИТИК", displayName: "DataCracker6" },
-}
-
-const CHAT_MESSAGES = [
-  { id: "M-01", time: "2025-10-13 14:22", from: "RedFox", to: "ALL", text: "Операцията е потвърдена. Цел е подготвена. 15 окт, 22:00.", highlighted: true },
-  { id: "M-02", time: "2025-10-13 14:25", from: "NightKiller", to: "ALL", text: "Потвърждавам. Маршрут 17. Транспортът е готов.", highlighted: false },
-  { id: "M-03", time: "2025-10-13 14:26", from: "Black-Voyvoda", to: "ALL", text: "Охраната е на място. Захарна фабрика, западно крило.", highlighted: false },
-  { id: "M-04", time: "2025-10-13 14:30", from: "ToxicBabe", to: "GothGirl", text: "GG, смени паролата — стандартна процедура преди операция. Не отговаряй в общия чат.", highlighted: false },
-  { id: "M-05", time: "2025-10-14 09:00", from: "DataCracker6", to: "ALL", text: "Публикувах decoy GPS данни. NullSyn ще ги разпространи. Сметката е чиста.", highlighted: false },
-  { id: "M-06", time: "2025-10-14 10:15", from: "RedFox", to: "ALL", text: "Не забравяйте — route-17-night е само bait за любопитни. Реалният маршрут е в Захарна фабрика.", highlighted: false },
-  { id: "M-07", time: "2025-10-15 20:00", from: "NightKiller", to: "Black-Voyvoda", text: "Тръгвам. 40 мин. Д.М. изпраща потвърждение.", highlighted: false },
-  { id: "M-08", time: "2025-10-15 20:05", from: "Black-Voyvoda", to: "NightKiller", text: "Разбрано. Задната врата е отворена. Пазя.", highlighted: false },
-  { id: "M-09", time: "2025-10-16 01:00", from: "RedFox", to: "ALL", text: "Ритуалът е завършен. Фаза 3 изпълнена. Изчистете следите.", highlighted: false },
-  { id: "M-10", time: "2025-10-16 01:05", from: "DataCracker6", to: "ALL", text: "Чистя логовете. IP адресите са маскирани. NODE-7 е зачистен.", highlighted: false },
-]
-
 const STATUS_COLOR: Record<string, string> = {
   ACTIVE: ACCENT,
   INACTIVE: "#555",
@@ -138,6 +123,10 @@ const STATUS_COLOR: Record<string, string> = {
 interface CultPanelProps {
   cultName: string
   sourceRoute: string
+}
+
+interface CultChatSystemPanelProps extends CultPanelProps {
+  cultSlug: string
 }
 
 export function CultOperatorsPanel({ cultName, sourceRoute }: CultPanelProps) {
@@ -248,34 +237,37 @@ export function CultOperatorsPanel({ cultName, sourceRoute }: CultPanelProps) {
   )
 }
 
-export function CultChatSystemPanel({ cultName, sourceRoute }: CultPanelProps) {
+export function CultChatSystemPanel({ cultName, sourceRoute, cultSlug }: CultChatSystemPanelProps) {
+  const archive = getCultChatArchive(cultSlug)
+  const members = getCultChatMembers(archive)
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [loginError, setLoginError] = useState("")
-  const [loggedIn, setLoggedIn] = useState<{ user: string; role: string; displayName: string } | null>(null)
+  const [loggedIn, setLoggedIn] = useState<CultChatMember | null>(null)
   const [savedClues, setSavedClues] = useState<string[]>([])
+  const [activeConversationId, setActiveConversationId] = useState(archive.conversations[0]?.id ?? "")
 
   useEffect(() => {
     setSavedClues(getGameState().clues.map((c) => c.id))
   }, [])
 
+  useEffect(() => {
+    setActiveConversationId(archive.conversations[0]?.id ?? "")
+    setLoggedIn(null)
+    setUsername("")
+    setPassword("")
+    setLoginError("")
+  }, [cultSlug, archive.conversations])
+
   const handleLogin = () => {
     const trimUser = username.trim()
     const trimPass = password.trim()
+    const member = members.find((profile) => profile.username.toLowerCase() === trimUser.toLowerCase())
 
-    if (trimUser === "GothGirl" && trimPass === "joko1132") {
-      setLoginError("Паролата на този акаунт е сменена преди 3 дни. Потърси друг операторски акаунт в LEAKS/PASSWORDS.")
-      return
-    }
-
-    if (trimUser === "GothGirl") {
-      setLoginError("Невалидни данни за вход.")
-      return
-    }
-
-    const cred = VALID_CREDENTIALS[trimUser]
-    if (cred && trimPass === cred.pass) {
-      setLoggedIn({ user: trimUser, role: cred.role, displayName: cred.displayName })
+    if (member && trimPass === member.password) {
+      setLoggedIn(member)
+      const firstConversation = archive.conversations.find((conversation) => conversation.participants.includes(member.username))
+      setActiveConversationId(firstConversation?.id ?? "")
       setLoginError("")
       return
     }
@@ -283,82 +275,138 @@ export function CultChatSystemPanel({ cultName, sourceRoute }: CultPanelProps) {
     setLoginError("Невалидни данни за вход.")
   }
 
-  const handleSave = (msg: typeof CHAT_MESSAGES[number]) => {
-    const id = `chat-${msg.id}`
+  const handleSave = (conversation: CultChatConversation, msg: CultChatMessage) => {
+    const id = `chat-${cultSlug}-${conversation.id}-${msg.id}`
     if (savedClues.includes(id)) return
 
     saveGameState(addClue(getGameState(), {
       id,
-      title: `[CHAT] ${msg.from} -> ${msg.to}`,
-      text: `[${msg.time}] ${msg.from}: ${msg.text}`,
+      title: `[CHAT] ${loggedIn?.username ?? "UNKNOWN"} // ${conversation.title}`,
+      text: `[${conversation.title}] [${msg.time}] ${msg.author}: ${msg.text}`,
       sourceRoute,
-      confidence: msg.highlighted ? 5 : 3,
+      confidence: msg.highlighted ? 5 : conversation.kind === "group" ? 4 : 3,
       status: "unverified",
     }))
     setSavedClues((prev) => [...prev, id])
   }
 
+  const visibleConversations = loggedIn
+    ? archive.conversations.filter((conversation) => conversation.participants.includes(loggedIn.username))
+    : archive.conversations
+  const activeConversation = visibleConversations.find((conversation) => conversation.id === activeConversationId) ?? visibleConversations[0]
+  const activeParticipants = activeConversation?.participants.filter((participant) => participant !== loggedIn?.username) ?? []
+  const activeSubtitle = activeConversation
+    ? activeConversation.kind === "group"
+      ? `${activeConversation.participants.length} участници`
+      : activeParticipants[0] ?? "директен чат"
+    : "няма разговор"
+
   return (
     <section id="chat-system" style={{ marginTop: 32, scrollMarginTop: 24 }}>
-      <SectionHeading label="CHAT SYSTEM" detail={`${cultName} // operator relay`} />
+      <SectionHeading label="CHAT SYSTEM" detail={`${cultName} // member accounts`} />
 
       <AnimatePresence mode="wait">
         {!loggedIn ? (
           <motion.div key="login" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <div style={{ padding: "10px 14px", background: "#0d000d", border: `1px solid ${ACCENT}20`, marginBottom: 18 }}>
               <p style={{ fontSize: 11, color: "#c0c0c0", margin: 0, fontFamily: "var(--font-mono)", lineHeight: 1.7 }}>
-                Вход в затворения чат на операторите. Credentials можеш да намериш в{" "}
-                <Link href="/hidden-wiki-2/leaks/passwords" style={{ color: ACCENT }}>LEAKS/PASSWORDS</Link>.
+                Вътрешният чат пази отделни акаунти за членовете на тази секта. Всеки профил има собствен username и password.
               </p>
             </div>
 
-            <div style={{ maxWidth: 430, padding: "24px", background: "#080808", border: "1px solid #1e1e1e" }}>
-              <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", letterSpacing: "0.2em", marginBottom: 20 }}>
-                INTERNAL CHAT // LOGIN
-              </div>
-              <label style={{ display: "block", marginBottom: 14 }}>
-                <span style={{ display: "block", fontSize: 9, color: "#909090", fontFamily: "var(--font-mono)", marginBottom: 5 }}>USERNAME</span>
-                <input
-                  value={username}
-                  onChange={(event) => setUsername(event.target.value)}
-                  onKeyDown={(event) => event.key === "Enter" && handleLogin()}
-                  style={{ width: "100%", padding: "7px 10px", background: "#111", border: "1px solid #222", color: "#e0e0e0", fontSize: 12, fontFamily: "var(--font-mono)", outline: "none" }}
-                />
-              </label>
-              <label style={{ display: "block", marginBottom: 16 }}>
-                <span style={{ display: "block", fontSize: 9, color: "#909090", fontFamily: "var(--font-mono)", marginBottom: 5 }}>PASSWORD</span>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  onKeyDown={(event) => event.key === "Enter" && handleLogin()}
-                  style={{ width: "100%", padding: "7px 10px", background: "#111", border: "1px solid #222", color: "#e0e0e0", fontSize: 12, fontFamily: "var(--font-mono)", outline: "none" }}
-                />
-              </label>
-              {loginError && (
-                <motion.div
-                  initial={{ opacity: 0, y: -4 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  style={{ padding: "8px 12px", background: "#1a0000", border: "1px solid #FF003330", marginBottom: 12, fontSize: 10, color: loginError.includes("LEAKS") ? ACCENT : "#FF0033", fontFamily: "var(--font-mono)", lineHeight: 1.6 }}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 300px), 1fr))", gap: 12, alignItems: "start" }}>
+              <div style={{ padding: "24px", background: "#080808", border: "1px solid #1e1e1e" }}>
+                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", letterSpacing: "0.2em", marginBottom: 20 }}>
+                  MEMBER CHAT // LOGIN
+                </div>
+                <label style={{ display: "block", marginBottom: 14 }}>
+                  <span style={{ display: "block", fontSize: 9, color: "#909090", fontFamily: "var(--font-mono)", marginBottom: 5 }}>USERNAME</span>
+                  <input
+                    value={username}
+                    onChange={(event) => setUsername(event.target.value)}
+                    onKeyDown={(event) => event.key === "Enter" && handleLogin()}
+                    style={{ width: "100%", padding: "7px 10px", background: "#111", border: "1px solid #222", color: "#e0e0e0", fontSize: 12, fontFamily: "var(--font-mono)", outline: "none" }}
+                  />
+                </label>
+                <label style={{ display: "block", marginBottom: 16 }}>
+                  <span style={{ display: "block", fontSize: 9, color: "#909090", fontFamily: "var(--font-mono)", marginBottom: 5 }}>PASSWORD</span>
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                    onKeyDown={(event) => event.key === "Enter" && handleLogin()}
+                    style={{ width: "100%", padding: "7px 10px", background: "#111", border: "1px solid #222", color: "#e0e0e0", fontSize: 12, fontFamily: "var(--font-mono)", outline: "none" }}
+                  />
+                </label>
+                {loginError && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    style={{ padding: "8px 12px", background: "#1a0000", border: "1px solid #FF003330", marginBottom: 12, fontSize: 10, color: "#FF0033", fontFamily: "var(--font-mono)", lineHeight: 1.6 }}
+                  >
+                    {loginError}
+                  </motion.div>
+                )}
+                <button
+                  type="button"
+                  onClick={handleLogin}
+                  style={{ width: "100%", padding: "8px 0", background: `${ACCENT}22`, border: `1px solid ${ACCENT}50`, color: ACCENT, fontSize: 10, fontFamily: "var(--font-mono)", letterSpacing: "0.15em", cursor: "pointer" }}
                 >
-                  {loginError}
-                </motion.div>
-              )}
-              <button
-                type="button"
-                onClick={handleLogin}
-                style={{ width: "100%", padding: "8px 0", background: `${ACCENT}22`, border: `1px solid ${ACCENT}50`, color: ACCENT, fontSize: 10, fontFamily: "var(--font-mono)", letterSpacing: "0.15em", cursor: "pointer" }}
-              >
-                LOGIN
-              </button>
+                  LOGIN
+                </button>
+              </div>
+
+              <div style={{ padding: "12px", background: "#050505", border: "1px solid #181818" }}>
+                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#555", letterSpacing: "0.18em", marginBottom: 10 }}>
+                  MEMBER PROFILES // {members.length}
+                </div>
+                <div style={{ display: "grid", gap: 6 }}>
+                  {members.map((member) => (
+                    <div key={member.username} style={{ padding: "9px 10px", background: "#090909", border: "1px solid #151515" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", gap: 10, alignItems: "flex-start", marginBottom: 7 }}>
+                        <div style={{ minWidth: 0 }}>
+                          <div style={{ fontSize: 12, fontFamily: "var(--font-mono)", color: "#e0e0e0", fontWeight: 700, overflowWrap: "anywhere" }}>
+                            {member.displayName}
+                          </div>
+                          <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#777", marginTop: 3, overflowWrap: "anywhere" }}>
+                            {member.role} / {member.statusLine}
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setUsername(member.username)
+                            setPassword(member.password)
+                            setLoginError("")
+                          }}
+                          style={{ padding: "3px 8px", border: `1px solid ${ACCENT}35`, background: `${ACCENT}12`, color: ACCENT, fontSize: 8, fontFamily: "var(--font-mono)", cursor: "pointer", flexShrink: 0 }}
+                        >
+                          USE
+                        </button>
+                      </div>
+                      <div style={{ display: "grid", gridTemplateColumns: "76px minmax(0, 1fr)", gap: 5, alignItems: "center" }}>
+                        <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#555" }}>USERNAME</span>
+                        <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: ACCENT, overflowWrap: "anywhere" }}>{member.username}</span>
+                        <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#555" }}>PASSWORD</span>
+                        <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#cfcfcf", overflowWrap: "anywhere" }}>{member.password}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </motion.div>
         ) : (
           <motion.div key="chat" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 14px", background: "#0a000a", border: `1px solid ${ACCENT}20`, marginBottom: 16, gap: 12 }}>
-              <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#bbbbbb" }}>
-                Влязъл като: <span style={{ color: ACCENT }}>{loggedIn.displayName}</span>
-                <span style={{ marginLeft: 10, fontSize: 9, color: "#909090" }}>[{loggedIn.role}]</span>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", background: "#0a000a", border: `1px solid ${ACCENT}20`, marginBottom: 16, gap: 12, flexWrap: "wrap" }}>
+              <div style={{ minWidth: 220 }}>
+                <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#bbbbbb", marginBottom: 4 }}>
+                  Влязъл като: <span style={{ color: ACCENT }}>{loggedIn.displayName}</span>
+                  <span style={{ marginLeft: 10, fontSize: 9, color: "#909090" }}>[{loggedIn.role}]</span>
+                </div>
+                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#707070", lineHeight: 1.5 }}>
+                  Членски акаунт: <span style={{ color: "#d8d8d8" }}>{loggedIn.username}</span> / {loggedIn.statusLine}
+                </div>
               </div>
               <button
                 type="button"
@@ -373,43 +421,154 @@ export function CultChatSystemPanel({ cultName, sourceRoute }: CultPanelProps) {
               </button>
             </div>
 
-            <div style={{ padding: "10px 14px", background: "#080808", border: "1px solid #1a1a1a", marginBottom: 16 }}>
-              <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.15em", marginBottom: 6 }}>АРХИВ // ОКТОМВРИ 2025</div>
-              <p style={{ fontSize: 10, color: "#bbbbbb", margin: 0, fontFamily: "var(--font-mono)", lineHeight: 1.6 }}>
-                Показани са само съобщения до теб или до ALL. Съобщенията между GothGirl и ToxicBabe са скрити.
-              </p>
-            </div>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-              {CHAT_MESSAGES.map((msg) => {
-                const isSaved = savedClues.includes(`chat-${msg.id}`)
-                const isToMe = msg.to === "ALL" || msg.to === loggedIn.user || msg.from === loggedIn.user
-                if (!isToMe) return null
-
-                return (
-                  <div key={msg.id} style={{ padding: "10px 14px", background: msg.highlighted ? "#0d0000" : "#090909", border: `1px solid ${msg.highlighted ? "#FF000030" : "#141414"}` }}>
-                    <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ display: "flex", flexWrap: "wrap", gap: 10, alignItems: "center", marginBottom: 5 }}>
-                          <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444" }}>{msg.time}</span>
-                          <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: msg.from === "RedFox" ? "#FF0033" : ACCENT, fontWeight: 600 }}>{msg.from}</span>
-                          <span style={{ fontSize: 9, color: "#333", fontFamily: "var(--font-mono)" }}>-&gt; {msg.to}</span>
-                          {msg.highlighted && <span style={{ fontSize: 7, color: "#FF0033", border: "1px solid #FF003330", padding: "1px 5px", fontFamily: "var(--font-mono)" }}>KEY</span>}
-                        </div>
-                        <div style={{ fontSize: 11, color: "#d0d0d0", fontFamily: "var(--font-mono)", lineHeight: 1.6 }}>{msg.text}</div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: 12, alignItems: "stretch" }}>
+              <aside style={{ minWidth: 0, border: "1px solid #181818", background: "#050505", display: "flex", flexDirection: "column" }}>
+                <div style={{ padding: "12px 14px", borderBottom: "1px solid #151515" }}>
+                  <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#4a4a4a", letterSpacing: "0.18em", marginBottom: 10 }}>
+                    АКТИВЕН ПРОФИЛ
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                    <div style={{ width: 36, height: 36, borderRadius: 18, border: `1px solid ${ACCENT}50`, background: `${ACCENT}14`, color: ACCENT, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontFamily: "var(--font-mono)", fontWeight: 700, flexShrink: 0 }}>
+                      {loggedIn.displayName.slice(0, 2).toUpperCase()}
+                    </div>
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ fontSize: 13, fontFamily: "var(--font-mono)", color: "#e5e5e5", fontWeight: 700, overflowWrap: "anywhere" }}>
+                        {loggedIn.username}
                       </div>
-                      <button
-                        type="button"
-                        onClick={() => handleSave(msg)}
-                        disabled={isSaved}
-                        style={{ padding: "3px 10px", fontSize: 9, fontFamily: "var(--font-mono)", background: isSaved ? `${ACCENT}18` : "#0d0d0d", color: isSaved ? ACCENT : "#909090", border: `1px solid ${isSaved ? ACCENT + "40" : "#1e1e1e"}`, cursor: isSaved ? "default" : "pointer", flexShrink: 0 }}
-                      >
-                        {isSaved ? "✓" : "SAVE"}
-                      </button>
+                      <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#777", lineHeight: 1.5, overflowWrap: "anywhere" }}>
+                        {visibleConversations.length} чата / {loggedIn.statusLine}
+                      </div>
                     </div>
                   </div>
-                )
-              })}
+                </div>
+
+                <div style={{ display: "flex", flexDirection: "column", gap: 2, padding: 4 }}>
+                  {visibleConversations.map((conversation) => {
+                    const isActive = conversation.id === activeConversation?.id
+                    const lastMessage = conversation.messages[conversation.messages.length - 1]
+                    const participants = conversation.participants.filter((participant) => participant !== loggedIn.username)
+                    const label = conversation.kind === "group" ? `${conversation.participants.length} участници` : participants[0] ?? "direct"
+
+                    return (
+                      <button
+                        key={conversation.id}
+                        type="button"
+                        onClick={() => setActiveConversationId(conversation.id)}
+                        style={{
+                          width: "100%",
+                          padding: "10px 11px",
+                          background: isActive ? `${ACCENT}10` : "#070707",
+                          border: `1px solid ${isActive ? `${ACCENT}35` : "#111"}`,
+                          color: "#d8d8d8",
+                          cursor: "pointer",
+                          textAlign: "left",
+                        }}
+                      >
+                        <div style={{ display: "flex", alignItems: "flex-start", gap: 9 }}>
+                          <div style={{ width: 28, height: 28, borderRadius: 14, border: `1px solid ${conversation.kind === "group" ? "#FFB00055" : `${ACCENT}35`}`, background: conversation.kind === "group" ? "#160f00" : "#061006", color: conversation.kind === "group" ? "#FFB000" : ACCENT, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontFamily: "var(--font-mono)", flexShrink: 0 }}>
+                            {conversation.kind === "group" ? "G" : "D"}
+                          </div>
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                              <span style={{ flex: 1, minWidth: 0, fontSize: 11, fontFamily: "var(--font-mono)", color: isActive ? ACCENT : "#dcdcdc", fontWeight: 700, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                                {conversation.title}
+                              </span>
+                              <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#555", flexShrink: 0 }}>{conversation.lastActivity.slice(11)}</span>
+                            </div>
+                            <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#666", marginBottom: 5, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                              {label}
+                            </div>
+                            <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                              <span style={{ flex: 1, minWidth: 0, fontSize: 9, fontFamily: "var(--font-mono)", color: "#8f8f8f", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                                {lastMessage ? `${lastMessage.author}: ${lastMessage.text}` : "няма съобщения"}
+                              </span>
+                              {conversation.unread > 0 && (
+                                <span style={{ minWidth: 18, height: 18, borderRadius: 9, padding: "0 5px", background: `${ACCENT}20`, border: `1px solid ${ACCENT}55`, color: ACCENT, fontSize: 9, lineHeight: "16px", textAlign: "center", fontFamily: "var(--font-mono)", flexShrink: 0 }}>
+                                  {conversation.unread}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </button>
+                    )
+                  })}
+                </div>
+              </aside>
+
+              <div style={{ minWidth: 0, border: "1px solid #181818", background: "#070707", display: "flex", flexDirection: "column", minHeight: 520 }}>
+                {activeConversation && (
+                  <>
+                    <div style={{ padding: "12px 14px", borderBottom: "1px solid #151515", background: "#090909", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 }}>
+                      <div style={{ minWidth: 0 }}>
+                        <div style={{ fontSize: 14, fontFamily: "var(--font-mono)", color: "#f0f0f0", fontWeight: 700, marginBottom: 4, overflowWrap: "anywhere" }}>
+                          {activeConversation.title}
+                        </div>
+                        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#777", lineHeight: 1.5, overflowWrap: "anywhere" }}>
+                          {activeSubtitle} / {activeConversation.lastActivity}
+                        </div>
+                      </div>
+                      <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: activeConversation.kind === "group" ? "#FFB000" : ACCENT, border: `1px solid ${activeConversation.kind === "group" ? "#FFB00044" : `${ACCENT}44`}`, padding: "3px 7px", letterSpacing: "0.08em", flexShrink: 0 }}>
+                        {activeConversation.kind === "group" ? "GROUP" : "DIRECT"}
+                      </div>
+                    </div>
+
+                    <div style={{ flex: 1, padding: "16px 14px", display: "flex", flexDirection: "column", gap: 10, background: "linear-gradient(180deg, #050505, #080808)" }}>
+                      {activeConversation.messages.map((msg) => {
+                        const isMine = msg.author === loggedIn.username
+                        const clueId = `chat-${cultSlug}-${activeConversation.id}-${msg.id}`
+                        const isSaved = savedClues.includes(clueId)
+
+                        return (
+                          <div key={msg.id} style={{ display: "flex", justifyContent: isMine ? "flex-end" : "flex-start" }}>
+                            <div
+                              style={{
+                                maxWidth: "min(78%, 620px)",
+                                padding: "9px 11px",
+                                background: msg.highlighted ? "#170303" : isMine ? "#06180c" : "#101010",
+                                border: `1px solid ${msg.highlighted ? "#FF003355" : isMine ? `${ACCENT}35` : "#222"}`,
+                                color: "#dcdcdc",
+                                boxShadow: msg.highlighted ? "0 0 18px #FF003314" : "none",
+                              }}
+                            >
+                              {!isMine && activeConversation.kind === "group" && (
+                                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: msg.highlighted ? "#FF6B6B" : "#FFB000", marginBottom: 4, fontWeight: 700, overflowWrap: "anywhere" }}>
+                                  {msg.author}
+                                </div>
+                              )}
+                              <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: msg.highlighted ? "#f2d0d0" : "#d6d6d6", lineHeight: 1.65, overflowWrap: "anywhere" }}>
+                                {msg.text}
+                              </div>
+                              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, marginTop: 8 }}>
+                                <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#606060" }}>
+                                  {msg.time}{isMine ? " / ти" : ` / ${msg.author}`}
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() => handleSave(activeConversation, msg)}
+                                  disabled={isSaved}
+                                  style={{ padding: "2px 7px", fontSize: 8, fontFamily: "var(--font-mono)", background: isSaved ? `${ACCENT}18` : "#0a0a0a", color: isSaved ? ACCENT : "#8f8f8f", border: `1px solid ${isSaved ? ACCENT + "40" : "#242424"}`, cursor: isSaved ? "default" : "pointer", flexShrink: 0 }}
+                                >
+                                  {isSaved ? "✓" : "SAVE"}
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+
+                    <div style={{ padding: "10px 12px", borderTop: "1px solid #151515", background: "#060606", display: "flex", gap: 8, alignItems: "center" }}>
+                      <div style={{ flex: 1, minWidth: 0, padding: "8px 10px", border: "1px solid #181818", background: "#0b0b0b", color: "#555", fontSize: 10, fontFamily: "var(--font-mono)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                        encrypted archive: write access revoked
+                      </div>
+                      <button type="button" disabled style={{ padding: "8px 10px", border: "1px solid #222", background: "#101010", color: "#444", fontSize: 9, fontFamily: "var(--font-mono)", cursor: "default", flexShrink: 0 }}>
+                        LOCKED
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
           </motion.div>
         )}

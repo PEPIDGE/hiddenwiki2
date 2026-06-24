@@ -15,6 +15,27 @@ export default function CultPage() {
         <div style={{ height: 1, background: `linear-gradient(90deg, ${ACCENT}, transparent)`, marginTop: 8 }} />
       </div>
 
+      <Link
+        href="/hidden-wiki-2/cult/chat-system"
+        style={{
+          display: "block",
+          padding: "14px 16px",
+          marginBottom: 14,
+          background: `${ACCENT}08`,
+          border: `1px solid ${ACCENT}35`,
+          color: ACCENT,
+          textDecoration: "none",
+          fontFamily: "var(--font-mono)",
+        }}
+      >
+        <div style={{ fontSize: 9, letterSpacing: "0.18em", color: `${ACCENT}99`, marginBottom: 5 }}>
+          MEMBER ACCOUNTS // ALL CULTS
+        </div>
+        <div style={{ fontSize: 15, fontWeight: 700, lineHeight: 1.4 }}>
+          ОТВОРИ CHAT SYSTEM
+        </div>
+      </Link>
+
       <div style={{ display: "grid", gap: 8 }}>
         {CULTS.map((cult, index) => {
           return (

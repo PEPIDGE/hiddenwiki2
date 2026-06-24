@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { CultChatSystemPanel, CultOperatorsPanel } from "@/components/tor/cult-intelligence-panels"
+import { CultOperatorsPanel } from "@/components/tor/cult-intelligence-panels"
 import { GlitchText } from "@/components/tor/glitch-text"
 import { SaveCultClueButton } from "@/components/tor/save-cult-clue-button"
 import { CULTS, getCultBySlug, type CultRisk } from "@/lib/cults"
@@ -326,7 +326,6 @@ export default async function CultDetailPage({
       </section>
 
       <CultOperatorsPanel cultName={cult.name} sourceRoute={sourceRoute} />
-      <CultChatSystemPanel cultName={cult.name} sourceRoute={sourceRoute} />
     </article>
   )
 }
