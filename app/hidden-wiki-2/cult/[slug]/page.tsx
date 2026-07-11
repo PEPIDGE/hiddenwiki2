@@ -245,48 +245,50 @@ export default async function CultDetailPage({
         </section>
       )}
 
-      <section style={{ marginBottom: 28 }}>
-        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", letterSpacing: "0.2em", marginBottom: 10 }}>
-          LONG FORM DOSSIER
-        </div>
-        <div style={{ borderTop: "1px solid #151515" }}>
-          {cult.article.map((paragraph, index) => (
-            <div
-              key={index}
-              style={{
-                margin: 0,
-                padding: "16px 0",
-                borderBottom: "1px solid #111",
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
-                <p
-                  style={{
-                    flex: 1,
-                    minWidth: 0,
-                    margin: 0,
-                    fontSize: 13,
-                    lineHeight: 1.9,
-                    color: "#c6c6c6",
-                    fontFamily: "var(--font-mono)",
-                  }}
-                >
-                  {paragraph}
-                </p>
-                <SaveCultClueButton
-                  clueId={`cult-${cult.slug}-article-${index + 1}`}
-                  name={cult.name}
-                  clue={paragraph}
-                  clueTitle={clueTitle(`DOSSIER ${String(index + 1).padStart(2, "0")}`)}
-                  sourceRoute={sourceRoute}
-                  confidence={confidence}
-                  compact
-                />
+      {cult.article.length > 0 && (
+        <section style={{ marginBottom: 28 }}>
+          <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", letterSpacing: "0.2em", marginBottom: 10 }}>
+            LONG FORM DOSSIER
+          </div>
+          <div style={{ borderTop: "1px solid #151515" }}>
+            {cult.article.map((paragraph, index) => (
+              <div
+                key={index}
+                style={{
+                  margin: 0,
+                  padding: "16px 0",
+                  borderBottom: "1px solid #111",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
+                  <p
+                    style={{
+                      flex: 1,
+                      minWidth: 0,
+                      margin: 0,
+                      fontSize: 13,
+                      lineHeight: 1.9,
+                      color: "#c6c6c6",
+                      fontFamily: "var(--font-mono)",
+                    }}
+                  >
+                    {paragraph}
+                  </p>
+                  <SaveCultClueButton
+                    clueId={`cult-${cult.slug}-article-${index + 1}`}
+                    name={cult.name}
+                    clue={paragraph}
+                    clueTitle={clueTitle(`DOSSIER ${String(index + 1).padStart(2, "0")}`)}
+                    sourceRoute={sourceRoute}
+                    confidence={confidence}
+                    compact
+                  />
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </section>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section style={{ marginBottom: 28 }}>
         <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", letterSpacing: "0.2em", marginBottom: 10 }}>
