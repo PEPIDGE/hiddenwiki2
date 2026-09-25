@@ -3,23 +3,23 @@
 import { useState, useEffect, Suspense } from "react"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
-import { GlitchText } from "@/components/tor/glitch-text"
 import { AnimatePresence, motion } from "framer-motion"
 import { ArrowLeft, Folder, FolderOpen } from "lucide-react"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
+import { PageHeader } from "@/components/tor/ui"
 
 const ACCENT = "#FFB000"
 
 type DocCategory =
-  | "\u041b\u0418\u0427\u041d\u0418 \u041a\u0410\u0420\u0422\u0418 / \u041f\u0410\u0421\u041f\u041e\u0420\u0422\u0418"
-  | "\u0428\u041e\u0424\u042c\u041e\u0420\u0421\u041a\u0418 \u041a\u041d\u0418\u0416\u041a\u0418"
-  | "\u0414\u0410\u041d\u0410\u0427\u041d\u0418 \u0414\u041e\u041a\u0423\u041c\u0415\u041d\u0422\u0418"
-  | "\u0422\u0420\u0423\u0414\u041e\u0412\u0418 \u0414\u041e\u0413\u041e\u0412\u041e\u0420\u0418"
-  | "\u0424\u0418\u0420\u041c\u0415\u041d\u0418 \u0414\u041e\u0413\u041e\u0412\u041e\u0420\u0418"
-  | "\u041f\u0420\u0415\u0417\u0415\u041d\u0422\u0410\u0426\u0418\u0418"
-  | "\u041b\u0418\u0427\u041d\u0418 \u0421\u041d\u0418\u041c\u041a\u0418 / \u0412\u0418\u0414\u0415\u041e"
-  | "\u041f\u041e\u041b\u0418\u0426\u0415\u0419\u0421\u041a\u0418 / \u0421\u042a\u0414\u0415\u0411\u041d\u0418"
-  | "\u0418\u041c\u041e\u0422\u041d\u0418 \u0414\u041e\u041a\u0423\u041c\u0415\u041d\u0422\u0418"
+  | "ЛИЧНИ КАРТИ / ПАСПОРТИ"
+  | "ШОФЬОРСКИ КНИЖКИ"
+  | "ДАНАЧНИ ДОКУМЕНТИ"
+  | "ТРУДОВИ ДОГОВОРИ"
+  | "ФИРМЕНИ ДОГОВОРИ"
+  | "ПРЕЗЕНТАЦИИ"
+  | "ЛИЧНИ СНИМКИ / ВИДЕО"
+  | "ПОЛИЦЕЙСКИ / СЪДЕБНИ"
+  | "ИМОТНИ ДОКУМЕНТИ"
 
 interface Doc {
   id: string
@@ -39,15 +39,15 @@ interface DocFolder {
   docs: Doc[]
 }
 
-const CAT_ID    = "\u041b\u0418\u0427\u041d\u0418 \u041a\u0410\u0420\u0422\u0418 / \u041f\u0410\u0421\u041f\u041e\u0420\u0422\u0418"
-const CAT_DL    = "\u0428\u041e\u0424\u042c\u041e\u0420\u0421\u041a\u0418 \u041a\u041d\u0418\u0416\u041a\u0418"
-const CAT_TAX   = "\u0414\u0410\u041d\u0410\u0427\u041d\u0418 \u0414\u041e\u041a\u0423\u041c\u0415\u041d\u0422\u0418"
-const CAT_HR    = "\u0422\u0420\u0423\u0414\u041e\u0412\u0418 \u0414\u041e\u0413\u041e\u0412\u041e\u0420\u0418"
-const CAT_CORP  = "\u0424\u0418\u0420\u041c\u0415\u041d\u0418 \u0414\u041e\u0413\u041e\u0412\u041e\u0420\u0418"
-const CAT_PPT   = "\u041f\u0420\u0415\u0417\u0415\u041d\u0422\u0410\u0426\u0418\u0418"
-const CAT_IMG   = "\u041b\u0418\u0427\u041d\u0418 \u0421\u041d\u0418\u041c\u041a\u0418 / \u0412\u0418\u0414\u0415\u041e"
-const CAT_LAW   = "\u041f\u041e\u041b\u0418\u0426\u0415\u0419\u0421\u041a\u0418 / \u0421\u042a\u0414\u0415\u0411\u041d\u0418"
-const CAT_PROP  = "\u0418\u041c\u041e\u0422\u041d\u0418 \u0414\u041e\u041a\u0423\u041c\u0415\u041d\u0422\u0418"
+const CAT_ID    = "ЛИЧНИ КАРТИ / ПАСПОРТИ"
+const CAT_DL    = "ШОФЬОРСКИ КНИЖКИ"
+const CAT_TAX   = "ДАНАЧНИ ДОКУМЕНТИ"
+const CAT_HR    = "ТРУДОВИ ДОГОВОРИ"
+const CAT_CORP  = "ФИРМЕНИ ДОГОВОРИ"
+const CAT_PPT   = "ПРЕЗЕНТАЦИИ"
+const CAT_IMG   = "ЛИЧНИ СНИМКИ / ВИДЕО"
+const CAT_LAW   = "ПОЛИЦЕЙСКИ / СЪДЕБНИ"
+const CAT_PROP  = "ИМОТНИ ДОКУМЕНТИ"
 
 const BASE_DOCS: Doc[] = [
   {
@@ -58,8 +58,8 @@ const BASE_DOCS: Doc[] = [
     date: "2025-10-02",
     size: "184 KB",
     source: "anon_dump_@leakbot",
-    preview: "\u0421\u043a\u0430\u043d\u0438\u0440\u0430\u043d\u0430 \u043b\u0438\u0447\u043d\u0430 \u043a\u0430\u0440\u0442\u0430: \u041f\u0435\u0442\u044a\u0440 \u0418\u0432\u0430\u043d\u043e\u0432 \u041f\u0435\u0442\u0440\u043e\u0432, \u0415\u0413\u041d 9004**1234, \u0438\u0437\u0434\u0430\u0434\u0435\u043d\u0430 \u041c\u0412\u0420 \u041f\u043b\u043e\u0432\u0434\u0438\u0432 2021. \u0410\u0434\u0440\u0435\u0441: \u0443\u043b. \u0420\u043e\u0437\u0430 14, \u0435\u0442. 3. \u0411\u0435\u0437 \u0432\u0440\u044a\u0437\u043a\u0430 \u0441 \u043e\u0441\u043d\u043e\u0432\u043d\u0438\u044f \u0441\u043b\u0443\u0447\u0430\u0439.",
-    tags: ["\u043b\u0438\u0447\u043d\u0430 \u043a\u0430\u0440\u0442\u0430", "scan", "\u043b\u0438\u0447\u043d\u0438 \u0434\u0430\u043d\u043d\u0438"],
+    preview: "Сканирана лична карта: Петър Иванов Петров, ЕГН 9004**1234, издадена МВР Пловдив 2021. Адрес: ул. Роза 14, ет. 3. Без връзка с основния случай.",
+    tags: ["лична карта", "scan", "лични данни"],
   },
   {
     id: "D-002",
@@ -69,8 +69,8 @@ const BASE_DOCS: Doc[] = [
     date: "2025-10-08",
     size: "210 KB",
     source: "anon_dump_@leakbot",
-    preview: "\u041f\u0430\u0441\u043f\u043e\u0440\u0442: \u041c\u0430\u0440\u0438\u044f \u041a\u043e\u0441\u0442\u0430\u0434\u0438\u043d\u043e\u0432\u0430 \u0418\u0432\u0430\u043d\u043e\u0432\u0430, \u2116 BG7854321, \u0432\u0430\u043b\u0438\u0434\u0435\u043d \u0434\u043e 2028. \u0421\u043d\u0438\u043c\u043a\u0430\u0442\u0430 \u0435 \u0447\u0430\u0441\u0442\u0438\u0447\u043d\u043e \u0437\u0430\u043c\u044a\u0433\u043b\u0435\u043d\u0430. \u041b\u0438\u0446\u0435\u0442\u043e \u043d\u0435 \u0435 \u0438\u0434\u0435\u043d\u0442\u0438\u0444\u0438\u0446\u0438\u0440\u0430\u043d\u043e \u0432 \u0441\u043b\u0443\u0447\u0430\u044f.",
-    tags: ["\u043f\u0430\u0441\u043f\u043e\u0440\u0442", "scan", "\u043b\u0438\u0447\u043d\u0438 \u0434\u0430\u043d\u043d\u0438"],
+    preview: "Паспорт: Мария Костадинова Иванова, № BG7854321, валиден до 2028. Снимката е частично замъглена. Лицето не е идентифицирано в случая.",
+    tags: ["паспорт", "scan", "лични данни"],
   },
   {
     id: "D-003",
@@ -80,8 +80,8 @@ const BASE_DOCS: Doc[] = [
     date: "2025-09-29",
     size: "96 KB",
     source: "paste_mirror_09",
-    preview: "\u0428\u043e\u0444\u044c\u043e\u0440\u0441\u043a\u0430 \u043a\u043d\u0438\u0436\u043a\u0430: \u0413\u0435\u043e\u0440\u0433\u0438 \u041a\u0440\u0430\u0441\u0438\u043c\u0438\u0440\u043e\u0432 \u0421\u0442\u043e\u044f\u043d\u043e\u0432, \u043a\u0430\u0442. B/C, \u0438\u0437\u0434\u0430\u0434\u0435\u043d\u0430 2019, \u0432\u0430\u043b\u0438\u0434\u043d\u0430 \u0434\u043e 2029. \u0415\u0413\u041d \u0447\u0430\u0441\u0442\u0438\u0447\u043d\u043e \u0432\u0438\u0434\u0438\u043c. \u041d\u0435 \u0441\u044a\u043e\u0442\u0432\u0435\u0442\u0441\u0442\u0432\u0430 \u043d\u0430 \u043d\u0438\u0442\u043e \u0435\u0434\u043d\u043e \u041f\u041f\u0421 \u0432 \u0441\u043b\u0443\u0447\u0430\u044f.",
-    tags: ["\u0448\u043e\u0444\u044c\u043e\u0440\u0441\u043a\u0430 \u043a\u043d\u0438\u0436\u043a\u0430", "\u043b\u0438\u0447\u043d\u0438 \u0434\u0430\u043d\u043d\u0438"],
+    preview: "Шофьорска книжка: Георги Красимиров Стоянов, кат. B/C, издадена 2019, валидна до 2029. ЕГН частично видим. Не съответства на нито едно ППС в случая.",
+    tags: ["шофьорска книжка", "лични данни"],
   },
   {
     id: "D-004",
@@ -91,8 +91,8 @@ const BASE_DOCS: Doc[] = [
     date: "2025-10-11",
     size: "74 KB",
     source: "paste_mirror_09",
-    preview: "\u0428\u043e\u0444\u044c\u043e\u0440\u0441\u043a\u0430 \u043a\u043d\u0438\u0436\u043a\u0430: \u0415\u043b\u0435\u043d\u0430 \u0412\u0430\u043b\u0435\u043d\u0442\u0438\u043d\u043e\u0432\u0430 \u0414\u0438\u043c\u0438\u0442\u0440\u043e\u0432\u0430, \u043a\u0430\u0442. B, \u0438\u0437\u0434\u0430\u0434\u0435\u043d\u0430 \u041c\u0412\u0420 \u0412\u0430\u0440\u043d\u0430 2022. \u0410\u0434\u0440\u0435\u0441\u044a\u0442 \u043d\u0430 \u0433\u044a\u0440\u0431\u0430 \u0435 \u043d\u0435\u0447\u0435\u0442\u043b\u0438\u0432. \u0411\u0435\u0437 \u043e\u0442\u043d\u043e\u0448\u0435\u043d\u0438\u0435 \u043a\u044a\u043c \u0440\u0430\u0437\u0441\u043b\u0435\u0434\u0432\u0430\u043d\u0435\u0442\u043e.",
-    tags: ["\u0448\u043e\u0444\u044c\u043e\u0440\u0441\u043a\u0430 \u043a\u043d\u0438\u0436\u043a\u0430", "\u043b\u0438\u0447\u043d\u0438 \u0434\u0430\u043d\u043d\u0438"],
+    preview: "Шофьорска книжка: Елена Валентинова Димитрова, кат. B, издадена МВР Варна 2022. Адресът на гърба е нечетлив. Без отношение към разследването.",
+    tags: ["шофьорска книжка", "лични данни"],
   },
   {
     id: "D-005",
@@ -102,8 +102,8 @@ const BASE_DOCS: Doc[] = [
     date: "2025-04-30",
     size: "118 KB",
     source: "nap_leak_mirror",
-    preview: "\u0414\u0430\u043d\u044a\u0447\u043d\u0430 \u0434\u0435\u043a\u043b\u0430\u0440\u0430\u0446\u0438\u044f \u043e\u0431\u0440. 2001 \u0437\u0430 2024 \u0433.: \u0410\u043b\u0435\u043a\u0441\u0430\u043d\u0434\u044a\u0440 \u041d\u0438\u043a\u043e\u043b\u043e\u0432, \u0414\u041e\u0418 8392****. \u0414\u043e\u0445\u043e\u0434\u0438 \u043e\u0442 \u0442\u0440\u0443\u0434\u043e\u0432\u043e \u043f\u0440\u0430\u0432\u043e\u043e\u0442\u043d\u043e\u0448\u0435\u043d\u0438\u0435: 38 400 \u043b\u0432. \u0421\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u0435\u043d \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442, \u0431\u0435\u0437 \u043d\u0435\u0440\u0435\u0434\u043d\u043e\u0441\u0442\u0438.",
-    tags: ["\u0434\u0430\u043d\u044a\u0447\u043d\u0430 \u0434\u0435\u043a\u043b\u0430\u0440\u0430\u0446\u0438\u044f", "\u041d\u0410\u041f", "\u0444\u0438\u0437\u0438\u0447\u0435\u0441\u043a\u043e \u043b\u0438\u0446\u0435"],
+    preview: "Данъчна декларация обр. 2001 за 2024 г.: Александър Николов, ДОИ 8392****. Доходи от трудово правоотношение: 38 400 лв. Стандартен документ, без нередности.",
+    tags: ["данъчна декларация", "НАП", "физическо лице"],
   },
   {
     id: "D-006",
@@ -113,8 +113,8 @@ const BASE_DOCS: Doc[] = [
     date: "2025-10-14",
     size: "52 KB",
     source: "nap_leak_mirror",
-    preview: "\u0414\u0414\u0421 \u0434\u0435\u043a\u043b\u0430\u0440\u0430\u0446\u0438\u044f \u0437\u0430 Q3 2025: \u0417\u0432\u0435\u0437\u0434\u0430 \u0415\u041e\u041e\u0414, \u0415\u0418\u041a 2059****. \u041d\u0430\u0447\u0438\u0441\u043b\u0435\u043d \u0414\u0414\u0421 12 800 \u043b\u0432, \u043f\u0440\u0438\u0441\u043f\u0430\u0434\u043d\u0430\u0442 9 400 \u043b\u0432. \u0420\u0435\u0434\u043e\u0432\u043d\u0430 \u0434\u0435\u043a\u043b\u0430\u0440\u0430\u0446\u0438\u044f, \u0431\u0435\u0437 \u0434\u0430\u043d\u044a\u0447\u043d\u0438 \u043d\u0430\u0440\u0443\u0448\u0435\u043d\u0438\u044f.",
-    tags: ["\u0414\u0414\u0421", "\u0444\u0438\u0440\u043c\u0430", "\u0434\u0430\u043d\u044a\u0447\u043d\u0438"],
+    preview: "ДДС декларация за Q3 2025: Звезда ЕООД, ЕИК 2059****. Начислен ДДС 12 800 лв, приспаднат 9 400 лв. Редовна декларация, без данъчни нарушения.",
+    tags: ["ДДС", "фирма", "данъчни"],
   },
   {
     id: "D-007",
@@ -124,8 +124,8 @@ const BASE_DOCS: Doc[] = [
     date: "2024-03-01",
     size: "140 KB",
     source: "hr_dump_v2",
-    preview: "\u0422\u0440\u0443\u0434\u043e\u0432 \u0434\u043e\u0433\u043e\u0432\u043e\u0440: \u0415\u043b\u0435\u043d\u0430 \u0412\u0430\u043b\u0435\u043d\u0442\u0438\u043d\u043e\u0432\u0430 \u0414\u0438\u043c\u0438\u0442\u0440\u043e\u0432\u0430, \u0434\u043b\u044a\u0436\u043d\u043e\u0441\u0442 \u041c\u0435\u043d\u0438\u0434\u0436\u044a\u0440 \u043e\u0431\u0441\u043b\u0443\u0436\u0432\u0430\u043d\u0435 \u043d\u0430 \u043a\u043b\u0438\u0435\u043d\u0442\u0438, \u0431\u0440\u0443\u0442\u043d\u0430 \u0437\u0430\u043f\u043b\u0430\u0442\u0430 2 800 \u043b\u0432/\u043c\u0435\u0441, \u0440\u0430\u0431\u043e\u0442\u043e\u0434\u0430\u0442\u0435\u043b: \u041c\u0435\u0434\u0438\u0430 \u0413\u0440\u0443\u043f \u0415\u041e\u041e\u0414. \u0421\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u0435\u043d \u0434\u043e\u0433\u043e\u0432\u043e\u0440.",
-    tags: ["\u0442\u0440\u0443\u0434\u043e\u0432 \u0434\u043e\u0433\u043e\u0432\u043e\u0440", "\u0437\u0430\u043f\u043b\u0430\u0442\u0430", "\u0441\u043b\u0443\u0436\u0438\u0442\u0435\u043b"],
+    preview: "Трудов договор: Елена Валентинова Димитрова, длъжност Мениджър обслужване на клиенти, брутна заплата 2 800 лв/мес, работодател: Медиа Груп ЕООД. Стандартен договор.",
+    tags: ["трудов договор", "заплата", "служител"],
   },
   {
     id: "D-008",
@@ -135,8 +135,8 @@ const BASE_DOCS: Doc[] = [
     date: "2025-10-31",
     size: "38 KB",
     source: "hr_dump_v2",
-    preview: "\u0424\u0438\u0448 \u0437\u0430 \u0437\u0430\u043f\u043b\u0430\u0442\u0430: \u0414\u0438\u043c\u0438\u0442\u044a\u0440 \u041a\u043e\u043b\u0435\u0432, \u043e\u043a\u0442\u043e\u043c\u0432\u0440\u0438 2025. \u0411\u0440\u0443\u0442\u043d\u043e 3 200 \u043b\u0432, \u043d\u0435\u0442\u043e 2 414 \u043b\u0432. \u0420\u0430\u0431\u043e\u0442\u043e\u0434\u0430\u0442\u0435\u043b: \u0418\u043d\u0444\u043e\u0442\u0435\u0445 \u0410\u0414. \u0411\u0435\u0437 \u043d\u0435\u0440\u0435\u0434\u043d\u043e\u0441\u0442\u0438.",
-    tags: ["\u0444\u0438\u0448", "\u0437\u0430\u043f\u043b\u0430\u0442\u0430", "\u0441\u043b\u0443\u0436\u0438\u0442\u0435\u043b"],
+    preview: "Фиш за заплата: Димитър Колев, октомври 2025. Брутно 3 200 лв, нето 2 414 лв. Работодател: Инфотех АД. Без нередности.",
+    tags: ["фиш", "заплата", "служител"],
   },
   {
     id: "D-009",
@@ -146,8 +146,8 @@ const BASE_DOCS: Doc[] = [
     date: "2025-07-15",
     size: "88 KB",
     source: "corp_leak_07",
-    preview: "NDA \u043c\u0435\u0436\u0434\u0443 \u0417\u0432\u0435\u0437\u0434\u0430 \u0425\u043e\u043b\u0434\u0438\u043d\u0433 \u0410\u0414 \u0438 \u041c\u0435\u0434\u0438\u0430 \u0413\u0440\u0443\u043f \u0415\u041e\u041e\u0414, \u0441\u0440\u043e\u043a 3 \u0433. \u0421\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u0438 \u043a\u043b\u0430\u0443\u0437\u0438 \u0437\u0430 \u043f\u043e\u0432\u0435\u0440\u0438\u0442\u0435\u043b\u043d\u043e\u0441\u0442. \u041d\u0435 \u0441\u0430 \u0432\u043a\u043b\u044e\u0447\u0435\u043d\u0438 \u0438\u043c\u0435\u043d\u0430 \u0438\u043b\u0438 \u0442\u0435\u043c\u0438 \u0441 \u043e\u0442\u043d\u043e\u0448\u0435\u043d\u0438\u0435 \u043a\u044a\u043c \u0441\u043b\u0443\u0447\u0430\u044f.",
-    tags: ["NDA", "\u0434\u043e\u0433\u043e\u0432\u043e\u0440", "\u0444\u0438\u0440\u043c\u0430"],
+    preview: "NDA между Звезда Холдинг АД и Медиа Груп ЕООД, срок 3 г. Стандартни клаузи за поверителност. Не са включени имена или теми с отношение към случая.",
+    tags: ["NDA", "договор", "фирма"],
   },
   {
     id: "D-010",
@@ -157,8 +157,8 @@ const BASE_DOCS: Doc[] = [
     date: "2025-08-01",
     size: "204 KB",
     source: "corp_leak_07",
-    preview: "\u041f\u0430\u0440\u0442\u043d\u044c\u043e\u0440\u0441\u043a\u0438 \u0434\u043e\u0433\u043e\u0432\u043e\u0440: GreenTech Ltd. & \u0411\u0443\u043b\u0433\u0430\u0440\u043e\u0438\u043b \u0410\u0414. \u0421\u044a\u0432\u043c\u0435\u0441\u0442\u0435\u043d \u043f\u0440\u043e\u0435\u043a\u0442 \u0437\u0430 \u0441\u043e\u043b\u0430\u0440\u043d\u0430 \u0446\u0435\u043d\u0442\u0440\u0430\u043b\u0430, \u0431\u044e\u0434\u0436\u0435\u0442 EUR 2.1 \u043c\u043b\u043d. \u0411\u0435\u0437 \u043e\u0442\u043d\u043e\u0448\u0435\u043d\u0438\u0435 \u043a\u044a\u043c \u0440\u0430\u0437\u0441\u043b\u0435\u0434\u0432\u0430\u043d\u0435\u0442\u043e.",
-    tags: ["\u043f\u0430\u0440\u0442\u043d\u044c\u043e\u0440\u0441\u0442\u0432\u043e", "\u0434\u043e\u0433\u043e\u0432\u043e\u0440", "\u0444\u0438\u0440\u043c\u0430"],
+    preview: "Партньорски договор: GreenTech Ltd. & Булгароил АД. Съвместен проект за соларна централа, бюджет EUR 2.1 млн. Без отношение към разследването.",
+    tags: ["партньорство", "договор", "фирма"],
   },
   {
     id: "D-011",
@@ -168,8 +168,8 @@ const BASE_DOCS: Doc[] = [
     date: "2025-09-05",
     size: "3.2 MB",
     source: "gdrive_mirror_anon",
-    preview: "\u0412\u044a\u0442\u0440\u0435\u0448\u043d\u0430 \u043f\u0440\u0435\u0437\u0435\u043d\u0442\u0430\u0446\u0438\u044f \u0417\u0432\u0435\u0437\u0434\u0430 \u0425\u043e\u043b\u0434\u0438\u043d\u0433 Q3 2025: \u043f\u0430\u0437\u0430\u0440\u0435\u043d \u0443\u0434\u044f\u043b, \u043f\u0440\u043e\u0433\u043d\u043e\u0437\u0438, KPI-\u0442\u0430. 34 \u0441\u043b\u0430\u0439\u0434\u0430. \u0421\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u043e \u0431\u0438\u0437\u043d\u0435\u0441 \u0441\u044a\u0434\u044a\u0440\u0436\u0430\u043d\u0438\u0435, \u0431\u0435\u0437 \u0447\u0443\u0432\u0441\u0442\u0432\u0438\u0442\u0435\u043b\u043d\u0438 \u0434\u0430\u043d\u043d\u0438 \u0437\u0430 \u0441\u043b\u0443\u0447\u0430\u044f.",
-    tags: ["\u043f\u0440\u0435\u0437\u0435\u043d\u0442\u0430\u0446\u0438\u044f", "\u0431\u0438\u0437\u043d\u0435\u0441 \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u044f", "\u0432\u044a\u0442\u0440\u0435\u0448\u0435\u043d"],
+    preview: "Вътрешна презентация Звезда Холдинг Q3 2025: пазарен удял, прогнози, KPI-та. 34 слайда. Стандартно бизнес съдържание, без чувствителни данни за случая.",
+    tags: ["презентация", "бизнес стратегия", "вътрешен"],
   },
   {
     id: "D-012",
@@ -179,8 +179,8 @@ const BASE_DOCS: Doc[] = [
     date: "2025-09-20",
     size: "1.8 MB",
     source: "gdrive_mirror_anon",
-    preview: "\u041f\u0440\u043e\u0435\u043a\u0442 \u043d\u0430 \u0433\u043e\u0434\u0438\u0448\u0435\u043d \u043e\u0442\u0447\u0435\u0442 2024 -- \u0417\u0432\u0435\u0437\u0434\u0430 \u0425\u043e\u043b\u0434\u0438\u043d\u0433. \u041f\u0440\u0438\u0445\u043e\u0434\u0438 4.7 \u043c\u043b\u043d \u043b\u0432, EBITDA 18%. \u041c\u0430\u0440\u043a\u0438\u0440\u0430\u043d DRAFT CONFIDENTIAL. \u0424\u0438\u043d\u0430\u043d\u0441\u043e\u0432\u043e \u043d\u0435\u0437\u043d\u0430\u0447\u0438\u0442\u0435\u043b\u0435\u043d \u0437\u0430 \u0441\u043b\u0443\u0447\u0430\u044f.",
-    tags: ["\u043e\u0442\u0447\u0435\u0442", "\u0431\u0438\u0437\u043d\u0435\u0441", "\u0432\u044a\u0442\u0440\u0435\u0448\u0435\u043d"],
+    preview: "Проект на годишен отчет 2024 -- Звезда Холдинг. Приходи 4.7 млн лв, EBITDA 18%. Маркиран DRAFT CONFIDENTIAL. Финансово незначителен за случая.",
+    tags: ["отчет", "бизнес", "вътрешен"],
   },
   {
     id: "D-013",
@@ -190,8 +190,8 @@ const BASE_DOCS: Doc[] = [
     date: "2025-10-17",
     size: "412 MB",
     source: "cloud_breach_mirror",
-    preview: "342 \u043b\u0438\u0447\u043d\u0438 \u0441\u043d\u0438\u043c\u043a\u0438 \u043e\u0442 iCloud \u0430\u043a\u0430\u0443\u043d\u0442: \u0432\u0430\u043a\u0430\u043d\u0446\u0438\u0438, \u0441\u0435\u043c\u0435\u0439\u043d\u0438 \u0441\u044a\u0431\u0438\u0440\u0430\u043d\u0438\u044f, \u0441\u0435\u043b\u0444\u0438\u0442\u0430. \u0411\u0435\u0437 \u043b\u043e\u043a\u0430\u0446\u0438\u043e\u043d\u043d\u0438 \u043c\u0435\u0442\u0430\u0434\u0430\u043d\u043d\u0438. \u041b\u0438\u0446\u0430\u0442\u0430 \u043d\u0435 \u0441\u0430 \u0440\u0430\u0437\u043f\u043e\u0437\u043d\u0430\u0442\u0438 \u0432 \u0440\u0430\u0437\u0441\u043b\u0435\u0434\u0432\u0430\u043d\u0435\u0442\u043e.",
-    tags: ["\u0441\u043d\u0438\u043c\u043a\u0438", "iCloud", "\u043b\u0438\u0447\u043d\u0438 \u0434\u0430\u043d\u043d\u0438"],
+    preview: "342 лични снимки от iCloud акаунт: ваканции, семейни събирания, селфита. Без локационни метаданни. Лицата не са разпознати в разследването.",
+    tags: ["снимки", "iCloud", "лични данни"],
   },
   {
     id: "D-014",
@@ -201,8 +201,8 @@ const BASE_DOCS: Doc[] = [
     date: "2025-06-20",
     size: "87 MB",
     source: "cloud_breach_mirror",
-    preview: "\u0412\u0438\u0434\u0435\u043e 3:42 \u043c\u0438\u043d \u043e\u0442 Google Drive: \u0441\u0435\u043c\u0435\u0439\u043d\u043e \u0441\u044a\u0431\u0438\u0440\u0430\u043d\u0435 \u043d\u0430 \u043e\u0442\u043a\u0440\u0438\u0442\u043e, \u043b\u0435\u0442\u0435\u043d \u0434\u0435\u043d. \u0413\u043b\u0430\u0441\u043e\u0432\u0435\u0442\u0435 \u0441\u0430 \u043d\u0435\u0440\u0430\u0437\u043f\u043e\u0437\u043d\u0430\u0432\u0430\u0435\u043c\u0438. \u0411\u0435\u0437 \u0440\u0435\u043b\u0435\u0432\u0430\u043d\u0442\u043d\u043e \u0441\u044a\u0434\u044a\u0440\u0436\u0430\u043d\u0438\u0435.",
-    tags: ["\u0432\u0438\u0434\u0435\u043e", "Google Drive", "\u043b\u0438\u0447\u043d\u0438 \u0434\u0430\u043d\u043d\u0438"],
+    preview: "Видео 3:42 мин от Google Drive: семейно събиране на открито, летен ден. Гласовете са неразпознаваеми. Без релевантно съдържание.",
+    tags: ["видео", "Google Drive", "лични данни"],
   },
   {
     id: "D-015",
@@ -212,8 +212,8 @@ const BASE_DOCS: Doc[] = [
     date: "2025-09-12",
     size: "62 KB",
     source: "anon_gov_leak",
-    preview: "\u041f\u043e\u043b\u0438\u0446\u0435\u0439\u0441\u043a\u0438 \u043f\u0440\u043e\u0442\u043e\u043a\u043e\u043b \u0437\u0430 \u041f\u0422\u041f \u043e\u0442 12.09.2025, \u0431\u0443\u043b. \u0412\u0438\u0442\u043e\u0448\u0430, \u0431\u0435\u0437 \u043f\u043e\u0441\u0442\u0440\u0430\u0434\u0430\u043b\u0438 \u043b\u0438\u0446\u0430. \u0412\u0438\u043d\u043e\u0432\u0435\u043d: \u043d\u0435\u0443\u0441\u0442\u0430\u043d\u043e\u0432\u0435\u043d \u0432\u043e\u0434\u0430\u0447. \u041f\u0440\u0435\u0432\u043e\u0437\u043d\u043e\u0442\u043e \u0441\u0440\u0435\u0434\u0441\u0442\u0432\u043e \u043d\u0435 \u0441\u044a\u0432\u043f\u0430\u0434\u0430 \u0441 \u043d\u0438\u0442\u043e \u0435\u0434\u043d\u043e \u0432 \u0441\u043b\u0443\u0447\u0430\u044f.",
-    tags: ["\u043f\u043e\u043b\u0438\u0446\u0438\u044f", "\u041f\u0422\u041f", "\u043f\u0440\u043e\u0442\u043e\u043a\u043e\u043b"],
+    preview: "Полицейски протокол за ПТП от 12.09.2025, бул. Витоша, без пострадали лица. Виновен: неустановен водач. Превозното средство не съвпада с нито едно в случая.",
+    tags: ["полиция", "ПТП", "протокол"],
   },
   {
     id: "D-016",
@@ -223,8 +223,8 @@ const BASE_DOCS: Doc[] = [
     date: "2025-08-28",
     size: "110 KB",
     source: "anon_gov_leak",
-    preview: "\u0420\u0435\u0448\u0435\u043d\u0438\u0435 \u043d\u0430 \u0421\u0420\u0421 \u043f\u043e \u0433\u0440\u0430\u0436\u0434\u0430\u043d\u0441\u043a\u043e \u0434\u0435\u043b\u043e \u0437\u0430 \u0438\u043c\u0443\u0449\u0435\u0441\u0442\u0432\u0435\u043d \u0441\u043f\u043e\u0440 -- \u043f\u0440\u0438\u043a\u043b\u044e\u0447\u0435\u043d\u043e \u0432 \u043f\u043e\u043b\u0437\u0430 \u043d\u0430 \u0438\u0449\u0435\u0446\u0430. \u0421\u0442\u0440\u0430\u043d\u0438\u0442\u0435 \u043f\u043e \u0434\u0435\u043b\u043e\u0442\u043e \u043d\u044f\u043c\u0430\u0442 \u043e\u0442\u043d\u043e\u0448\u0435\u043d\u0438\u0435 \u043a\u044a\u043c \u0441\u043b\u0443\u0447\u0430\u044f.",
-    tags: ["\u0441\u044a\u0434", "\u0440\u0435\u0448\u0435\u043d\u0438\u0435", "\u0438\u043c\u0443\u0449\u0435\u0441\u0442\u0432\u043e"],
+    preview: "Решение на СРС по гражданско дело за имуществен спор -- приключено в полза на ищеца. Страните по делото нямат отношение към случая.",
+    tags: ["съд", "решение", "имущество"],
   },
   {
     id: "D-017",
@@ -234,8 +234,8 @@ const BASE_DOCS: Doc[] = [
     date: "2024-11-10",
     size: "156 KB",
     source: "registry_leak_bg",
-    preview: "\u041d\u043e\u0442\u0430\u0440\u0438\u0430\u043b\u0435\u043d \u0430\u043a\u0442 \u2116 114/2024: \u0430\u043f\u0430\u0440\u0442\u0430\u043c\u0435\u043d\u0442 78 \u043a\u0432.m, \u043a\u0432. \u041b\u043e\u0437\u0435\u043d\u0435\u0446, \u043f\u0440\u043e\u0434\u0430\u0432\u0430\u0447 \u0421\u0442\u0430\u043c\u043e \u041d\u0438\u043a\u043e\u043b\u043e\u0432, \u043a\u0443\u043f\u0443\u0432\u0430\u0447 \u041a\u0440\u0430\u0441\u0438\u043c\u0438\u0440\u0430 \u041f\u0435\u0442\u0440\u043e\u0432\u0430, \u0446\u0435\u043d\u0430 EUR 142 000. \u0421\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u0430 \u0441\u0434\u0435\u043b\u043a\u0430.",
-    tags: ["\u043d\u043e\u0442\u0430\u0440\u0438\u0430\u043b\u0435\u043d \u0430\u043a\u0442", "\u0430\u043f\u0430\u0440\u0442\u0430\u043c\u0435\u043d\u0442", "\u0438\u043c\u043e\u0442"],
+    preview: "Нотариален акт № 114/2024: апартамент 78 кв.m, кв. Лозенец, продавач Стамо Николов, купувач Красимира Петрова, цена EUR 142 000. Стандартна сделка.",
+    tags: ["нотариален акт", "апартамент", "имот"],
   },
   {
     id: "D-018",
@@ -245,8 +245,8 @@ const BASE_DOCS: Doc[] = [
     date: "2023-07-22",
     size: "198 KB",
     source: "registry_leak_bg",
-    preview: "\u0414\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0438 \u0437\u0430 \u0432\u0438\u043b\u0430, \u043c-\u0441\u0442 \u0422\u0440\u0430\u043a\u0430\u0442\u0430, \u0412\u0430\u0440\u043d\u0430, 2023. \u0421\u043e\u0431\u0441\u0442\u0432\u0435\u043d\u0438\u043a: \u041b\u044e\u0434\u043c\u0438\u043b\u0430 \u0422\u043e\u0434\u043e\u0440\u043e\u0432\u0430-\u041c\u0430\u043d\u0435\u0432\u0430. \u0418\u043f\u043e\u0442\u0435\u043a\u0430 \u043a\u044a\u043c \u042e\u043d\u0438\u041a\u0440\u0435\u0434\u0438\u0442 \u0411\u0443\u043b\u0431\u0430\u043d\u043a. \u0411\u0435\u0437 \u043e\u0442\u043d\u043e\u0448\u0435\u043d\u0438\u0435 \u043a\u044a\u043c \u0441\u043b\u0443\u0447\u0430\u044f.",
-    tags: ["\u0432\u0438\u043b\u0430", "\u0438\u043c\u043e\u0442", "\u0412\u0430\u0440\u043d\u0430"],
+    preview: "Документи за вила, м-ст Траката, Варна, 2023. Собственик: Людмила Тодорова-Манева. Ипотека към ЮниКредит Булбанк. Без отношение към случая.",
+    tags: ["вила", "имот", "Варна"],
   },
 ]
 
@@ -451,7 +451,7 @@ function FolderCard({ folder, onOpen }: { folder: DocFolder; onOpen: () => void 
 
         <div style={{ minWidth: 0 }}>
           <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.12em", marginBottom: 6, fontWeight: 700 }}>
-            [{CATEGORY_ICONS[folder.category]}] \u00b7 {folder.docs.length} \u0424\u0410\u0419\u041b\u0410
+            [{CATEGORY_ICONS[folder.category]}] · {folder.docs.length} ФАЙЛА
           </div>
           <div style={{ fontSize: 13, fontFamily: "var(--font-mono)", color: hovered ? "#ffffff" : "#e2e2e2", letterSpacing: "0.04em", lineHeight: 1.45, overflowWrap: "anywhere", fontWeight: 600 }}>
             {folder.category}
@@ -465,7 +465,7 @@ function FolderCard({ folder, onOpen }: { folder: DocFolder; onOpen: () => void 
 
           return (
             <div key={doc.id} style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
-              <span style={{ width: 32, flexShrink: 0, fontSize: 9, fontFamily: "var(--font-mono)", color: extColor, letterSpacing: "0.06em", fontWeight: 700 }}>
+              <span style={{ width: 32, flexShrink: 0, fontSize: 10, fontFamily: "var(--font-mono)", color: extColor, letterSpacing: "0.06em", fontWeight: 700 }}>
                 {doc.ext}
               </span>
               <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#9a9a9a", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
@@ -529,10 +529,20 @@ function LeaksDocsInner() {
   return (
     <div style={{ maxWidth: 980, margin: "0 auto" }}>
 
-      <div style={{ marginBottom: 20 }}>
+      <PageHeader
+        title="DOCS"
+        accent={ACCENT}
+        intro={
+          !activeFolder && (
+            <>
+              {DOC_FOLDERS.length} категории · {DOCS.length} изтекли документа. Избери папка, за да разгледаш файловете.
+            </>
+          )
+        }
+        kicker={
         <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-          <Link href="/hidden-wiki-2/leaks" style={crumbStyle}>\u2190 LEAKS</Link>
-          <span style={{ fontSize: 11, color: "#555", fontFamily: "var(--font-mono)" }}>/</span>
+          <Link href="/hidden-wiki-2/leaks" style={crumbStyle}>← LEAKS</Link>
+          <span style={{ fontSize: 11, color: "#7c7c7c", fontFamily: "var(--font-mono)" }}>/</span>
           {activeFolder ? (
             <button type="button" onClick={closeDocFolder} style={crumbStyle}>DOCS</button>
           ) : (
@@ -540,23 +550,15 @@ function LeaksDocsInner() {
           )}
           {activeFolder && (
             <>
-              <span style={{ fontSize: 11, color: "#555", fontFamily: "var(--font-mono)" }}>/</span>
+              <span style={{ fontSize: 11, color: "#7c7c7c", fontFamily: "var(--font-mono)" }}>/</span>
               <span style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.1em" }}>
                 {activeFolder.category}
               </span>
             </>
           )}
         </div>
-        <div style={{ marginTop: 10 }}>
-          <GlitchText text="DOCS" as="h1" intensity="low" className="text-3xl font-bold tracking-widest" color={ACCENT} />
-        </div>
-        <div style={{ height: 2, background: `linear-gradient(90deg, ${ACCENT}, transparent)`, marginTop: 10 }} />
-        {!activeFolder && (
-          <div style={{ fontSize: 12, fontFamily: "var(--font-mono)", color: "#c4c4c4", marginTop: 12, letterSpacing: "0.04em", lineHeight: 1.6 }}>
-            {DOC_FOLDERS.length} \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u0438 \u00b7 {DOCS.length} \u0438\u0437\u0442\u0435\u043a\u043b\u0438 \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430. \u0418\u0437\u0431\u0435\u0440\u0438 \u043f\u0430\u043f\u043a\u0430, \u0437\u0430 \u0434\u0430 \u0440\u0430\u0437\u0433\u043b\u0435\u0434\u0430\u0448 \u0444\u0430\u0439\u043b\u043e\u0432\u0435\u0442\u0435.
-          </div>
-        )}
-      </div>
+        }
+      />
 
       <AnimatePresence mode="wait">
         {!activeFolder ? (
@@ -590,7 +592,7 @@ function LeaksDocsInner() {
               }}
             >
               <ArrowLeft size={13} strokeWidth={1.5} />
-              \u041d\u0410\u0417\u0410\u0414 \u041a\u042a\u041c \u041f\u0410\u041f\u041a\u0418\u0422\u0415
+              НАЗАД КЪМ ПАПКИТЕ
             </button>
 
             <div style={{ marginBottom: 12, padding: "12px 16px", background: `${ACCENT}0a`, border: `1px solid ${ACCENT}40`, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
@@ -598,7 +600,7 @@ function LeaksDocsInner() {
                 [{CATEGORY_ICONS[activeFolder.category]}] {activeFolder.category}
               </div>
               <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#b0b0b0", letterSpacing: "0.1em", flexShrink: 0 }}>
-                {visibleDocs.length} \u0424\u0410\u0419\u041b\u0410
+                {visibleDocs.length} ФАЙЛА
               </div>
             </div>
 
@@ -632,7 +634,7 @@ function LeaksDocsInner() {
                         <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 5, flexWrap: "wrap" }}>
                           <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#9a9a9a", letterSpacing: "0.1em" }}>{doc.id}</span>
                           <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#c0c0c0", background: "#161616", padding: "2px 7px", border: "1px solid #2a2a2a", letterSpacing: "0.04em" }}>
-                            {doc.date} \u00b7 {doc.size}
+                            {doc.date} · {doc.size}
                           </span>
                         </div>
                         <div style={{ fontSize: 13, fontFamily: "var(--font-mono)", color: "#ececec", letterSpacing: "0.02em", marginBottom: 6, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontWeight: 600 }}>
@@ -649,7 +651,7 @@ function LeaksDocsInner() {
                       </div>
 
                       <span style={{ fontSize: 12, color: isExpanded ? ACCENT : "#8a8a8a", fontFamily: "var(--font-mono)", flexShrink: 0, marginTop: 2 }}>
-                        {isExpanded ? "\u25b2" : "\u25bc"}
+                        {isExpanded ? "▲" : "▼"}
                       </span>
                     </div>
 
@@ -672,11 +674,11 @@ function LeaksDocsInner() {
                               border: `1px solid ${isSaved ? ACCENT + "60" : "#3a3a3a"}`,
                               cursor: isSaved ? "default" : "pointer", transition: "all 0.2s",
                             }}>
-                            {isSaved ? "\u2713 \u0417\u0410\u041f\u0410\u0417\u0415\u041d\u041e" : "\u0417\u0410\u041f\u0410\u0417\u0418 \u0421\u041b\u0415\u0414\u0410"}
+                            {isSaved ? "✓ ЗАПАЗЕНО" : "ЗАПАЗИ СЛЕДА"}
                           </button>
                           {isSaved && (
                             <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#9a9a9a", letterSpacing: "0.06em" }}>
-                              \u0434\u043e\u0441\u0442\u043e\u0432\u0435\u0440\u043d\u043e\u0441\u0442: \u043d\u0438\u0441\u043a\u0430 \u00b7 \u0441\u0442\u0430\u0442\u0443\u0441: \u043d\u0435\u043f\u043e\u0442\u0432\u044a\u0440\u0434\u0435\u043d\u043e
+                              достоверност: ниска · статус: непотвърдено
                             </span>
                           )}
                         </div>
@@ -692,9 +694,9 @@ function LeaksDocsInner() {
 
       <div style={{ marginTop: 20, paddingTop: 10, borderTop: "1px solid #1a1a1a", fontSize: 10, fontFamily: "var(--font-mono)", color: "#8a8a8a", letterSpacing: "0.08em" }}>
         {activeFolder ? (
-          <>\u041f\u041e\u041a\u0410\u0417\u0410\u041d\u0418 {visibleDocs.length} / {DOCS.length} \u0414\u041e\u041a\u0423\u041c\u0415\u041d\u0422\u0410</>
+          <>ПОКАЗАНИ {visibleDocs.length} / {DOCS.length} ДОКУМЕНТА</>
         ) : (
-          <>{DOC_FOLDERS.length} \u041f\u0410\u041f\u041a\u0418 / {DOCS.length} \u0414\u041e\u041a\u0423\u041c\u0415\u041d\u0422\u0410</>
+          <>{DOC_FOLDERS.length} ПАПКИ / {DOCS.length} ДОКУМЕНТА</>
         )}
       </div>
     </div>

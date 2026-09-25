@@ -12,8 +12,8 @@ export function PageLoader({ label = "LOADING NODE" }: { label?: string }) {
       >
         <div
           style={{
-            fontSize: 9,
-            color: "#1a2a1a",
+            fontSize: 10,
+            color: "#528452",
             letterSpacing: "0.25em",
             marginBottom: 14,
           }}
@@ -30,7 +30,7 @@ export function PageLoader({ label = "LOADING NODE" }: { label?: string }) {
             key={line}
             style={{
               fontSize: 11,
-              color: index === 0 ? "#00FF41" : "#2e2e2e",
+              color: index === 0 ? "#00FF41" : "#5e5e5e",
               lineHeight: 1.9,
               letterSpacing: "0.04em",
               animation: `fade-up 0.25s ease ${index * 0.08}s both`,

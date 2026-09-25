@@ -103,7 +103,7 @@ export function EvidenceBoard() {
             </div>
             <div
               style={{
-                fontSize: 9,
+                fontSize: 10,
                 color: "#8a8a8a",
                 letterSpacing: "0.1em",
                 marginTop: 4,
@@ -207,7 +207,7 @@ export function EvidenceBoard() {
                           </div>
                           <div
                             style={{
-                              fontSize: 9,
+                              fontSize: 10,
                               color: "#9a9a9a",
                               fontFamily: "var(--font-mono)",
                               letterSpacing: "0.04em",

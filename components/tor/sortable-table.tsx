@@ -61,7 +61,7 @@ export function SortableTable<T extends Record<string, unknown>>({
   }
 
   const SortIndicator = ({ col }: { col: keyof T }) => {
-    if (sortKey !== col) return <span style={{ color: "#222", marginLeft: 4 }}>⇅</span>
+    if (sortKey !== col) return <span style={{ color: "#5a5a5a", marginLeft: 4 }}>⇅</span>
     return (
       <span style={{ color: accentColor, marginLeft: 4 }}>
         {sortDir === "asc" ? "↑" : "↓"}
@@ -89,7 +89,7 @@ export function SortableTable<T extends Record<string, unknown>>({
             onClick={() => handleSort(col.key)}
             style={{
               padding: "9px 12px",
-              fontSize: 8,
+              fontSize: 9.5,
               fontFamily: "var(--font-mono)",
               color: sortKey === col.key ? accentColor : "#444",
               letterSpacing: "0.18em",
@@ -113,7 +113,7 @@ export function SortableTable<T extends Record<string, unknown>>({
       {/* Rows */}
       <div style={{ maxHeight, overflowY: "auto", overflowX: "hidden" }}>
         {sorted.length === 0 ? (
-          <div style={{ padding: "28px 12px", textAlign: "center", fontSize: 10, fontFamily: "var(--font-mono)", color: "#2a2a2a" }}>
+          <div style={{ padding: "28px 12px", textAlign: "center", fontSize: 10, fontFamily: "var(--font-mono)", color: "#5e5e5e" }}>
             {emptyMessage}
           </div>
         ) : (
@@ -177,11 +177,11 @@ export function SortableTable<T extends Record<string, unknown>>({
         justifyContent: "space-between",
         alignItems: "center",
       }}>
-        <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#222", letterSpacing: "0.12em" }}>
+        <span style={{ fontSize: 9.5, fontFamily: "var(--font-mono)", color: "#5a5a5a", letterSpacing: "0.12em" }}>
           {sorted.length} RECORDS
         </span>
         {sortKey && (
-          <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: `${accentColor}50`, letterSpacing: "0.1em" }}>
+          <span style={{ fontSize: 9.5, fontFamily: "var(--font-mono)", color: `${accentColor}50`, letterSpacing: "0.1em" }}>
             SORT: {String(sortKey).toUpperCase()} {sortDir?.toUpperCase()}
           </span>
         )}

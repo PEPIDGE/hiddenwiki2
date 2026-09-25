@@ -1,17 +1,23 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Link from "next/link"
 import { useRouter, usePathname } from "next/navigation"
-import { motion } from "framer-motion"
+import { FolderSearch, Menu, X } from "lucide-react"
+import s from "./shell.module.css"
 
 interface TopBarProps {
   currentSite?: string
   siteColor?: string
+  navOpen?: boolean
+  evidenceOpen?: boolean
+  onToggleNav?: () => void
+  onToggleEvidence?: () => void
 }
 
 const ROOT = "/hidden-wiki-2"
 
-export function TorTopBar({ currentSite, siteColor = "#00FF41" }: TopBarProps) {
+export function TorTopBar({ currentSite, navOpen, evidenceOpen, onToggleNav, onToggleEvidence }: TopBarProps) {
   const [time, setTime] = useState("")
   const router = useRouter()
   const pathname = usePathname() ?? ""
@@ -41,161 +47,61 @@ export function TorTopBar({ currentSite, siteColor = "#00FF41" }: TopBarProps) {
     router.push(parent.startsWith(ROOT) ? parent : ROOT)
   }
 
-  return (
-    <header
-      style={{
-        height: 42,
-        background: "var(--panel-bg)",
-        borderBottom: "1px solid var(--panel-border)",
-        display: "flex",
-        alignItems: "center",
-        padding: "0 14px",
-        gap: 14,
-        flexShrink: 0,
-        position: "relative",
-        overflow: "hidden",
-        fontFamily: "var(--font-mono)",
-      }}
-    >
-      {/* Subtle bottom accent line */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: "1px",
-          background: `linear-gradient(90deg, ${siteColor}55, transparent)`,
-        }}
-      />
+  const crumbs = pathname.replace(ROOT, "").split("/").filter(Boolean)
 
-      {/* Back / up button */}
+  return (
+    <header className={s.topbar}>
       <button
-        onClick={goUp}
-        disabled={atRoot}
-        title="Назад"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          height: 28,
-          padding: 0,
-          background: atRoot ? "transparent" : "rgba(255,255,255,0.02)",
-          border: `1px solid ${atRoot ? "#1c1c1c" : "var(--panel-border)"}`,
-          color: atRoot ? "#3a3a3a" : "#dcdcdc",
-          fontFamily: "var(--font-mono)",
-          cursor: atRoot ? "not-allowed" : "pointer",
-          flexShrink: 0,
-          overflow: "hidden",
-          transition: "all 0.14s ease",
-        }}
-        onMouseEnter={(e) => {
-          if (atRoot) return
-          e.currentTarget.style.borderColor = siteColor
-          e.currentTarget.style.color = siteColor
-          e.currentTarget.style.boxShadow = `0 0 10px ${siteColor}30`
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.borderColor = atRoot ? "#1c1c1c" : "var(--panel-border)"
-          e.currentTarget.style.color = atRoot ? "#3a3a3a" : "#dcdcdc"
-          e.currentTarget.style.boxShadow = "none"
-        }}
+        type="button"
+        className={`${s.iconBtn} ${s.menuBtn}`}
+        onClick={onToggleNav}
+        data-active={navOpen ? "" : undefined}
+        aria-label="Меню"
       >
-        {/* Chevron cell */}
-        <span
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            width: 26,
-            height: "100%",
-            fontSize: 15,
-            lineHeight: 1,
-            borderRight: `1px solid ${atRoot ? "#1c1c1c" : "var(--panel-border)"}`,
-          }}
-        >
-          ‹
-        </span>
-        {/* Label cell */}
-        <span
-          style={{
-            padding: "0 12px",
-            fontSize: 10,
-            letterSpacing: "0.18em",
-            fontWeight: 700,
-          }}
-        >
-          НАЗАД
-        </span>
+        {navOpen ? <X size={15} /> : <Menu size={15} />}
       </button>
 
-      {/* Brand + current site — single aligned baseline, equal sizing */}
-      <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
-        <span
-          style={{
-            fontSize: 13,
-            fontFamily: "var(--font-mono)",
-            fontWeight: 700,
-            letterSpacing: "0.16em",
-            color: "#e8e8e8",
-            lineHeight: 1,
-          }}
-        >
-          HIDDEN WIKI 2
-        </span>
+      <button type="button" className={s.iconBtn} onClick={goUp} disabled={atRoot} title="Назад">
+        ‹ НАЗАД
+      </button>
 
+      <Link href={ROOT} className={s.brand}>
+        HIDDEN WIKI 2
         {currentSite && (
           <>
-            <span style={{ color: "#3a3a3a", fontSize: 14, lineHeight: 1, fontWeight: 300 }}>/</span>
-            <motion.span
-              key={currentSite}
-              initial={{ opacity: 0, x: -6 }}
-              animate={{ opacity: 1, x: 0 }}
-              style={{
-                fontSize: 13,
-                fontFamily: "var(--font-mono)",
-                fontWeight: 700,
-                letterSpacing: "0.16em",
-                color: siteColor,
-                lineHeight: 1,
-              }}
-            >
-              {currentSite.toUpperCase()}
-            </motion.span>
+            <i>/</i>
+            <b>{currentSite.toUpperCase()}</b>
           </>
         )}
+      </Link>
+
+      <div className={s.crumb}>
+        hw2://
+        {crumbs.map((c, i) => (
+          <span key={i}>
+            {i > 0 && "/"}
+            {c}
+          </span>
+        ))}
       </div>
 
-      {/* Spacer */}
-      <div style={{ flex: 1 }} />
+      <div className={s.spacer} />
 
-      {/* Clock */}
-      <div
-        style={{
-          fontSize: 12,
-          fontFamily: "var(--font-mono)",
-          color: "#d0d0d0",
-          minWidth: 64,
-          letterSpacing: "0.06em",
-          textAlign: "right",
-        }}
-        suppressHydrationWarning
-      >
+      <div className={s.clock} suppressHydrationWarning>
         {time}
       </div>
 
-      {/* Online status */}
-      <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
-        <div
-          style={{
-            width: 7,
-            height: 7,
-            background: "#00FF41",
-            animation: "pulse-glow 2.4s infinite",
-            boxShadow: "0 0 7px #00FF41",
-          }}
-        />
-        <span style={{ fontSize: 10, color: "#00FF41", letterSpacing: "0.14em" }}>ONLINE</span>
-      </div>
+      <div className={s.online}>ONLINE</div>
+
+      <button
+        type="button"
+        className={`${s.iconBtn} ${s.evidenceBtn}`}
+        onClick={onToggleEvidence}
+        data-active={evidenceOpen ? "" : undefined}
+        aria-label="Улики"
+      >
+        <FolderSearch size={14} />
+      </button>
     </header>
   )
 }

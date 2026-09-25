@@ -1,10 +1,9 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import Link from "next/link"
-import { GlitchText } from "@/components/tor/glitch-text"
 import { motion, AnimatePresence } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
+import { PageHeader } from "@/components/tor/ui"
 
 const ACCENT = "#FFB000"
 
@@ -128,13 +127,7 @@ export default function LeaksVehiclesPage() {
 
     return (
       <div style={{ maxWidth: 560, margin: "48px auto" }}>
-        <div style={{ marginBottom: 20 }}>
-          <Link href="/hidden-wiki-2/leaks" style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#bdbdbd", letterSpacing: "0.12em", textDecoration: "none" }}>← LEAKS</Link>
-          <div style={{ marginTop: 12 }}>
-            <GlitchText text="VEHICLES" as="h1" intensity="low" className="text-3xl font-bold tracking-widest" color={ACCENT} />
-          </div>
-          <div style={{ height: 2, background: `linear-gradient(90deg, ${ACCENT}, transparent)`, marginTop: 10 }} />
-        </div>
+        <PageHeader title="VEHICLES" accent={ACCENT} kicker="LEAKS // VEHICLES" />
 
         <motion.div
           animate={shake ? { x: [-8, 8, -6, 6, -3, 3, 0] } : { x: 0 }}
@@ -231,14 +224,12 @@ export default function LeaksVehiclesPage() {
 
   return (
     <div style={{ maxWidth: 1040, margin: "0 auto" }}>
-      <div style={{ marginBottom: 20 }}>
-        <Link href="/hidden-wiki-2/leaks" style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#bdbdbd", letterSpacing: "0.12em", textDecoration: "none" }}>← LEAKS</Link>
-        <div style={{ marginTop: 12, display: "flex", alignItems: "center", gap: 12 }}>
-          <GlitchText text="VEHICLES" as="h1" intensity="low" className="text-3xl font-bold tracking-widest" color={ACCENT} />
-          <span style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#9a9a9a", marginLeft: "auto", letterSpacing: "0.1em" }}>{VEHICLES.length} ЗАПИСА</span>
-        </div>
-        <div style={{ height: 2, background: `linear-gradient(90deg, ${ACCENT}, transparent)`, marginTop: 10 }} />
-      </div>
+      <PageHeader
+        title="VEHICLES"
+        accent={ACCENT}
+        kicker="LEAKS // VEHICLES"
+        aside={<span className="hw-count">{VEHICLES.length} ЗАПИСА</span>}
+      />
 
       <div style={{ padding: "12px 16px", background: "#0a0a06", border: `1px solid ${ACCENT}33`, marginBottom: 16 }}>
         <p style={{ fontSize: 12, color: "#d6d6d6", margin: 0, fontFamily: "var(--font-mono)", lineHeight: 1.7 }}>
@@ -274,7 +265,7 @@ export default function LeaksVehiclesPage() {
                       <span style={{ fontSize: 13, fontFamily: "var(--font-mono)", color: v.match ? ACCENT : "#e0e0e0", fontWeight: v.match ? 700 : 400 }}>
                         {v.brand} {v.model}
                       </span>
-                      {v.match && <span style={{ marginLeft: 7, fontSize: 9, color: ACCENT, border: `1px solid ${ACCENT}55`, padding: "1px 6px", letterSpacing: "0.06em" }}>MATCH</span>}
+                      {v.match && <span style={{ marginLeft: 7, fontSize: 10, color: ACCENT, border: `1px solid ${ACCENT}55`, padding: "1px 6px", letterSpacing: "0.06em" }}>MATCH</span>}
                     </td>
                     <td style={{ padding: "11px 12px", fontSize: 12, color: "#d0d0d0", fontFamily: "var(--font-mono)" }}>{v.year}</td>
                     <td style={{ padding: "11px 12px", fontSize: 12, color: "#d0d0d0", fontFamily: "var(--font-mono)" }}>{v.color}</td>

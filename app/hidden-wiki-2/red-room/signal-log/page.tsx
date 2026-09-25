@@ -1,10 +1,9 @@
 ﻿"use client"
 
 import { useState, useEffect } from "react"
-import Link from "next/link"
-import { GlitchText } from "@/components/tor/glitch-text"
 import { motion, AnimatePresence } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
+import { PageHeader } from "@/components/tor/ui"
 
 const ACCENT = "#FF0033"
 
@@ -102,13 +101,7 @@ export default function RedRoomSignalLogPage() {
 
   return (
     <div style={{ maxWidth: 860, margin: "0 auto" }}>
-      <div style={{ marginBottom: 20 }}>
-        <Link href="/hidden-wiki-2/red-room" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.15em", textDecoration: "none" }}>← RED ROOM</Link>
-        <div style={{ marginTop: 10 }}>
-          <GlitchText text="SIGNAL LOG" as="h2" intensity="medium" className="text-xl font-bold tracking-widest" color={ACCENT} />
-        </div>
-        <div style={{ height: 1, background: `linear-gradient(90deg, ${ACCENT}, transparent)`, marginTop: 8 }} />
-      </div>
+      <PageHeader title="SIGNAL LOG" accent={ACCENT} intensity="medium" kicker="RED ROOM // INTERCEPTED RADIO" />
 
       <div style={{ padding: "10px 14px", background: "#0d0000", border: `1px solid ${ACCENT}20`, marginBottom: 16 }}>
         <p style={{ fontSize: 11, color: "#c0c0c0", margin: 0, fontFamily: "var(--font-mono)", lineHeight: 1.7 }}>
@@ -120,7 +113,7 @@ export default function RedRoomSignalLogPage() {
       <div style={{ display: "flex", gap: 6, marginBottom: 16 }}>
         {(["all", "anomaly"] as const).map((f) => (
           <button key={f} onClick={() => setFiltered(f)}
-            style={{ padding: "4px 12px", fontSize: 9, fontFamily: "var(--font-mono)", background: filtered === f ? `${ACCENT}22` : "#0d0d0d", color: filtered === f ? ACCENT : "#999999", border: `1px solid ${filtered === f ? ACCENT + "50" : "#1e1e1e"}`, cursor: "pointer", letterSpacing: "0.1em" }}>
+            style={{ padding: "4px 12px", fontSize: 10, fontFamily: "var(--font-mono)", background: filtered === f ? `${ACCENT}22` : "#0d0d0d", color: filtered === f ? ACCENT : "#999999", border: `1px solid ${filtered === f ? ACCENT + "50" : "#1e1e1e"}`, cursor: "pointer", letterSpacing: "0.1em" }}>
             {f === "all" ? "ALL SIGNALS" : "ANOMALIES ONLY"}
           </button>
         ))}
@@ -135,13 +128,13 @@ export default function RedRoomSignalLogPage() {
             <div key={sig.id}>
               <motion.div whileHover={{ x: 2 }} onClick={() => setExpanded(isExpanded ? null : sig.id)}
                 style={{ padding: "10px 14px", background: isExpanded ? `${ACCENT}08` : "#090909", border: `1px solid ${isExpanded ? `${ACCENT}35` : sig.anomaly ? `${ACCENT}15` : "#141414"}`, cursor: "pointer", display: "grid", gridTemplateColumns: "70px 110px 80px 1fr auto", gap: 10, alignItems: "center" }}>
-                <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: sig.anomaly ? ACCENT : "#333", letterSpacing: "0.1em" }}>{sig.id}</span>
-                <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#999999" }}>{sig.timestamp.split(" ")[1]}</span>
-                <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444" }}>{sig.freq}</span>
-                <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: sig.anomaly ? "#c0c0c0" : "#444", letterSpacing: "0.05em", fontWeight: sig.anomaly ? 600 : 400 }}>
+                <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: sig.anomaly ? ACCENT : "#5e5e5e", letterSpacing: "0.1em" }}>{sig.id}</span>
+                <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#999999" }}>{sig.timestamp.split(" ")[1]}</span>
+                <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#727272" }}>{sig.freq}</span>
+                <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: sig.anomaly ? "#c0c0c0" : "#444", letterSpacing: "0.05em", fontWeight: sig.anomaly ? 600 : 400 }}>
                   {sig.decoded || sig.note}
                 </span>
-                {sig.anomaly && <span style={{ fontSize: 7, color: ACCENT, border: `1px solid ${ACCENT}40`, padding: "1px 4px", flexShrink: 0 }}>ANOMALY</span>}
+                {sig.anomaly && <span style={{ fontSize: 9, color: ACCENT, border: `1px solid ${ACCENT}40`, padding: "1px 4px", flexShrink: 0 }}>ANOMALY</span>}
               </motion.div>
 
               <AnimatePresence>
@@ -150,11 +143,11 @@ export default function RedRoomSignalLogPage() {
                     <div style={{ padding: "10px 14px", background: "#060000", border: `1px solid ${ACCENT}20`, borderTop: "none" }}>
                       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
                         <div>
-                          <div style={{ fontSize: 7, color: "#333", fontFamily: "var(--font-mono)", letterSpacing: "0.12em", marginBottom: 3 }}>TIMESTAMP</div>
+                          <div style={{ fontSize: 9, color: "#646464", fontFamily: "var(--font-mono)", letterSpacing: "0.12em", marginBottom: 3 }}>TIMESTAMP</div>
                           <div style={{ fontSize: 10, color: "#c0c0c0", fontFamily: "var(--font-mono)" }}>{sig.timestamp}</div>
                         </div>
                         <div>
-                          <div style={{ fontSize: 7, color: "#333", fontFamily: "var(--font-mono)", letterSpacing: "0.12em", marginBottom: 3 }}>FREQUENCY / DURATION</div>
+                          <div style={{ fontSize: 9, color: "#646464", fontFamily: "var(--font-mono)", letterSpacing: "0.12em", marginBottom: 3 }}>FREQUENCY / DURATION</div>
                           <div style={{ fontSize: 10, color: "#c0c0c0", fontFamily: "var(--font-mono)" }}>{sig.freq} — {sig.duration}</div>
                         </div>
                       </div>
@@ -165,7 +158,7 @@ export default function RedRoomSignalLogPage() {
                         <>
                           <div style={{ padding: "6px 10px", background: "#0a0000", border: `1px solid ${ACCENT}20`, marginBottom: 10, fontSize: 10, color: ACCENT, fontFamily: "var(--font-mono)" }}>{sig.clue}</div>
                           <button onClick={(e) => { e.stopPropagation(); handleSave(sig) }} disabled={isSaved}
-                            style={{ padding: "4px 14px", fontSize: 9, fontFamily: "var(--font-mono)", background: isSaved ? `${ACCENT}18` : "transparent", color: isSaved ? ACCENT : "#aaaaaa", border: `1px solid ${isSaved ? ACCENT + "50" : "#222"}`, cursor: isSaved ? "default" : "pointer" }}>
+                            style={{ padding: "4px 14px", fontSize: 10, fontFamily: "var(--font-mono)", background: isSaved ? `${ACCENT}18` : "transparent", color: isSaved ? ACCENT : "#aaaaaa", border: `1px solid ${isSaved ? ACCENT + "50" : "#222"}`, cursor: isSaved ? "default" : "pointer" }}>
                             {isSaved ? "✓ SAVED" : "SAVE CLUE"}
                           </button>
                         </>

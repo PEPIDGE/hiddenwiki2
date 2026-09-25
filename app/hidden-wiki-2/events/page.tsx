@@ -1,10 +1,9 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import Link from "next/link"
-import { GlitchText } from "@/components/tor/glitch-text"
 import { motion } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
+import { PageHeader } from "@/components/tor/ui"
 
 const ACCENT = "#00FF41"
 
@@ -89,31 +88,17 @@ export default function EventsPage() {
 
   return (
     <div style={{ maxWidth: 920, margin: "0 auto" }}>
-      <div style={{ marginBottom: 20 }}>
-        <GlitchText text="EVENTS" as="h1" intensity="low" className="text-3xl font-bold tracking-widest" color={ACCENT} />
-        <div style={{ height: 1, background: `linear-gradient(90deg, ${ACCENT}, transparent)`, marginTop: 8 }} />
-      </div>
+      <PageHeader
+        title="EVENTS"
+        accent={ACCENT}
+        kicker="EVENTS // ORGANIZATIONS & FRONTS"
+        intro={
+          <>
+            Организации и техните публични fronts. <span style={{ color: ACCENT }}>Огледален преход</span> е събитие с три секти — ключова точка в случая с Лора Костова.
+          </>
+        }
+      />
 
-      <div style={{ display: "flex", gap: 8, marginBottom: 20, flexWrap: "wrap" }}>
-        {[
-          { label: "CALENDAR", href: "/hidden-wiki-2/events/calendar" },
-          { label: "ALBUMS", href: "/hidden-wiki-2/events/albums" },
-          { label: "GUESTBOOK", href: "/hidden-wiki-2/events/guestbook" },
-        ].map((link) => (
-          <Link key={link.href} href={link.href}
-            style={{ padding: "6px 14px", fontSize: 9, fontFamily: "var(--font-mono)", color: "#bbbbbb", border: "1px solid #222", textDecoration: "none", letterSpacing: "0.12em" }}
-            onMouseEnter={(e) => { e.currentTarget.style.color = ACCENT; e.currentTarget.style.borderColor = ACCENT + "50" }}
-            onMouseLeave={(e) => { e.currentTarget.style.color = "#bbbbbb"; e.currentTarget.style.borderColor = "#222" }}>
-            /{link.label} →
-          </Link>
-        ))}
-      </div>
-
-      <div style={{ padding: "10px 14px", background: "#0d0500", border: `1px solid ${ACCENT}20`, marginBottom: 20 }}>
-        <p style={{ fontSize: 11, color: "#c0c0c0", margin: 0, fontFamily: "var(--font-mono)", lineHeight: 1.7 }}>
-          Организации и техните публични fronts. <span style={{ color: ACCENT }}>Огледален преход</span> е събитие с три секти — ключова точка в случая с Лора Костова.
-        </p>
-      </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
         {ORGS.map((org, i) => {
@@ -127,38 +112,38 @@ export default function EventsPage() {
                   onClick={() => setExpanded(isExpanded ? null : org.id)}>
                   <div style={{ flex: 1 }}>
                     <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 6 }}>
-                      <span style={{ fontSize: 7, fontFamily: "var(--font-mono)", color: org.warning ? ACCENT : "#909090", border: `1px solid ${org.warning ? ACCENT + "30" : "#222"}`, padding: "1px 6px", letterSpacing: "0.12em" }}>{org.type}</span>
-                      {org.warning && <span style={{ fontSize: 7, color: "#FF0033", fontFamily: "var(--font-mono)" }}>⚠</span>}
+                      <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: org.warning ? ACCENT : "#909090", border: `1px solid ${org.warning ? ACCENT + "30" : "#222"}`, padding: "1px 6px", letterSpacing: "0.12em" }}>{org.type}</span>
+                      {org.warning && <span style={{ fontSize: 9, color: "#FF0033", fontFamily: "var(--font-mono)" }}>⚠</span>}
                     </div>
                     <div style={{ fontSize: 14, fontFamily: "var(--font-mono)", color: org.warning ? "#e0d0c0" : "#c0c0c0", fontWeight: 600, marginBottom: 4 }}>
                       {org.publicName}
                     </div>
-                    <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090" }}>
-                      <span style={{ color: "#444" }}>Реална организация: </span>
+                    <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#909090" }}>
+                      <span style={{ color: "#727272" }}>Реална организация: </span>
                       <span style={{ color: org.warning ? ACCENT : "#999999" }}>{org.realName}</span>
                     </div>
                   </div>
-                  <span style={{ fontSize: 9, color: "#444", fontFamily: "var(--font-mono)", flexShrink: 0 }}>{isExpanded ? "▲" : "▼"}</span>
+                  <span style={{ fontSize: 10, color: "#727272", fontFamily: "var(--font-mono)", flexShrink: 0 }}>{isExpanded ? "▲" : "▼"}</span>
                 </div>
                 {isExpanded && (
                   <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }}
                     style={{ borderTop: "1px solid #141414", padding: "14px 18px" }}>
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
                       <div>
-                        <div style={{ fontSize: 9, color: "#444", fontFamily: "var(--font-mono)", marginBottom: 4, letterSpacing: "0.1em" }}>СЪБИТИЯ</div>
+                        <div style={{ fontSize: 10, color: "#727272", fontFamily: "var(--font-mono)", marginBottom: 4, letterSpacing: "0.1em" }}>СЪБИТИЯ</div>
                         {org.events.map((e) => <div key={e} style={{ fontSize: 10, color: "#cccccc", fontFamily: "var(--font-mono)", marginBottom: 2 }}>{e}</div>)}
                       </div>
                       <div>
-                        <div style={{ fontSize: 9, color: "#444", fontFamily: "var(--font-mono)", marginBottom: 4, letterSpacing: "0.1em" }}>КОНТАКТ</div>
+                        <div style={{ fontSize: 10, color: "#727272", fontFamily: "var(--font-mono)", marginBottom: 4, letterSpacing: "0.1em" }}>КОНТАКТ</div>
                         <div style={{ fontSize: 10, color: "#bbbbbb", fontFamily: "var(--font-mono)" }}>{org.contact}</div>
-                        <div style={{ fontSize: 9, color: "#909090", fontFamily: "var(--font-mono)", marginTop: 4 }}>{org.website}</div>
+                        <div style={{ fontSize: 10, color: "#909090", fontFamily: "var(--font-mono)", marginTop: 4 }}>{org.website}</div>
                       </div>
                     </div>
                     <div style={{ padding: "8px 12px", background: "#0a0300", border: `1px solid ${ACCENT}15`, marginBottom: 10, fontSize: 10, color: "#c0c0c0", fontFamily: "var(--font-mono)", lineHeight: 1.6 }}>
                       {org.clue}
                     </div>
                     <button onClick={() => handleSave(org)}
-                      style={{ padding: "4px 14px", fontSize: 9, fontFamily: "var(--font-mono)", letterSpacing: "0.1em", background: isSaved ? `${ACCENT}18` : "#111", color: isSaved ? ACCENT : "#aaaaaa", border: `1px solid ${isSaved ? ACCENT + "50" : "#222"}`, cursor: "pointer" }}>
+                      style={{ padding: "4px 14px", fontSize: 10, fontFamily: "var(--font-mono)", letterSpacing: "0.1em", background: isSaved ? `${ACCENT}18` : "#111", color: isSaved ? ACCENT : "#aaaaaa", border: `1px solid ${isSaved ? ACCENT + "50" : "#222"}`, cursor: "pointer" }}>
                       {isSaved ? "✓ SAVED" : "SAVE CLUE"}
                     </button>
                   </motion.div>

@@ -1,10 +1,9 @@
 ﻿"use client"
 
 import { useState, useEffect } from "react"
-import Link from "next/link"
-import { GlitchText } from "@/components/tor/glitch-text"
 import { motion } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
+import { PageHeader } from "@/components/tor/ui"
 
 const ACCENT = "#FF0033"
 
@@ -76,15 +75,7 @@ export default function ChatReplayPage() {
 
   return (
     <div style={{ maxWidth: 980, margin: "0 auto" }}>
-      <div style={{ marginBottom: 20 }}>
-        <Link href="/hidden-wiki-2/red-room" style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#bdbdbd", letterSpacing: "0.12em", textDecoration: "none" }}>
-          ← RED ROOM
-        </Link>
-        <div style={{ marginTop: 12 }}>
-          <GlitchText text="CHAT REPLAY" as="h1" intensity="low" className="text-3xl font-bold tracking-widest" color={ACCENT} />
-        </div>
-        <div style={{ height: 2, background: `linear-gradient(90deg, ${ACCENT}, transparent)`, marginTop: 10 }} />
-      </div>
+      <PageHeader title="CHAT REPLAY" accent={ACCENT} kicker="RED ROOM // ARCHIVED STREAM CHAT" />
 
       {/* Filters */}
       <div style={{ display: "flex", gap: 5, marginBottom: 16, flexWrap: "wrap", alignItems: "center" }}>
@@ -97,7 +88,7 @@ export default function ChatReplayPage() {
         <div style={{ marginLeft: 8, display: "flex", gap: 5, flexWrap: "wrap" }}>
           {USERS.map((u) => (
             <button key={u} onClick={() => { setUserFilter(userFilter === u ? null : u); setFilter("ALL") }}
-              style={{ padding: "5px 10px", fontSize: 9, fontFamily: "var(--font-mono)", background: userFilter === u ? `${USER_COLORS[u]}22` : "#0d0d0d", color: userFilter === u ? USER_COLORS[u] : "#b0b0b0", border: `1px solid ${userFilter === u ? USER_COLORS[u] + "55" : "#222"}`, cursor: "pointer" }}>
+              style={{ padding: "5px 10px", fontSize: 10, fontFamily: "var(--font-mono)", background: userFilter === u ? `${USER_COLORS[u]}22` : "#0d0d0d", color: userFilter === u ? USER_COLORS[u] : "#b0b0b0", border: `1px solid ${userFilter === u ? USER_COLORS[u] + "55" : "#222"}`, cursor: "pointer" }}>
               {u}
             </button>
           ))}
@@ -120,12 +111,12 @@ export default function ChatReplayPage() {
                   cursor: "pointer", position: "relative",
                 }}>
                 {msg.removed && (
-                  <div style={{ position: "absolute", top: 0, right: 0, padding: "3px 9px", background: `${ACCENT}1a`, fontSize: 9, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.1em" }}>
+                  <div style={{ position: "absolute", top: 0, right: 0, padding: "3px 9px", background: `${ACCENT}1a`, fontSize: 10, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.1em" }}>
                     REMOVED
                   </div>
                 )}
                 {msg.edited && !msg.removed && (
-                  <div style={{ position: "absolute", top: 0, right: 0, padding: "3px 9px", background: `${AMBER}1a`, fontSize: 9, fontFamily: "var(--font-mono)", color: AMBER, letterSpacing: "0.1em" }}>
+                  <div style={{ position: "absolute", top: 0, right: 0, padding: "3px 9px", background: `${AMBER}1a`, fontSize: 10, fontFamily: "var(--font-mono)", color: AMBER, letterSpacing: "0.1em" }}>
                     EDITED
                   </div>
                 )}

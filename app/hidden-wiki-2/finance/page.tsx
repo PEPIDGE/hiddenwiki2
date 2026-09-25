@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { GlitchText } from "@/components/tor/glitch-text"
 import { motion, AnimatePresence } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
+import { PageHeader } from "@/components/tor/ui"
 
 const ACCENT = "#00FF41"
 
@@ -121,17 +121,17 @@ export default function FinancePage() {
 
   return (
     <div style={{ maxWidth: 880, margin: "0 auto" }}>
-      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
-        <div>
-          <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.35em", marginBottom: 8 }}>
-            FINANCE — TRANSACTION LEDGER // RESTRICTED ACCESS
-          </div>
-          <GlitchText text="FINANCE" as="h1" intensity="medium" className="text-3xl font-bold tracking-widest" color={ACCENT} />
-        </div>
-        <div style={{ padding: "6px 12px", border: `1px solid ${ACCENT}25`, background: "#0d0008", fontSize: 9, fontFamily: "var(--font-mono)", color: `${ACCENT}60`, letterSpacing: "0.1em" }}>
-          {accessGranted ? "ACCESS GRANTED" : "LOCKED — ТРЕБВА ТОКЕН"}
-        </div>
-      </div>
+      <PageHeader
+        title="FINANCE"
+        accent={ACCENT}
+        intensity="medium"
+        kicker="FINANCE — TRANSACTION LEDGER // RESTRICTED ACCESS"
+        aside={
+          <span className="hw-count" style={{ color: accessGranted ? ACCENT : "#ff5070", borderColor: accessGranted ? `${ACCENT}55` : "#ff507055" }}>
+            {accessGranted ? "ACCESS GRANTED" : "LOCKED — ТРЕБВА ТОКЕН"}
+          </span>
+        }
+      />
 
       {!accessGranted ? (
         <motion.div
@@ -139,10 +139,10 @@ export default function FinancePage() {
           animate={{ opacity: 1, y: 0 }}
           style={{ padding: "32px 28px", border: `1px solid ${ACCENT}20`, background: "#060006", maxWidth: 420 }}
         >
-          <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.2em", marginBottom: 20 }}>
+          <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#5e5e5e", letterSpacing: "0.2em", marginBottom: 20 }}>
             ACCESS GATE — ФИНАНСОВ АРХИВ
           </div>
-          <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#444444", lineHeight: 1.7, marginBottom: 24 }}>
+          <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#727272", lineHeight: 1.7, marginBottom: 24 }}>
             Тази секция изисква токен. Намери го в{" "}
             <Link href="/hidden-wiki-2/cult" style={{ color: "#00FF41", textDecoration: "none" }}>CULT</Link>.
           </div>
@@ -176,7 +176,7 @@ export default function FinancePage() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.08em" }}
+                style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.08em" }}
               >
                 {error}
               </motion.div>
@@ -185,7 +185,7 @@ export default function FinancePage() {
         </motion.div>
       ) : (
         <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
-          <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333333", lineHeight: 1.8, marginBottom: 24, maxWidth: 540, paddingLeft: 12, borderLeft: "2px solid #200010" }}>
+          <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#646464", lineHeight: 1.8, marginBottom: 24, maxWidth: 540, paddingLeft: 12, borderLeft: "2px solid #200010" }}>
             Финансови транзакции от три оператора. Три са директно свързани с Canon котвите.
             Всяка верифицирана транзакция носи максимална confidence: 5.
           </div>
@@ -193,7 +193,7 @@ export default function FinancePage() {
           <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
             <div style={{ display: "grid", gridTemplateColumns: "80px 90px 1fr 1fr 120px", gap: 8, padding: "6px 12px", background: "#0a0a0a", borderBottom: "1px solid #181818" }}>
               {["TX ID", "AMOUNT", "FROM", "TO", "TIME"].map((h) => (
-                <div key={h} style={{ fontSize: 7, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.2em" }}>{h}</div>
+                <div key={h} style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#5e5e5e", letterSpacing: "0.2em" }}>{h}</div>
               ))}
             </div>
 
@@ -216,11 +216,11 @@ export default function FinancePage() {
                       cursor: "pointer",
                     }}
                   >
-                    <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: tx.anomaly ? ACCENT : "#2a2a2a" }}>{tx.id}</div>
-                    <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: tx.anomaly ? "#dddddd" : "#444444", fontWeight: tx.anomaly ? 700 : 400 }}>{tx.amount}</div>
-                    <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444444" }}>{tx.from}</div>
-                    <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: tx.anomaly ? `${ACCENT}80` : "#444444" }}>{tx.to}</div>
-                    <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: tx.anomaly ? `${ACCENT}70` : "#333333" }}>{tx.timestamp.split(" ")[1]}</div>
+                    <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: tx.anomaly ? ACCENT : "#5e5e5e" }}>{tx.id}</div>
+                    <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: tx.anomaly ? "#dddddd" : "#444444", fontWeight: tx.anomaly ? 700 : 400 }}>{tx.amount}</div>
+                    <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#727272" }}>{tx.from}</div>
+                    <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: tx.anomaly ? `${ACCENT}80` : "#444444" }}>{tx.to}</div>
+                    <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: tx.anomaly ? `${ACCENT}70` : "#333333" }}>{tx.timestamp.split(" ")[1]}</div>
                   </motion.div>
 
                   <AnimatePresence>
@@ -233,15 +233,15 @@ export default function FinancePage() {
                         style={{ overflow: "hidden" }}
                       >
                         <div style={{ padding: "12px 16px", background: "#060003", border: `1px solid ${ACCENT}20`, borderTop: "none" }}>
-                          <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#3a0015", letterSpacing: "0.12em", marginBottom: 6 }}>ПОТВЪРДЕНА ТРАНЗАКЦИЯ</div>
+                          <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#a6305b", letterSpacing: "0.12em", marginBottom: 6 }}>ПОТВЪРДЕНА ТРАНЗАКЦИЯ</div>
                           <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: ACCENT, marginBottom: 12 }}>{tx.clue}</div>
                           <button
                             onClick={(e) => { e.stopPropagation(); handleSave(tx) }}
                             disabled={isSaved}
                             style={{
                               background: "transparent", border: `1px solid ${isSaved ? "#222222" : `${ACCENT}40`}`,
-                              color: isSaved ? "#2a2a2a" : ACCENT, fontFamily: "var(--font-mono)",
-                              fontSize: 9, letterSpacing: "0.1em", padding: "7px 18px", cursor: isSaved ? "default" : "pointer",
+                              color: isSaved ? "#5e5e5e" : ACCENT, fontFamily: "var(--font-mono)",
+                              fontSize: 10, letterSpacing: "0.1em", padding: "7px 18px", cursor: isSaved ? "default" : "pointer",
                             }}
                           >
                             {isSaved ? "ЗАПИСАНО" : "ЗАПАЗИ УЛИКА (confidence: 5)"}

@@ -204,7 +204,7 @@ export function HackTerminal({
           <div style={{ width: 7, height: 7, background: "#1a1a1a", border: "1px solid #222" }} />
           <div style={{ width: 7, height: 7, background: `${accentColor}30`, border: `1px solid ${accentColor}40` }} />
         </div>
-        <span style={{ fontSize: 8, color: "#333", letterSpacing: "0.2em", flex: 1, textAlign: "center" }}>
+        <span style={{ fontSize: 9.5, color: "#646464", letterSpacing: "0.2em", flex: 1, textAlign: "center" }}>
           TERMINAL — {id.toUpperCase()}
         </span>
         <AnimatePresence>
@@ -213,7 +213,7 @@ export function HackTerminal({
               initial={{ opacity: 0 }}
               animate={{ opacity: [0.4, 1, 0.4] }}
               transition={{ repeat: Infinity, duration: 0.8 }}
-              style={{ fontSize: 8, color: "#FF6B00", letterSpacing: "0.1em" }}
+              style={{ fontSize: 9.5, color: "#FF6B00", letterSpacing: "0.1em" }}
             >
               PROCESSING...
             </motion.span>
@@ -227,7 +227,7 @@ export function HackTerminal({
           <motion.div
             animate={{ opacity: [0.3, 1, 0.3] }}
             transition={{ repeat: Infinity, duration: 1.2 }}
-            style={{ fontSize: 9, color: "#333", letterSpacing: "0.1em" }}
+            style={{ fontSize: 10, color: "#646464", letterSpacing: "0.1em" }}
           >
             INITIALIZING...
           </motion.div>

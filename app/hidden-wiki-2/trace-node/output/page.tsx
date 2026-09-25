@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { GlitchText } from "@/components/tor/glitch-text"
 import { getGameState } from "@/lib/game-state"
+import { PageHeader } from "@/components/tor/ui"
 
 const ACCENT = "#00FF41"
 const REAL_LAT = "42.6977"
@@ -72,20 +72,7 @@ export default function TraceOutputPage() {
 
   return (
     <div style={{ maxWidth: 780, margin: "0 auto" }}>
-      <div style={{ marginBottom: 24 }}>
-        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.35em", marginBottom: 8 }}>
-          TRACE-NODE // CASE OUTPUT
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <motion.div
-            animate={{ opacity: [0.3, 1, 0.3] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            style={{ width: 10, height: 10, background: ACCENT, boxShadow: `0 0 14px ${ACCENT}` }}
-          />
-          <GlitchText text="CASE OUTPUT" as="h1" intensity="low" color={ACCENT} className="text-2xl font-bold tracking-widest" />
-        </div>
-        <div style={{ height: 1, background: `linear-gradient(90deg, ${ACCENT}40, transparent)`, marginTop: 10 }} />
-      </div>
+      <PageHeader title="CASE OUTPUT" accent={ACCENT} kicker="TRACE-NODE // CASE OUTPUT" />
 
       {/* Status banner */}
       <motion.div
@@ -102,14 +89,14 @@ export default function TraceOutputPage() {
         }}
       >
         <div>
-          <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.25em", marginBottom: 4 }}>
+          <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#3f8f52", letterSpacing: "0.25em", marginBottom: 4 }}>
             STATUS
           </div>
           <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: isComplete ? ACCENT : "#444", fontWeight: 700, letterSpacing: "0.12em" }}>
             {isComplete ? "CASE CLOSED — VERIFIED" : "INVESTIGATION IN PROGRESS"}
           </div>
         </div>
-        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#222", textAlign: "right", lineHeight: 2 }}>
+        <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#5a5a5a", textAlign: "right", lineHeight: 2 }}>
           <div>PROGRESS: {gameState.progress}%</div>
           <div>PUZZLES: {gameState.solvedPuzzles.length}</div>
         </div>
@@ -128,11 +115,11 @@ export default function TraceOutputPage() {
                   transition={{ duration: 0.3 }}
                   style={{ padding: "16px", border: `1px solid ${block.color}20`, background: "#030303" }}
                 >
-                  <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: block.color, letterSpacing: "0.2em", marginBottom: 12, borderBottom: `1px solid ${block.color}15`, paddingBottom: 6 }}>
+                  <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: block.color, letterSpacing: "0.2em", marginBottom: 12, borderBottom: `1px solid ${block.color}15`, paddingBottom: 6 }}>
                     {block.label}
                   </div>
                   {block.lines.map((line, i) => (
-                    <div key={i} style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#999999", lineHeight: 1.9 }}>
+                    <div key={i} style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#999999", lineHeight: 1.9 }}>
                       {line}
                     </div>
                   ))}
@@ -142,7 +129,7 @@ export default function TraceOutputPage() {
                   <motion.div
                     animate={{ opacity: [0.2, 0.6, 0.2] }}
                     transition={{ duration: 1, repeat: Infinity }}
-                    style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#222", letterSpacing: "0.2em" }}
+                    style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#5a5a5a", letterSpacing: "0.2em" }}
                   >
                     LOADING...
                   </motion.div>
@@ -160,7 +147,7 @@ export default function TraceOutputPage() {
         transition={{ delay: 1.4 }}
         style={{ padding: "20px 24px", border: `1px solid ${ACCENT}20`, background: "#020a02" }}
       >
-        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.25em", marginBottom: 12 }}>
+        <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#3f8f52", letterSpacing: "0.25em", marginBottom: 12 }}>
           ФИНАЛНА СТЪПКА
         </div>
         <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#909090", lineHeight: 1.8, marginBottom: 16 }}>

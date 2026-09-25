@@ -1,10 +1,9 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import Link from "next/link"
-import { GlitchText } from "@/components/tor/glitch-text"
 import { motion } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
+import { PageHeader } from "@/components/tor/ui"
 
 const ACCENT = "#00FF41"
 
@@ -101,13 +100,7 @@ export default function EventsGuestbookPage() {
 
   return (
     <div style={{ maxWidth: 860, margin: "0 auto" }}>
-      <div style={{ marginBottom: 20 }}>
-        <Link href="/hidden-wiki-2/events" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.15em", textDecoration: "none" }}>← EVENTS</Link>
-        <div style={{ marginTop: 10 }}>
-          <GlitchText text="GUESTBOOK" as="h2" intensity="low" className="text-xl font-bold tracking-widest" color={ACCENT} />
-        </div>
-        <div style={{ height: 1, background: `linear-gradient(90deg, ${ACCENT}, transparent)`, marginTop: 8 }} />
-      </div>
+      <PageHeader title="GUESTBOOK" accent={ACCENT} kicker="EVENTS // GUESTBOOK" />
 
       <div style={{ padding: "10px 14px", background: "#0d0500", border: `1px solid ${ACCENT}20`, marginBottom: 20 }}>
         <p style={{ fontSize: 11, color: "#c0c0c0", margin: 0, fontFamily: "var(--font-mono)", lineHeight: 1.7 }}>
@@ -118,7 +111,7 @@ export default function EventsGuestbookPage() {
       <div style={{ display: "flex", gap: 6, marginBottom: 16, flexWrap: "wrap" }}>
         {EVENTS_GUESTS.map((ev) => (
           <button key={ev.eventId} onClick={() => setExpanded(ev.eventId)}
-            style={{ padding: "5px 12px", fontSize: 9, fontFamily: "var(--font-mono)", background: expanded === ev.eventId ? `${ACCENT}22` : "#0d0d0d", color: expanded === ev.eventId ? ACCENT : "#999999", border: `1px solid ${expanded === ev.eventId ? ACCENT + "50" : "#1e1e1e"}`, cursor: "pointer", letterSpacing: "0.08em" }}>
+            style={{ padding: "5px 12px", fontSize: 10, fontFamily: "var(--font-mono)", background: expanded === ev.eventId ? `${ACCENT}22` : "#0d0d0d", color: expanded === ev.eventId ? ACCENT : "#999999", border: `1px solid ${expanded === ev.eventId ? ACCENT + "50" : "#1e1e1e"}`, cursor: "pointer", letterSpacing: "0.08em" }}>
             {ev.eventId}
           </button>
         ))}
@@ -127,7 +120,7 @@ export default function EventsGuestbookPage() {
       {EVENTS_GUESTS.filter((ev) => ev.eventId === expanded).map((ev) => (
         <motion.div key={ev.eventId} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
           <div style={{ padding: "14px 18px", background: "#090909", border: `1px solid ${ev.warning ? ACCENT + "20" : "#1a1a1a"}`, marginBottom: 12 }}>
-            <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: ev.warning ? ACCENT : "#909090", letterSpacing: "0.15em", marginBottom: 6 }}>
+            <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: ev.warning ? ACCENT : "#909090", letterSpacing: "0.15em", marginBottom: 6 }}>
               {ev.eventId} {ev.warning && "⚠"}
             </div>
             <div style={{ fontSize: 15, fontFamily: "var(--font-mono)", color: "#e0e0e0", fontWeight: 700, marginBottom: 4 }}>{ev.eventName}</div>
@@ -136,7 +129,7 @@ export default function EventsGuestbookPage() {
               {ev.clue}
             </div>
             <button onClick={() => handleSave(ev)}
-              style={{ padding: "4px 14px", fontSize: 9, fontFamily: "var(--font-mono)", background: savedClues.includes(`guestbook-${ev.eventId}-event`) ? `${ACCENT}18` : "#111", color: savedClues.includes(`guestbook-${ev.eventId}-event`) ? ACCENT : "#aaaaaa", border: `1px solid ${savedClues.includes(`guestbook-${ev.eventId}-event`) ? ACCENT + "50" : "#222"}`, cursor: "pointer" }}>
+              style={{ padding: "4px 14px", fontSize: 10, fontFamily: "var(--font-mono)", background: savedClues.includes(`guestbook-${ev.eventId}-event`) ? `${ACCENT}18` : "#111", color: savedClues.includes(`guestbook-${ev.eventId}-event`) ? ACCENT : "#aaaaaa", border: `1px solid ${savedClues.includes(`guestbook-${ev.eventId}-event`) ? ACCENT + "50" : "#222"}`, cursor: "pointer" }}>
               {savedClues.includes(`guestbook-${ev.eventId}-event`) ? "✓ SAVED" : "SAVE EVENT CLUE"}
             </button>
           </div>
@@ -145,7 +138,7 @@ export default function EventsGuestbookPage() {
             <thead>
               <tr style={{ borderBottom: "1px solid #222" }}>
                 {["ИМЕ", "ОРГАНИЗАЦИЯ", "СТАТУС", "БЕЛЕЖКИ", ""].map((h) => (
-                  <th key={h} style={{ padding: "7px 10px", fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", letterSpacing: "0.12em", textAlign: "left" }}>{h}</th>
+                  <th key={h} style={{ padding: "7px 10px", fontSize: 10, fontFamily: "var(--font-mono)", color: "#727272", letterSpacing: "0.12em", textAlign: "left" }}>{h}</th>
                 ))}
               </tr>
             </thead>
@@ -154,17 +147,17 @@ export default function EventsGuestbookPage() {
                 <tr key={g.name} style={{ borderBottom: "1px solid #131313", background: (g as any).key ? "#0d0000" : "transparent" }}>
                   <td style={{ padding: "9px 10px" }}>
                     <span style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: (g as any).key ? "#FF0033" : "#d0d0d0", fontWeight: (g as any).key ? 700 : 400 }}>{g.name}</span>
-                    {(g as any).key && <span style={{ marginLeft: 6, fontSize: 7, color: "#FF0033", border: "1px solid #FF003340", padding: "1px 4px" }}>KEY</span>}
+                    {(g as any).key && <span style={{ marginLeft: 6, fontSize: 9, color: "#FF0033", border: "1px solid #FF003340", padding: "1px 4px" }}>KEY</span>}
                   </td>
                   <td style={{ padding: "9px 10px" }}>
-                    <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: ORG_COLORS[g.org] || "#999999" }}>{g.org}</span>
+                    <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: ORG_COLORS[g.org] || "#999999" }}>{g.org}</span>
                   </td>
-                  <td style={{ padding: "9px 10px", fontSize: 9, color: g.status === "НЕИЗВЕСТЕН" ? "#FF0033" : "#cccccc", fontFamily: "var(--font-mono)" }}>{g.status}</td>
-                  <td style={{ padding: "9px 10px", fontSize: 9, color: (g as any).key ? ACCENT : "#999999", fontFamily: "var(--font-mono)", maxWidth: 220 }}>{g.note}</td>
+                  <td style={{ padding: "9px 10px", fontSize: 10, color: g.status === "НЕИЗВЕСТЕН" ? "#FF0033" : "#cccccc", fontFamily: "var(--font-mono)" }}>{g.status}</td>
+                  <td style={{ padding: "9px 10px", fontSize: 10, color: (g as any).key ? ACCENT : "#999999", fontFamily: "var(--font-mono)", maxWidth: 220 }}>{g.note}</td>
                   <td style={{ padding: "9px 10px" }}>
                     {(g as any).key && (
                       <button onClick={() => handleSaveGuest(ev, g.name, g.note)}
-                        style={{ padding: "2px 8px", fontSize: 7, fontFamily: "var(--font-mono)", background: savedClues.includes(`guestbook-${ev.eventId}-guest-${g.name.replace(/\s/g, "_")}`) ? `${ACCENT}18` : "#0d0d0d", color: savedClues.includes(`guestbook-${ev.eventId}-guest-${g.name.replace(/\s/g, "_")}`) ? ACCENT : "#909090", border: "1px solid #222", cursor: "pointer" }}>
+                        style={{ padding: "2px 8px", fontSize: 9, fontFamily: "var(--font-mono)", background: savedClues.includes(`guestbook-${ev.eventId}-guest-${g.name.replace(/\s/g, "_")}`) ? `${ACCENT}18` : "#0d0d0d", color: savedClues.includes(`guestbook-${ev.eventId}-guest-${g.name.replace(/\s/g, "_")}`) ? ACCENT : "#909090", border: "1px solid #222", cursor: "pointer" }}>
                         {savedClues.includes(`guestbook-${ev.eventId}-guest-${g.name.replace(/\s/g, "_")}`) ? "✓" : "SAVE"}
                       </button>
                     )}

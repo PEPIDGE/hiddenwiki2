@@ -151,7 +151,7 @@ export function PuzzleGate({
       >
         <div
           style={{
-            fontSize: 9,
+            fontSize: 10,
             fontFamily: "var(--font-mono)",
             color: accentColor,
             letterSpacing: "0.15em",
@@ -230,7 +230,7 @@ export function PuzzleGate({
             style={{
               fontSize: 10,
               fontFamily: "var(--font-mono)",
-              color: "#333333",
+              color: "#646464",
               marginBottom: 6,
             }}
           >
@@ -262,7 +262,7 @@ export function PuzzleGate({
         >
           <div
             style={{
-              fontSize: 9,
+              fontSize: 10,
               fontFamily: "var(--font-mono)",
               color: "#FF0033",
               letterSpacing: "0.1em",
@@ -344,7 +344,7 @@ export function PuzzleGate({
       {message && state !== "decoy" && (
         <div
           style={{
-            fontSize: 9,
+            fontSize: 10,
             fontFamily: "var(--font-mono)",
             color: state === "success" ? accentColor : "#FF0033",
             marginTop: 8,
@@ -361,7 +361,7 @@ export function PuzzleGate({
           {showHint ? (
             <div
               style={{
-                fontSize: 9,
+                fontSize: 10,
                 fontFamily: "var(--font-mono)",
                 color: "#FFD700",
                 padding: "6px 10px",
@@ -381,9 +381,9 @@ export function PuzzleGate({
               style={{
                 background: "transparent",
                 border: "none",
-                color: attempts >= 3 ? "#FFD700" : "#222222",
+                color: attempts >= 3 ? "#FFD700" : "#5e5e5e",
                 fontFamily: "var(--font-mono)",
-                fontSize: 9,
+                fontSize: 10,
                 cursor: attempts >= 3 ? "pointer" : "not-allowed",
                 letterSpacing: "0.1em",
                 padding: 0,
@@ -417,9 +417,9 @@ export function PuzzleGate({
         ))}
         <span
           style={{
-            fontSize: 8,
+            fontSize: 9.5,
             fontFamily: "var(--font-mono)",
-            color: "#222222",
+            color: "#5a5a5a",
             marginLeft: 6,
           }}
         >

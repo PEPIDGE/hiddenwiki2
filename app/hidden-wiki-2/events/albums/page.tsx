@@ -1,10 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import Link from "next/link"
-import { GlitchText } from "@/components/tor/glitch-text"
 import { motion, AnimatePresence } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
+import { PageHeader } from "@/components/tor/ui"
 
 const ACCENT = "#00FF41"
 
@@ -72,13 +71,7 @@ export default function EventsAlbumsPage() {
 
   return (
     <div style={{ maxWidth: 860, margin: "0 auto" }}>
-      <div style={{ marginBottom: 20 }}>
-        <Link href="/hidden-wiki-2/events" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", letterSpacing: "0.15em", textDecoration: "none" }}>← EVENTS</Link>
-        <div style={{ marginTop: 10 }}>
-          <GlitchText text="ALBUMS" as="h2" intensity="low" className="text-xl font-bold tracking-widest" color={ACCENT} />
-        </div>
-        <div style={{ height: 1, background: `linear-gradient(90deg, ${ACCENT}, transparent)`, marginTop: 8 }} />
-      </div>
+      <PageHeader title="ALBUMS" accent={ACCENT} kicker="EVENTS // ALBUMS" />
 
       <div style={{ padding: "10px 14px", background: "#0d0500", border: `1px solid ${ACCENT}20`, marginBottom: 20 }}>
         <p style={{ fontSize: 11, color: "#c0c0c0", margin: 0, fontFamily: "var(--font-mono)", lineHeight: 1.7 }}>
@@ -99,14 +92,14 @@ export default function EventsAlbumsPage() {
                 padding: "16px", cursor: "pointer",
               }}>
                 <div style={{ height: 90, background: alb.anomaly ? "repeating-linear-gradient(135deg,#140500,#140500 2px,#0a0300 2px,#0a0300 10px)" : "#060606", marginBottom: 12, position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: alb.anomaly ? `${ACCENT}50` : "#1a1a1a", letterSpacing: "0.2em" }}>
+                  <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: alb.anomaly ? `${ACCENT}50` : "#1a1a1a", letterSpacing: "0.2em" }}>
                     {alb.anomaly ? "[ ANOMALY ]" : `${alb.photos} PHOTOS`}
                   </div>
-                  <div style={{ position: "absolute", bottom: 4, right: 6, fontSize: 7, fontFamily: "var(--font-mono)", color: "#1a1a1a" }}>{alb.id}</div>
-                  {isSaved && <div style={{ position: "absolute", top: 4, left: 6, fontSize: 7, fontFamily: "var(--font-mono)", color: ACCENT }}>✓</div>}
+                  <div style={{ position: "absolute", bottom: 4, right: 6, fontSize: 9, fontFamily: "var(--font-mono)", color: "#565656" }}>{alb.id}</div>
+                  {isSaved && <div style={{ position: "absolute", top: 4, left: 6, fontSize: 9, fontFamily: "var(--font-mono)", color: ACCENT }}>✓</div>}
                 </div>
                 <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: isSelected ? ACCENT : "#c0c0c0", fontWeight: 700, marginBottom: 4 }}>{alb.title}</div>
-                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444" }}>{alb.date} — {alb.photos} снимки</div>
+                <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#727272" }}>{alb.date} — {alb.photos} снимки</div>
               </motion.div>
 
               <AnimatePresence>
@@ -117,13 +110,13 @@ export default function EventsAlbumsPage() {
                       <div style={{ display: "flex", flexDirection: "column", gap: 4, marginBottom: 12 }}>
                         {alb.photos_detail.map((ph) => (
                           <div key={ph.n} style={{ padding: "6px 10px", background: "#0a0200", border: "1px solid #1a0a00", display: "flex", gap: 10 }}>
-                            <span style={{ fontSize: 9, color: ACCENT, fontFamily: "var(--font-mono)", flexShrink: 0 }}>#{ph.n}</span>
+                            <span style={{ fontSize: 10, color: ACCENT, fontFamily: "var(--font-mono)", flexShrink: 0 }}>#{ph.n}</span>
                             <span style={{ fontSize: 10, color: "#b0b0b0", fontFamily: "var(--font-mono)", lineHeight: 1.5 }}>{ph.desc}</span>
                           </div>
                         ))}
                       </div>
                       <button onClick={(e) => { e.stopPropagation(); handleSave(alb) }} disabled={isSaved}
-                        style={{ background: "transparent", border: `1px solid ${isSaved ? "#222" : `${ACCENT}40`}`, color: isSaved ? "#2a2a2a" : ACCENT, fontFamily: "var(--font-mono)", fontSize: 9, padding: "6px 16px", cursor: isSaved ? "default" : "pointer" }}>
+                        style={{ background: "transparent", border: `1px solid ${isSaved ? "#222" : `${ACCENT}40`}`, color: isSaved ? "#5e5e5e" : ACCENT, fontFamily: "var(--font-mono)", fontSize: 10, padding: "6px 16px", cursor: isSaved ? "default" : "pointer" }}>
                         {isSaved ? "✓ SAVED" : "SAVE CLUE"}
                       </button>
                     </div>

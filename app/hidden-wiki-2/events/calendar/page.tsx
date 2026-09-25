@@ -1,10 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import Link from "next/link"
-import { GlitchText } from "@/components/tor/glitch-text"
 import { motion, AnimatePresence } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
+import { PageHeader } from "@/components/tor/ui"
 
 const ACCENT = "#00FF41"
 
@@ -47,12 +46,7 @@ export default function EventsCalendarPage() {
 
   return (
     <div style={{ maxWidth: 860, margin: "0 auto" }}>
-      <div style={{ marginBottom: 24 }}>
-        <Link href="/hidden-wiki-2/events" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333", textDecoration: "none", letterSpacing: "0.1em" }}>← EVENTS</Link>
-        <div style={{ height: 1, background: "#111", margin: "10px 0" }} />
-        <GlitchText text="CALENDAR" as="h2" intensity="low" className="text-xl font-bold tracking-widest" color={ACCENT} />
-        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", marginTop: 6 }}>Хронологичен изглед — 4 критични времеви маркера.</div>
-      </div>
+      <PageHeader title="CALENDAR" accent={ACCENT} kicker="EVENTS // CALENDAR" intro="Хронологичен изглед — 4 критични времеви маркера." />
 
       <div style={{ position: "relative", paddingLeft: 80 }}>
         <div style={{ position: "absolute", left: 56, top: 0, bottom: 0, width: 1, background: "#141414" }} />
@@ -66,10 +60,10 @@ export default function EventsCalendarPage() {
               style={{ position: "relative", marginBottom: 3 }}>
               {/* Date label */}
               <div style={{ position: "absolute", left: -72, top: 12, textAlign: "right", width: 64 }}>
-                <div style={{ fontSize: 7, fontFamily: "var(--font-mono)", color: ev.highlight ? ACCENT : "#222", letterSpacing: "0.06em" }}>
+                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: ev.highlight ? ACCENT : "#5e5e5e", letterSpacing: "0.06em" }}>
                   {ev.date.slice(5)}
                 </div>
-                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: ev.highlight ? ACCENT : "#1a1a1a", fontWeight: ev.highlight ? 700 : 400 }}>
+                <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: ev.highlight ? ACCENT : "#5e5e5e", fontWeight: ev.highlight ? 700 : 400 }}>
                   {ev.time}
                 </div>
               </div>
@@ -89,17 +83,17 @@ export default function EventsCalendarPage() {
                 <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: isSelected ? ACCENT : ev.highlight ? "#cccccc" : "#909090", fontWeight: ev.highlight ? 700 : 400 }}>
                   {ev.title}
                 </div>
-                {ev.note && <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333", marginTop: 3 }}>{ev.note}</div>}
+                {ev.note && <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#646464", marginTop: 3 }}>{ev.note}</div>}
               </div>
 
               <AnimatePresence>
                 {isSelected && ev.clue && (
                   <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.16 }} style={{ overflow: "hidden" }}>
                     <div style={{ padding: "10px 14px", background: "#060300", border: `1px solid ${ACCENT}20`, borderTop: "none" }}>
-                      <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#3a2000", letterSpacing: "0.12em", marginBottom: 4 }}>УЛИКА</div>
+                      <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#a67130", letterSpacing: "0.12em", marginBottom: 4 }}>УЛИКА</div>
                       <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: ACCENT, marginBottom: 10 }}>{ev.clue}</div>
                       <button onClick={(e) => { e.stopPropagation(); handleSave(ev, i) }} disabled={isSaved}
-                        style={{ background: "transparent", border: `1px solid ${isSaved ? "#222" : `${ACCENT}40`}`, color: isSaved ? "#2a2a2a" : ACCENT, fontFamily: "var(--font-mono)", fontSize: 9, letterSpacing: "0.1em", padding: "6px 16px", cursor: isSaved ? "default" : "pointer" }}>
+                        style={{ background: "transparent", border: `1px solid ${isSaved ? "#222" : `${ACCENT}40`}`, color: isSaved ? "#5e5e5e" : ACCENT, fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.1em", padding: "6px 16px", cursor: isSaved ? "default" : "pointer" }}>
                         {isSaved ? "ЗАПИСАНО" : "ЗАПАЗИ УЛИКА"}
                       </button>
                     </div>

@@ -1,18 +1,11 @@
-﻿"use client"
+"use client"
 
-import { useState, useEffect } from "react"
+import { type CSSProperties, useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { GlitchText } from "@/components/tor/glitch-text"
 import { ROUTES_CONFIG, getGameState, type GameState } from "@/lib/game-state"
 import { motion, AnimatePresence } from "framer-motion"
-
-const STATUS_COLORS: Record<string, string> = {
-  ENTRY: "#FF0033",
-  ACTIVE: "#00FF41",
-  LOCKED: "#2a2a2a",
-  FINAL: "#00FF41",
-}
+import s from "./shell.module.css"
 
 export function TorNav() {
   const pathname = usePathname()
@@ -45,101 +38,43 @@ export function TorNav() {
 
   // Render a minimal skeleton on server to avoid hydration mismatch
   if (!mounted) {
-    return (
-      <nav style={{ width: 210, minWidth: 210, background: "var(--panel-bg)", borderRight: "1px solid var(--panel-border)", height: "100%", flexShrink: 0 }} />
-    )
+    return <nav className={s.nav} />
   }
 
   return (
-    <nav
-      style={{
-        width: 210,
-        minWidth: 210,
-        background: "var(--panel-bg)",
-        borderRight: "1px solid var(--panel-border)",
-        display: "flex",
-        flexDirection: "column",
-        height: "100%",
-        overflowY: "auto",
-        overflowX: "hidden",
-        flexShrink: 0,
-        position: "relative",
-        zIndex: 10,
-      }}
-    >
-      {/* Logo */}
-      <Link
-        href="/"
-        style={{
-          display: "block",
-          padding: "12px 14px 10px",
-          borderBottom: "1px solid var(--panel-border)",
-          textDecoration: "none",
-          cursor: "pointer",
-        }}
-      >
-        <GlitchText text="HIDDEN WIKI 2" intensity="low" color="#00FF41" />
-      </Link>
-
-      {/* Header */}
-      <div style={{ padding: "10px 14px", borderBottom: "1px solid var(--panel-border)", display: "flex", flexDirection: "column", gap: 6 }}>
-        <div style={{ fontSize: 9, color: "#8a8a8a", letterSpacing: "0.25em", fontFamily: "var(--font-mono)" }}>
-          NODE INDEX
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
-          <div style={{ width: 5, height: 5, background: "#00FF41", boxShadow: "0 0 5px #00FF41", animation: "flicker 3s infinite" }} />
-          <span style={{ fontSize: 9, color: "#00FF41", fontFamily: "var(--font-mono)", letterSpacing: "0.1em" }}>
-            {ROUTES_CONFIG.filter((r) => !r.locked).length}/{ROUTES_CONFIG.length} ACTIVE
-          </span>
-        </div>
+    <nav className={s.nav}>
+      <div className={s.navHead}>
+        <Link href="/" className={s.navLogo}>
+          HW//2
+          <small>HIDDEN WIKI 2</small>
+        </Link>
       </div>
 
-      {/* Route list */}
-      <div style={{ flex: 1, paddingTop: 4, paddingBottom: 4 }}>
+      <div className={s.navMeta}>
+        NODE INDEX
+        <b>
+          {ROUTES_CONFIG.filter((r) => !r.locked).length}/{ROUTES_CONFIG.length} ACTIVE
+        </b>
+      </div>
+
+      <div className={s.routes}>
         {ROUTES_CONFIG.map((route, idx) => {
           const unlocked = isUnlocked(route.id)
           const active = pathname?.startsWith(route.path) ?? false
           const expanded = expandedRoute === route.id
 
           return (
-            <div key={route.id}>
-              {/* Row: navigate on label click, toggle on arrow click */}
+            <div key={route.id} style={{ "--accent": route.accentColor } as CSSProperties}>
               <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  background: active ? `${route.accentColor}12` : "transparent",
-                  borderLeft: active ? `2px solid ${route.accentColor}` : "2px solid transparent",
-                  transition: "background 0.12s",
-                }}
+                className={s.row}
+                data-active={active ? "" : undefined}
+                data-locked={unlocked ? undefined : ""}
               >
-                {/* Index */}
-                <span style={{ fontSize: 9, color: "#6a6a6a", fontFamily: "var(--font-mono)", paddingLeft: 10, minWidth: 26, flexShrink: 0 }}>
-                  {String(idx + 1).padStart(2, "0")}
-                </span>
-
-                {/* Color dot */}
-                <span style={{
-                  width: 5, height: 5, flexShrink: 0, marginRight: 8,
-                  background: unlocked ? route.accentColor : "#222",
-                  boxShadow: active && unlocked ? `0 0 8px ${route.accentColor}` : "none",
-                }} />
-
-                {/* Label — clicking navigates */}
+                <span className={s.rowIdx}>{String(idx + 1).padStart(2, "0")}</span>
+                <span className={s.dot} />
                 <Link
                   href={unlocked ? route.path : "#"}
-                  style={{
-                    flex: 1,
-                    fontSize: 10,
-                    fontFamily: "var(--font-mono)",
-                    letterSpacing: "0.08em",
-                    color: unlocked ? (active ? route.accentColor : "#b0b0b0") : "#333333",
-                    fontWeight: active ? 700 : 400,
-                    textDecoration: "none",
-                    padding: "7px 0",
-                    display: "block",
-                    pointerEvents: unlocked ? "auto" : "none",
-                  }}
+                  className={s.rowLink}
                   onClick={(e) => {
                     if (!unlocked) { e.preventDefault(); return }
                     // If clicking active route, just toggle dropdown
@@ -147,42 +82,26 @@ export function TorNav() {
                     else setExpandedRoute(route.id)
                   }}
                 >
-                  {active ? (
-                    <GlitchText text={route.label} intensity="low" color={route.accentColor} />
-                  ) : route.label}
+                  {route.label}
                 </Link>
 
-                {/* Toggle arrow — always clickable if unlocked */}
-                {unlocked && route.sublinks.length > 0 && (
+                {unlocked && route.sublinks.length > 0 ? (
                   <button
+                    type="button"
+                    className={s.toggle}
+                    data-open={expanded ? "" : undefined}
                     onClick={() => setExpandedRoute(expanded ? null : route.id)}
-                    style={{
-                      background: "none", border: "none", padding: "7px 10px",
-                      color: expanded ? route.accentColor : "#888888",
-                      fontSize: 9, fontFamily: "var(--font-mono)",
-                      transition: "color 0.12s",
-                    }}
                     aria-label={expanded ? "Collapse" : "Expand"}
                   >
-                    {expanded ? "▲" : "▼"}
+                    ▼
                   </button>
-                )}
-
-                {/* Status badge */}
-                {!route.sublinks.length && (
-                  <span style={{
-                    fontSize: 7, fontFamily: "var(--font-mono)",
-                    color: STATUS_COLORS[route.status] || "#282828",
-                    letterSpacing: "0.06em", paddingRight: 10, opacity: unlocked ? 0.7 : 0.25,
-                  }}>
-                    {route.status}
-                  </span>
+                ) : (
+                  <span className={s.status}>{route.status}</span>
                 )}
               </div>
 
-              {/* Sub-links — show when expanded + unlocked */}
               <AnimatePresence initial={false}>
-                {expanded && unlocked && (
+                {expanded && unlocked && route.sublinks.length > 0 && (
                   <motion.div
                     key="sub"
                     initial={{ height: 0, opacity: 0 }}
@@ -191,35 +110,23 @@ export function TorNav() {
                     transition={{ duration: 0.16 }}
                     style={{ overflow: "hidden" }}
                   >
-                    <div style={{
-                      marginLeft: 36,
-                      borderLeft: `1px solid ${route.accentColor}25`,
-                      paddingLeft: 10,
-                      paddingTop: 2,
-                      paddingBottom: 6,
-                    }}>
-                      {/* Index sub-link */}
-                      <Link href={route.path} style={{
-                        display: "block", padding: "3px 6px",
-                        fontSize: 9, fontFamily: "var(--font-mono)",
-                        color: pathname === route.path ? route.accentColor : "#aaaaaa",
-                        textDecoration: "none",
-                        letterSpacing: "0.06em",
-                      }}>
+                    <div className={s.subs}>
+                      <Link
+                        href={route.path}
+                        className={s.sub}
+                        data-active={pathname === route.path ? "" : undefined}
+                      >
                         /index
                       </Link>
                       {route.sublinks.map((sub) => {
                         const fullPath = `${route.path}${sub}`
-                        const subActive = pathname === fullPath
                         return (
-                          <Link key={sub} href={fullPath} style={{
-                            display: "block", padding: "3px 6px",
-                            fontSize: 9, fontFamily: "var(--font-mono)",
-                            color: subActive ? route.accentColor : "#aaaaaa",
-                            textDecoration: "none",
-                            letterSpacing: "0.06em",
-                            fontWeight: subActive ? 700 : 400,
-                          }}>
+                          <Link
+                            key={sub}
+                            href={fullPath}
+                            className={s.sub}
+                            data-active={pathname === fullPath ? "" : undefined}
+                          >
                             {sub}
                           </Link>
                         )
@@ -233,14 +140,9 @@ export function TorNav() {
         })}
       </div>
 
-      {/* Footer */}
-      <div style={{ padding: "9px 14px", borderTop: "1px solid var(--panel-border)" }}>
-        <div style={{ fontSize: 9, color: "#7a7a7a", fontFamily: "var(--font-mono)", letterSpacing: "0.1em" }}>
-          HW2 v2.4.1
-        </div>
-        <div style={{ fontSize: 9, color: "#5a5a5a", fontFamily: "var(--font-mono)" }} suppressHydrationWarning>
-          SID: {sessionId}
-        </div>
+      <div className={s.navFoot}>
+        <span>HW2 v2.4.1</span>
+        <span suppressHydrationWarning>SID: {sessionId}</span>
       </div>
     </nav>
   )

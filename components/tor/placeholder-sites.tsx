@@ -17,7 +17,7 @@ function PlaceholderPage({ siteId }: { siteId: string }) {
   return (
     <div style={{ maxWidth: 860, margin: "0 auto" }}>
       <div style={{ marginBottom: 32 }}>
-        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "var(--muted-foreground)", letterSpacing: "0.3em", marginBottom: 10 }}>
+        <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--muted-foreground)", letterSpacing: "0.3em", marginBottom: 10 }}>
           {site.locked ? "LOCKED SITE" : "ACTIVE SITE"} — {site.label}
         </div>
         <GlitchText text={site.label} as="h1" intensity="low" className="text-3xl font-bold tracking-widest" color={site.color} />
@@ -34,13 +34,13 @@ function PlaceholderPage({ siteId }: { siteId: string }) {
 
       <div style={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
         {site.sublinks.map((sub) => (
-          <div key={sub} style={{ padding: "8px 16px", fontSize: 10, fontFamily: "var(--font-mono)", color: "#222222", letterSpacing: "0.1em", background: "#0a0a0a", border: "1px solid #1a1a1a" }}>
+          <div key={sub} style={{ padding: "8px 16px", fontSize: 10, fontFamily: "var(--font-mono)", color: "#5a5a5a", letterSpacing: "0.1em", background: "#0a0a0a", border: "1px solid #1a1a1a" }}>
             {sub.replace("/", "").toUpperCase()}
           </div>
         ))}
       </div>
 
-      <div style={{ marginTop: 20, padding: "12px 14px", border: "1px solid #1a1a1a", fontSize: 9, fontFamily: "var(--font-mono)", color: "#222222" }}>
+      <div style={{ marginTop: 20, padding: "12px 14px", border: "1px solid #1a1a1a", fontSize: 10, fontFamily: "var(--font-mono)", color: "#5a5a5a" }}>
         [COMING IN STEP {site.step}]
       </div>
     </div>

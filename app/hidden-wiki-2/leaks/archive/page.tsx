@@ -3,9 +3,9 @@
 import { useState, useEffect, Suspense } from "react"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
-import { GlitchText } from "@/components/tor/glitch-text"
 import { motion, AnimatePresence } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
+import { PageHeader } from "@/components/tor/ui"
 
 const ACCENT = "#FFB000"
 
@@ -184,10 +184,10 @@ function PhotoCard({ photo, isSaved, onSave, highlight = false }: {
         <div style={{ position: "absolute", inset: 0, background: `repeating-linear-gradient(90deg, transparent 0px, transparent 3px, ${photo.bg}88 3px, ${photo.bg}88 4px)`, opacity: 0.3 }} />
         <div style={{ position: "absolute", inset: 0, backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E")`, opacity: 0.6 }} />
         <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.7) 100%)" }} />
-        <div style={{ position: "absolute", top: 8, left: 8, fontSize: 9, fontFamily: "var(--font-mono)", color: "#ffffffaa", letterSpacing: "0.12em" }}>{photo.id}</div>
-        <div style={{ position: "absolute", bottom: 8, left: 8, fontSize: 9, fontFamily: "var(--font-mono)", color: "#ffffff88", letterSpacing: "0.04em" }}>{photo.date}</div>
+        <div style={{ position: "absolute", top: 8, left: 8, fontSize: 10, fontFamily: "var(--font-mono)", color: "#ffffffaa", letterSpacing: "0.12em" }}>{photo.id}</div>
+        <div style={{ position: "absolute", bottom: 8, left: 8, fontSize: 10, fontFamily: "var(--font-mono)", color: "#ffffff88", letterSpacing: "0.04em" }}>{photo.date}</div>
         {isSaved && (
-          <div style={{ position: "absolute", top: 8, right: 8, fontSize: 9, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.08em" }}>✓ SAVED</div>
+          <div style={{ position: "absolute", top: 8, right: 8, fontSize: 10, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.08em" }}>✓ SAVED</div>
         )}
       </div>
 
@@ -271,14 +271,14 @@ function FolderCard({ folder, onClick }: { folder: Folder; onClick: () => void }
             </div>
           ))}
           {folder.photos.length > 3 && (
-            <div style={{ width: 28, height: 28, background: "#111", border: "1px solid #1a1a1a", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, fontFamily: "var(--font-mono)", color: "#9a9a9a" }}>
+            <div style={{ width: 28, height: 28, background: "#111", border: "1px solid #1a1a1a", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontFamily: "var(--font-mono)", color: "#9a9a9a" }}>
               +{folder.photos.length - 3}
             </div>
           )}
         </div>
       )}
       {isEmpty && (
-        <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#FF444460", letterSpacing: "0.1em" }}>ACCESS DENIED</div>
+        <div style={{ fontSize: 9.5, fontFamily: "var(--font-mono)", color: "#FF444460", letterSpacing: "0.1em" }}>ACCESS DENIED</div>
       )}
     </motion.div>
   )
@@ -346,11 +346,13 @@ function LeaksArchiveInner() {
 
   return (
     <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-      <div style={{ marginBottom: 20 }}>
-        {/* Hierarchical breadcrumb */}
+      <PageHeader
+        title="ARCHIVE"
+        accent={ACCENT}
+        kicker={
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <Link href="/hidden-wiki-2/leaks" style={crumbStyle}>← LEAKS</Link>
-          <span style={{ fontSize: 11, color: "#555", fontFamily: "var(--font-mono)" }}>/</span>
+          <span style={{ fontSize: 11, color: "#7c7c7c", fontFamily: "var(--font-mono)" }}>/</span>
           {openFolder ? (
             <button onClick={backToFolders} style={crumbStyle}>ARCHIVE</button>
           ) : (
@@ -358,16 +360,13 @@ function LeaksArchiveInner() {
           )}
           {openFolder && (
             <>
-              <span style={{ fontSize: 11, color: "#555", fontFamily: "var(--font-mono)" }}>/</span>
+              <span style={{ fontSize: 11, color: "#7c7c7c", fontFamily: "var(--font-mono)" }}>/</span>
               <span style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.1em" }}>{activeFolder?.label}</span>
             </>
           )}
         </div>
-        <div style={{ marginTop: 10 }}>
-          <GlitchText text="ARCHIVE" as="h1" intensity="low" className="text-3xl font-bold tracking-widest" color={ACCENT} />
-        </div>
-        <div style={{ height: 1, background: `linear-gradient(90deg, ${ACCENT}, transparent)`, marginTop: 8 }} />
-      </div>
+        }
+      />
 
       <div style={{ padding: "10px 14px", background: "#0a0a06", border: `1px solid ${ACCENT}33`, marginBottom: 16 }}>
         <p style={{ fontSize: 12, color: "#d0d0d0", margin: 0, fontFamily: "var(--font-mono)", lineHeight: 1.7 }}>

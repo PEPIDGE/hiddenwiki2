@@ -1,88 +1,100 @@
+import type { CSSProperties } from "react"
 import Link from "next/link"
 import { GlitchText } from "@/components/tor/glitch-text"
-import { CULTS } from "@/lib/cults"
+import { CULTS, RISK_META, type CultRisk } from "@/lib/cults"
+import s from "./cult-index.module.css"
 
-const ACCENT = "#00FF41"
+const RISK_ORDER: CultRisk[] = ["CRITICAL", "HIGH", "MEDIUM", "LOW"]
 
 export default function CultPage() {
-  return (
-    <div style={{ maxWidth: 980, margin: "0 auto" }}>
-      <div style={{ marginBottom: 22 }}>
-        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333", letterSpacing: "0.3em", marginBottom: 8 }}>
-          CULT DATABASE // 10 ACTIVE DOSSIERS
-        </div>
-        <GlitchText text="CULT" as="h1" intensity="low" className="text-3xl font-bold tracking-widest" color={ACCENT} />
-        <div style={{ height: 1, background: `linear-gradient(90deg, ${ACCENT}, transparent)`, marginTop: 8 }} />
-      </div>
+  const counts = RISK_ORDER.map((risk) => ({
+    risk,
+    ...RISK_META[risk],
+    count: CULTS.filter((c) => c.risk === risk).length,
+  })).filter((r) => r.count > 0)
 
-      <Link
-        href="/hidden-wiki-2/cult/chat-system"
-        style={{
-          display: "block",
-          padding: "14px 16px",
-          marginBottom: 14,
-          background: `${ACCENT}08`,
-          border: `1px solid ${ACCENT}35`,
-          color: ACCENT,
-          textDecoration: "none",
-          fontFamily: "var(--font-mono)",
-        }}
-      >
-        <div style={{ fontSize: 9, letterSpacing: "0.18em", color: `${ACCENT}99`, marginBottom: 5 }}>
-          MEMBER ACCOUNTS // ALL CULTS
+  return (
+    <div className={s.page}>
+      <header className={s.header}>
+        <div className={s.kicker}>
+          <span className={s.blink} />
+          CULT DATABASE <em>//</em> {CULTS.length} ОТВОРЕНИ ДОСИЕТА
         </div>
-        <div style={{ fontSize: 15, fontWeight: 700, lineHeight: 1.4 }}>
-          ОТВОРИ CHAT SYSTEM
+        <GlitchText text="КУЛТОВЕ" as="h1" intensity="low" className={s.title} />
+        <p className={s.intro}>
+          Затворени групи, открити по време на разследването. Всяко досие крие улики — прочети го,
+          запази каквото ти е важно и търси връзките между тях.
+        </p>
+
+        <div className={s.threatBoard}>
+          <div className={s.threatBar} aria-hidden>
+            {counts.map((r) => (
+              <span key={r.risk} style={{ flexGrow: r.count, background: r.color }} />
+            ))}
+          </div>
+          <ul className={s.legend}>
+            {counts.map((r) => (
+              <li key={r.risk} style={{ "--c": r.color } as CSSProperties}>
+                <b>{String(r.count).padStart(2, "0")}</b>
+                <span>{r.label}</span>
+              </li>
+            ))}
+          </ul>
         </div>
+      </header>
+
+      <Link href="/hidden-wiki-2/cult/chat-system" className={s.chat}>
+        <span className={s.chatPrompt}>
+          <i>root@hw2</i>:~$ open chat-system --all-cults
+        </span>
+        <span className={s.chatTitle}>ВЛЕЗ В ЧАТА НА ЧЛЕНОВЕТЕ</span>
+        <span className={s.chatArrow}>→</span>
       </Link>
 
-      <div style={{ display: "grid", gap: 8 }}>
-        {CULTS.map((cult, index) => {
+      <div className={s.grid}>
+        {CULTS.map((cult) => {
+          const risk = RISK_META[cult.risk]
+          const caseNo = cult.id.replace(/\D/g, "")
+          const featured = cult.risk === "CRITICAL"
+
           return (
             <Link
               key={cult.id}
               href={`/hidden-wiki-2/cult/${cult.slug}`}
-              style={{
-                display: "grid",
-                gridTemplateColumns: "52px minmax(0, 1fr)",
-                gap: 14,
-                alignItems: "center",
-                padding: "14px 16px",
-                background: "#070707",
-                border: "1px solid #151515",
-                borderLeft: "2px solid #222",
-                color: "#d8d8d8",
-                textDecoration: "none",
-                minHeight: 78,
-              }}
+              className={`${s.card} ${featured ? s.featured : ""}`}
+              style={{ "--risk": risk.color } as CSSProperties}
             >
-              <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#555", letterSpacing: "0.08em" }}>
-                {String(index + 1).padStart(2, "0")}
-              </div>
-              <div style={{ minWidth: 0 }}>
-                <div
-                  style={{
-                    fontSize: 16,
-                    lineHeight: 1.35,
-                    fontFamily: "var(--font-mono)",
-                    color: "#e2e2e2",
-                    fontWeight: 700,
-                    overflowWrap: "anywhere",
-                  }}
-                >
-                  {cult.name}
+              {featured && (
+                <div className={s.cardImg}>
+                  <img src={cult.photos[0].src} alt="" />
+                  <span className={s.priority}>ПРИОРИТЕТ</span>
                 </div>
-                <div
-                  style={{
-                    fontSize: 10,
-                    lineHeight: 1.7,
-                    fontFamily: "var(--font-mono)",
-                    color: "#8f8f8f",
-                    marginTop: 4,
-                    overflowWrap: "anywhere",
-                  }}
-                >
-                  {cult.short}
+              )}
+              <div className={s.cardBody}>
+                <div className={s.cardTop}>
+                  <span className={s.caseNo}>{caseNo}</span>
+                  <span className={s.riskTag}>
+                    <span className={s.meter} aria-hidden>
+                      {[1, 2, 3, 4].map((n) => (
+                        <i key={n} data-on={n <= risk.level ? "" : undefined} />
+                      ))}
+                    </span>
+                    {risk.label}
+                  </span>
+                </div>
+                <div className={s.status}>{cult.status}</div>
+                <h2 className={s.name}>{cult.name}</h2>
+                <p className={s.short}>{cult.short}</p>
+                <div className={s.meta}>
+                  <span>
+                    <em>ЧЛЕНОВЕ</em>
+                    {cult.members}
+                  </span>
+                  <span>
+                    <em>ОСНОВАН</em>
+                    {cult.founded}
+                  </span>
+                  <span className={s.open}>ОТВОРИ →</span>
                 </div>
               </div>
             </Link>

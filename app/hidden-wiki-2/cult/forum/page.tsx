@@ -1,10 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import Link from "next/link"
-import { GlitchText } from "@/components/tor/glitch-text"
 import { motion, AnimatePresence } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
+import { PageHeader } from "@/components/tor/ui"
 
 const ACCENT = "#00FF41"
 
@@ -79,16 +78,12 @@ export default function CultForumPage() {
 
   return (
     <div style={{ maxWidth: 800, margin: "0 auto" }}>
-      <div style={{ marginBottom: 24 }}>
-        <Link href="/hidden-wiki-2/cult" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333", textDecoration: "none" }}>
-          ← CULT
-        </Link>
-        <div style={{ height: 1, background: "#111", margin: "10px 0" }} />
-        <GlitchText text="CULT FORUM" as="h2" intensity="low" className="text-xl font-bold tracking-widest" color={ACCENT} />
-        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", marginTop: 6 }}>
-          Вътрешен форум на Кръга — само за оператори. 3 от 5 съобщения съдържат улики.
-        </div>
-      </div>
+      <PageHeader
+        title="CULT FORUM"
+        accent={ACCENT}
+        kicker="CULT // CULT FORUM"
+        intro="Вътрешен форум на Кръга — само за оператори. 3 от 5 съобщения съдържат улики."
+      />
 
       {/* Access badge */}
       <div
@@ -107,7 +102,7 @@ export default function CultForumPage() {
           transition={{ duration: 2, repeat: Infinity }}
           style={{ width: 6, height: 6, background: ACCENT, boxShadow: `0 0 6px ${ACCENT}` }}
         />
-        <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#2a2a2a", letterSpacing: "0.15em" }}>
+        <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#5e5e5e", letterSpacing: "0.15em" }}>
           ENCRYPTED SESSION — HOPS=3 — READ-ONLY ACCESS
         </span>
       </div>
@@ -163,7 +158,7 @@ export default function CultForumPage() {
                   <div>
                     <div
                       style={{
-                        fontSize: 7,
+                        fontSize: 9,
                         fontFamily: "var(--font-mono)",
                         color: levelColor,
                         letterSpacing: "0.15em",
@@ -176,7 +171,7 @@ export default function CultForumPage() {
                       style={{
                         fontSize: isExp ? 11 : 10,
                         fontFamily: "var(--font-mono)",
-                        color: isExp ? "#cccccc" : isDecoy ? "#2a2a2a" : "#aaaaaa",
+                        color: isExp ? "#cccccc" : isDecoy ? "#5e5e5e" : "#aaaaaa",
                         lineHeight: 1.6,
                       }}
                     >
@@ -185,7 +180,7 @@ export default function CultForumPage() {
                   </div>
                   <div
                     style={{
-                      fontSize: 9,
+                      fontSize: 10,
                       fontFamily: "var(--font-mono)",
                       color: msg.flagged ? `${ACCENT}60` : "#1a1a1a",
                       marginLeft: 16,
@@ -224,9 +219,9 @@ export default function CultForumPage() {
                       >
                         <div
                           style={{
-                            fontSize: 9,
+                            fontSize: 10,
                             fontFamily: "var(--font-mono)",
-                            color: "#2a1040",
+                            color: "#7030a6",
                             letterSpacing: "0.12em",
                             marginBottom: 3,
                           }}
@@ -253,9 +248,9 @@ export default function CultForumPage() {
                         style={{
                           background: "transparent",
                           border: `1px solid ${isSaved ? "#222" : `${ACCENT}40`}`,
-                          color: isSaved ? "#2a2a2a" : ACCENT,
+                          color: isSaved ? "#5e5e5e" : ACCENT,
                           fontFamily: "var(--font-mono)",
-                          fontSize: 9,
+                          fontSize: 10,
                           padding: "6px 16px",
                           cursor: isSaved ? "default" : "pointer",
                           letterSpacing: "0.1em",
@@ -286,15 +281,15 @@ export default function CultForumPage() {
           { color: ACCENT, label: "АРХИТЕКТ" },
           { color: "#8844CC", label: "ОПЕРАТОР" },
           { color: "#909090", label: "ПОСВЕТЕН" },
-          { color: "#222", label: "DECOY" },
+          { color: "#5a5a5a", label: "DECOY" },
         ].map(({ color, label }) => (
           <div key={label} style={{ display: "flex", alignItems: "center", gap: 5 }}>
             <div style={{ width: 6, height: 6, background: color }} />
             <span
               style={{
-                fontSize: 9,
+                fontSize: 10,
                 fontFamily: "var(--font-mono)",
-                color: "#333",
+                color: "#646464",
                 letterSpacing: "0.1em",
               }}
             >

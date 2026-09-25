@@ -156,7 +156,7 @@ export function CultOperatorsPanel({ cultName, sourceRoute }: CultPanelProps) {
     <section id="operators" style={{ marginTop: 32, scrollMarginTop: 24 }}>
       <SectionHeading label="OPERATORS" detail={`${cultName} // embedded intelligence`} />
 
-      <div style={{ marginBottom: 16, padding: "10px 14px", border: "1px solid #1a1a1a", background: "#040404", fontSize: 9, fontFamily: "var(--font-mono)", color: "#555", lineHeight: 1.7 }}>
+      <div style={{ marginBottom: 16, padding: "10px 14px", border: "1px solid #1a1a1a", background: "#040404", fontSize: 10, fontFamily: "var(--font-mono)", color: "#7c7c7c", lineHeight: 1.7 }}>
         Правило: реален оператор = HOPS=3. HOPS != 3 = decoy или компрометиран.
       </div>
 
@@ -185,7 +185,7 @@ export function CultOperatorsPanel({ cultName, sourceRoute }: CultPanelProps) {
               >
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 }}>
                   <div style={{ minWidth: 0 }}>
-                    <div style={{ fontSize: 7, fontFamily: "var(--font-mono)", color: "#2a2a2a", marginBottom: 5 }}>
+                    <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#5e5e5e", marginBottom: 5 }}>
                       {op.id} // {op.level} // {op.cult}
                     </div>
                     <div style={{ fontSize: 14, fontFamily: "var(--font-mono)", color: isSelected ? ACCENT : op.anomaly ? "#cccccc" : "#909090", fontWeight: 700 }}>
@@ -193,8 +193,8 @@ export function CultOperatorsPanel({ cultName, sourceRoute }: CultPanelProps) {
                     </div>
                   </div>
                   <div style={{ textAlign: "right", flexShrink: 0 }}>
-                    <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: STATUS_COLOR[op.status] ?? "#333" }}>{op.status}</div>
-                    <div style={{ fontSize: 7, fontFamily: "var(--font-mono)", color: op.relay === "HOPS=3" ? `${ACCENT}70` : "#FF003370", marginTop: 3 }}>{op.relay}</div>
+                    <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: STATUS_COLOR[op.status] ?? "#5e5e5e" }}>{op.status}</div>
+                    <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: op.relay === "HOPS=3" ? `${ACCENT}70` : "#FF003370", marginTop: 3 }}>{op.relay}</div>
                   </div>
                 </div>
               </motion.button>
@@ -208,10 +208,10 @@ export function CultOperatorsPanel({ cultName, sourceRoute }: CultPanelProps) {
                     style={{ overflow: "hidden" }}
                   >
                     <div style={{ padding: "12px 16px", background: "#060208", border: `1px solid ${ACCENT}18`, borderTop: "none" }}>
-                      <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333", marginBottom: 4 }}>LAST SEEN: {op.lastSeen}</div>
+                      <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#646464", marginBottom: 4 }}>LAST SEEN: {op.lastSeen}</div>
                       <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#999999", lineHeight: 1.7, marginBottom: 12 }}>{op.note}</div>
                       <div style={{ padding: "8px 12px", background: "#080310", border: `1px solid ${ACCENT}20`, marginBottom: 10 }}>
-                        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#3a1050", marginBottom: 3 }}>УЛИКА</div>
+                        <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#7e30a6", marginBottom: 3 }}>УЛИКА</div>
                         <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: ACCENT, lineHeight: 1.6 }}>{op.clue}</div>
                       </div>
                       <button
@@ -221,7 +221,7 @@ export function CultOperatorsPanel({ cultName, sourceRoute }: CultPanelProps) {
                           handleSave(op)
                         }}
                         disabled={isSaved}
-                        style={{ background: "transparent", border: `1px solid ${isSaved ? "#222" : `${ACCENT}40`}`, color: isSaved ? "#2a2a2a" : ACCENT, fontFamily: "var(--font-mono)", fontSize: 9, padding: "6px 16px", cursor: isSaved ? "default" : "pointer" }}
+                        style={{ background: "transparent", border: `1px solid ${isSaved ? "#222" : `${ACCENT}40`}`, color: isSaved ? "#5e5e5e" : ACCENT, fontFamily: "var(--font-mono)", fontSize: 10, padding: "6px 16px", cursor: isSaved ? "default" : "pointer" }}
                       >
                         {isSaved ? "ЗАПИСАНО" : "ЗАПАЗИ УЛИКА"}
                       </button>
@@ -316,11 +316,11 @@ export function CultChatSystemPanel({ cultName, sourceRoute, cultSlug }: CultCha
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 300px), 1fr))", gap: 12, alignItems: "start" }}>
               <div style={{ padding: "24px", background: "#080808", border: "1px solid #1e1e1e" }}>
-                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", letterSpacing: "0.2em", marginBottom: 20 }}>
+                <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#727272", letterSpacing: "0.2em", marginBottom: 20 }}>
                   MEMBER CHAT // LOGIN
                 </div>
                 <label style={{ display: "block", marginBottom: 14 }}>
-                  <span style={{ display: "block", fontSize: 9, color: "#909090", fontFamily: "var(--font-mono)", marginBottom: 5 }}>USERNAME</span>
+                  <span style={{ display: "block", fontSize: 10, color: "#909090", fontFamily: "var(--font-mono)", marginBottom: 5 }}>USERNAME</span>
                   <input
                     value={username}
                     onChange={(event) => setUsername(event.target.value)}
@@ -329,7 +329,7 @@ export function CultChatSystemPanel({ cultName, sourceRoute, cultSlug }: CultCha
                   />
                 </label>
                 <label style={{ display: "block", marginBottom: 16 }}>
-                  <span style={{ display: "block", fontSize: 9, color: "#909090", fontFamily: "var(--font-mono)", marginBottom: 5 }}>PASSWORD</span>
+                  <span style={{ display: "block", fontSize: 10, color: "#909090", fontFamily: "var(--font-mono)", marginBottom: 5 }}>PASSWORD</span>
                   <input
                     type="password"
                     value={password}
@@ -357,7 +357,7 @@ export function CultChatSystemPanel({ cultName, sourceRoute, cultSlug }: CultCha
               </div>
 
               <div style={{ padding: "12px", background: "#050505", border: "1px solid #181818" }}>
-                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#555", letterSpacing: "0.18em", marginBottom: 10 }}>
+                <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#7c7c7c", letterSpacing: "0.18em", marginBottom: 10 }}>
                   MEMBER PROFILES // {members.length}
                 </div>
                 <div style={{ display: "grid", gap: 6 }}>
@@ -368,7 +368,7 @@ export function CultChatSystemPanel({ cultName, sourceRoute, cultSlug }: CultCha
                           <div style={{ fontSize: 12, fontFamily: "var(--font-mono)", color: "#e0e0e0", fontWeight: 700, overflowWrap: "anywhere" }}>
                             {member.displayName}
                           </div>
-                          <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#777", marginTop: 3, overflowWrap: "anywhere" }}>
+                          <div style={{ fontSize: 9.5, fontFamily: "var(--font-mono)", color: "#777", marginTop: 3, overflowWrap: "anywhere" }}>
                             {member.role} / {member.statusLine}
                           </div>
                         </div>
@@ -379,15 +379,15 @@ export function CultChatSystemPanel({ cultName, sourceRoute, cultSlug }: CultCha
                             setPassword(member.password)
                             setLoginError("")
                           }}
-                          style={{ padding: "3px 8px", border: `1px solid ${ACCENT}35`, background: `${ACCENT}12`, color: ACCENT, fontSize: 8, fontFamily: "var(--font-mono)", cursor: "pointer", flexShrink: 0 }}
+                          style={{ padding: "3px 8px", border: `1px solid ${ACCENT}35`, background: `${ACCENT}12`, color: ACCENT, fontSize: 9.5, fontFamily: "var(--font-mono)", cursor: "pointer", flexShrink: 0 }}
                         >
                           USE
                         </button>
                       </div>
                       <div style={{ display: "grid", gridTemplateColumns: "76px minmax(0, 1fr)", gap: 5, alignItems: "center" }}>
-                        <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#555" }}>USERNAME</span>
+                        <span style={{ fontSize: 9.5, fontFamily: "var(--font-mono)", color: "#7c7c7c" }}>USERNAME</span>
                         <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: ACCENT, overflowWrap: "anywhere" }}>{member.username}</span>
-                        <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#555" }}>PASSWORD</span>
+                        <span style={{ fontSize: 9.5, fontFamily: "var(--font-mono)", color: "#7c7c7c" }}>PASSWORD</span>
                         <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#cfcfcf", overflowWrap: "anywhere" }}>{member.password}</span>
                       </div>
                     </div>
@@ -402,9 +402,9 @@ export function CultChatSystemPanel({ cultName, sourceRoute, cultSlug }: CultCha
               <div style={{ minWidth: 220 }}>
                 <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#bbbbbb", marginBottom: 4 }}>
                   Влязъл като: <span style={{ color: ACCENT }}>{loggedIn.displayName}</span>
-                  <span style={{ marginLeft: 10, fontSize: 9, color: "#909090" }}>[{loggedIn.role}]</span>
+                  <span style={{ marginLeft: 10, fontSize: 10, color: "#909090" }}>[{loggedIn.role}]</span>
                 </div>
-                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#707070", lineHeight: 1.5 }}>
+                <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#707070", lineHeight: 1.5 }}>
                   Членски акаунт: <span style={{ color: "#d8d8d8" }}>{loggedIn.username}</span> / {loggedIn.statusLine}
                 </div>
               </div>
@@ -415,7 +415,7 @@ export function CultChatSystemPanel({ cultName, sourceRoute, cultSlug }: CultCha
                   setUsername("")
                   setPassword("")
                 }}
-                style={{ background: "none", border: "1px solid #222", color: "#909090", fontSize: 9, fontFamily: "var(--font-mono)", padding: "3px 8px", cursor: "pointer" }}
+                style={{ background: "none", border: "1px solid #222", color: "#909090", fontSize: 10, fontFamily: "var(--font-mono)", padding: "3px 8px", cursor: "pointer" }}
               >
                 LOGOUT
               </button>
@@ -424,7 +424,7 @@ export function CultChatSystemPanel({ cultName, sourceRoute, cultSlug }: CultCha
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: 12, alignItems: "stretch" }}>
               <aside style={{ minWidth: 0, border: "1px solid #181818", background: "#050505", display: "flex", flexDirection: "column" }}>
                 <div style={{ padding: "12px 14px", borderBottom: "1px solid #151515" }}>
-                  <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#4a4a4a", letterSpacing: "0.18em", marginBottom: 10 }}>
+                  <div style={{ fontSize: 9.5, fontFamily: "var(--font-mono)", color: "#4a4a4a", letterSpacing: "0.18em", marginBottom: 10 }}>
                     АКТИВЕН ПРОФИЛ
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -435,7 +435,7 @@ export function CultChatSystemPanel({ cultName, sourceRoute, cultSlug }: CultCha
                       <div style={{ fontSize: 13, fontFamily: "var(--font-mono)", color: "#e5e5e5", fontWeight: 700, overflowWrap: "anywhere" }}>
                         {loggedIn.username}
                       </div>
-                      <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#777", lineHeight: 1.5, overflowWrap: "anywhere" }}>
+                      <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#777", lineHeight: 1.5, overflowWrap: "anywhere" }}>
                         {visibleConversations.length} чата / {loggedIn.statusLine}
                       </div>
                     </div>
@@ -473,17 +473,17 @@ export function CultChatSystemPanel({ cultName, sourceRoute, cultSlug }: CultCha
                               <span style={{ flex: 1, minWidth: 0, fontSize: 11, fontFamily: "var(--font-mono)", color: isActive ? ACCENT : "#dcdcdc", fontWeight: 700, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                                 {conversation.title}
                               </span>
-                              <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#555", flexShrink: 0 }}>{conversation.lastActivity.slice(11)}</span>
+                              <span style={{ fontSize: 9.5, fontFamily: "var(--font-mono)", color: "#7c7c7c", flexShrink: 0 }}>{conversation.lastActivity.slice(11)}</span>
                             </div>
-                            <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#666", marginBottom: 5, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                            <div style={{ fontSize: 9.5, fontFamily: "var(--font-mono)", color: "#666", marginBottom: 5, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                               {label}
                             </div>
                             <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                              <span style={{ flex: 1, minWidth: 0, fontSize: 9, fontFamily: "var(--font-mono)", color: "#8f8f8f", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                              <span style={{ flex: 1, minWidth: 0, fontSize: 10, fontFamily: "var(--font-mono)", color: "#8f8f8f", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                                 {lastMessage ? `${lastMessage.author}: ${lastMessage.text}` : "няма съобщения"}
                               </span>
                               {conversation.unread > 0 && (
-                                <span style={{ minWidth: 18, height: 18, borderRadius: 9, padding: "0 5px", background: `${ACCENT}20`, border: `1px solid ${ACCENT}55`, color: ACCENT, fontSize: 9, lineHeight: "16px", textAlign: "center", fontFamily: "var(--font-mono)", flexShrink: 0 }}>
+                                <span style={{ minWidth: 18, height: 18, borderRadius: 9, padding: "0 5px", background: `${ACCENT}20`, border: `1px solid ${ACCENT}55`, color: ACCENT, fontSize: 10, lineHeight: "16px", textAlign: "center", fontFamily: "var(--font-mono)", flexShrink: 0 }}>
                                   {conversation.unread}
                                 </span>
                               )}
@@ -504,11 +504,11 @@ export function CultChatSystemPanel({ cultName, sourceRoute, cultSlug }: CultCha
                         <div style={{ fontSize: 14, fontFamily: "var(--font-mono)", color: "#f0f0f0", fontWeight: 700, marginBottom: 4, overflowWrap: "anywhere" }}>
                           {activeConversation.title}
                         </div>
-                        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#777", lineHeight: 1.5, overflowWrap: "anywhere" }}>
+                        <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#777", lineHeight: 1.5, overflowWrap: "anywhere" }}>
                           {activeSubtitle} / {activeConversation.lastActivity}
                         </div>
                       </div>
-                      <div style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: activeConversation.kind === "group" ? "#FFB000" : ACCENT, border: `1px solid ${activeConversation.kind === "group" ? "#FFB00044" : `${ACCENT}44`}`, padding: "3px 7px", letterSpacing: "0.08em", flexShrink: 0 }}>
+                      <div style={{ fontSize: 9.5, fontFamily: "var(--font-mono)", color: activeConversation.kind === "group" ? "#FFB000" : ACCENT, border: `1px solid ${activeConversation.kind === "group" ? "#FFB00044" : `${ACCENT}44`}`, padding: "3px 7px", letterSpacing: "0.08em", flexShrink: 0 }}>
                         {activeConversation.kind === "group" ? "GROUP" : "DIRECT"}
                       </div>
                     </div>
@@ -532,7 +532,7 @@ export function CultChatSystemPanel({ cultName, sourceRoute, cultSlug }: CultCha
                               }}
                             >
                               {!isMine && activeConversation.kind === "group" && (
-                                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: msg.highlighted ? "#FF6B6B" : "#FFB000", marginBottom: 4, fontWeight: 700, overflowWrap: "anywhere" }}>
+                                <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: msg.highlighted ? "#FF6B6B" : "#FFB000", marginBottom: 4, fontWeight: 700, overflowWrap: "anywhere" }}>
                                   {msg.author}
                                 </div>
                               )}
@@ -540,14 +540,14 @@ export function CultChatSystemPanel({ cultName, sourceRoute, cultSlug }: CultCha
                                 {msg.text}
                               </div>
                               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, marginTop: 8 }}>
-                                <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#606060" }}>
+                                <span style={{ fontSize: 9.5, fontFamily: "var(--font-mono)", color: "#606060" }}>
                                   {msg.time}{isMine ? " / ти" : ` / ${msg.author}`}
                                 </span>
                                 <button
                                   type="button"
                                   onClick={() => handleSave(activeConversation, msg)}
                                   disabled={isSaved}
-                                  style={{ padding: "2px 7px", fontSize: 8, fontFamily: "var(--font-mono)", background: isSaved ? `${ACCENT}18` : "#0a0a0a", color: isSaved ? ACCENT : "#8f8f8f", border: `1px solid ${isSaved ? ACCENT + "40" : "#242424"}`, cursor: isSaved ? "default" : "pointer", flexShrink: 0 }}
+                                  style={{ padding: "2px 7px", fontSize: 9.5, fontFamily: "var(--font-mono)", background: isSaved ? `${ACCENT}18` : "#0a0a0a", color: isSaved ? ACCENT : "#8f8f8f", border: `1px solid ${isSaved ? ACCENT + "40" : "#242424"}`, cursor: isSaved ? "default" : "pointer", flexShrink: 0 }}
                                 >
                                   {isSaved ? "✓" : "SAVE"}
                                 </button>
@@ -559,10 +559,10 @@ export function CultChatSystemPanel({ cultName, sourceRoute, cultSlug }: CultCha
                     </div>
 
                     <div style={{ padding: "10px 12px", borderTop: "1px solid #151515", background: "#060606", display: "flex", gap: 8, alignItems: "center" }}>
-                      <div style={{ flex: 1, minWidth: 0, padding: "8px 10px", border: "1px solid #181818", background: "#0b0b0b", color: "#555", fontSize: 10, fontFamily: "var(--font-mono)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                      <div style={{ flex: 1, minWidth: 0, padding: "8px 10px", border: "1px solid #181818", background: "#0b0b0b", color: "#7c7c7c", fontSize: 10, fontFamily: "var(--font-mono)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                         encrypted archive: write access revoked
                       </div>
-                      <button type="button" disabled style={{ padding: "8px 10px", border: "1px solid #222", background: "#101010", color: "#444", fontSize: 9, fontFamily: "var(--font-mono)", cursor: "default", flexShrink: 0 }}>
+                      <button type="button" disabled style={{ padding: "8px 10px", border: "1px solid #222", background: "#101010", color: "#727272", fontSize: 10, fontFamily: "var(--font-mono)", cursor: "default", flexShrink: 0 }}>
                         LOCKED
                       </button>
                     </div>
@@ -582,7 +582,7 @@ function SectionHeading({ label, detail }: { label: string; detail: string }) {
     <div style={{ marginBottom: 16 }}>
       <GlitchText text={label} as="h2" intensity="low" className="text-xl font-bold tracking-widest" color={ACCENT} />
       <div style={{ height: 1, background: `linear-gradient(90deg, ${ACCENT}, transparent)`, marginTop: 8, marginBottom: 8 }} />
-      <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", letterSpacing: "0.12em" }}>
+      <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#727272", letterSpacing: "0.12em" }}>
         {detail}
       </div>
     </div>

@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { GlitchText } from "@/components/tor/glitch-text"
 import { motion } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
+import { PageHeader } from "@/components/tor/ui"
 
 const ACCENT = "#FFB000"
 
@@ -60,13 +60,7 @@ export default function LeaksPasswordsPage() {
 
   return (
     <div style={{ maxWidth: 960, margin: "0 auto" }}>
-      <div style={{ marginBottom: 20 }}>
-        <Link href="/hidden-wiki-2/leaks" style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#bdbdbd", letterSpacing: "0.12em", textDecoration: "none" }}>← LEAKS</Link>
-        <div style={{ marginTop: 12 }}>
-          <GlitchText text="PASSWORDS" as="h1" intensity="low" className="text-3xl font-bold tracking-widest" color={ACCENT} />
-        </div>
-        <div style={{ height: 2, background: `linear-gradient(90deg, ${ACCENT}, transparent)`, marginTop: 10 }} />
-      </div>
+      <PageHeader title="PASSWORDS" accent={ACCENT} kicker="LEAKS // PASSWORDS" />
 
       <div style={{ padding: "12px 16px", background: "#0a0a06", border: `1px solid ${ACCENT}33`, marginBottom: 16 }}>
         <p style={{ fontSize: 12, color: "#d6d6d6", margin: 0, fontFamily: "var(--font-mono)", lineHeight: 1.7 }}>
@@ -92,7 +86,7 @@ export default function LeaksPasswordsPage() {
               <div style={{ flex: 1, minWidth: 130 }}>
                 <div style={{ fontSize: 14, fontFamily: "var(--font-mono)", color: "#f0f0f0", fontWeight: 700, marginBottom: 4 }}>
                   {pw.username}
-                  {pw.changed && <span style={{ marginLeft: 8, fontSize: 9, color: ACCENT, border: `1px solid ${ACCENT}55`, padding: "1px 6px", letterSpacing: "0.08em" }}>CHANGED</span>}
+                  {pw.changed && <span style={{ marginLeft: 8, fontSize: 10, color: ACCENT, border: `1px solid ${ACCENT}55`, padding: "1px 6px", letterSpacing: "0.08em" }}>CHANGED</span>}
                 </div>
                 <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#a8a8a8" }}>{pw.email}</div>
               </div>
@@ -109,7 +103,7 @@ export default function LeaksPasswordsPage() {
                     {pw.password}
                   </motion.span>
                 ) : (
-                  <span style={{ fontSize: 13, fontFamily: "var(--font-mono)", color: "#555", letterSpacing: "0.2em" }}>{"•".repeat(pw.password.length)}</span>
+                  <span style={{ fontSize: 13, fontFamily: "var(--font-mono)", color: "#7c7c7c", letterSpacing: "0.2em" }}>{"•".repeat(pw.password.length)}</span>
                 )}
               </div>
               <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>

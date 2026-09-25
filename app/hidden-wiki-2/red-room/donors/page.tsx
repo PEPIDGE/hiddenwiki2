@@ -1,10 +1,9 @@
 ﻿"use client"
 
 import { useState, useEffect } from "react"
-import Link from "next/link"
-import { GlitchText } from "@/components/tor/glitch-text"
 import { motion } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
+import { PageHeader } from "@/components/tor/ui"
 
 const ACCENT = "#FF0033"
 
@@ -80,18 +79,12 @@ export default function DonorsPage() {
 
   return (
     <div style={{ maxWidth: 1040, margin: "0 auto" }}>
-      <div style={{ marginBottom: 20 }}>
-        <Link href="/hidden-wiki-2/red-room" style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#bdbdbd", letterSpacing: "0.12em", textDecoration: "none" }}>
-          ← RED ROOM
-        </Link>
-        <div style={{ marginTop: 12, display: "flex", alignItems: "center", gap: 12 }}>
-          <GlitchText text="DONORS" as="h1" intensity="low" className="text-3xl font-bold tracking-widest" color={ACCENT} />
-          <span style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#9a9a9a", marginLeft: "auto", letterSpacing: "0.1em" }}>
-            {DONORS.length} ЗАПИСА
-          </span>
-        </div>
-        <div style={{ height: 2, background: `linear-gradient(90deg, ${ACCENT}, transparent)`, marginTop: 10 }} />
-      </div>
+      <PageHeader
+        title="DONORS"
+        accent={ACCENT}
+        kicker="RED ROOM // DONOR LEDGER"
+        aside={<span className="hw-count">{DONORS.length} ЗАПИСА</span>}
+      />
 
       <div style={{ padding: "12px 16px", background: "#0a0606", border: `1px solid ${ACCENT}33`, marginBottom: 20 }}>
         <p style={{ fontSize: 12, color: "#d6d6d6", margin: 0, fontFamily: "var(--font-mono)", lineHeight: 1.7 }}>

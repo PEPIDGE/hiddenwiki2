@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import { GlitchText } from "@/components/tor/glitch-text"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
+import { PageHeader } from "@/components/tor/ui"
 
 const ACCENT = "#00FF41"
 
@@ -32,11 +32,7 @@ export default function FinanceBeneficiariesPage() {
 
   return (
     <div style={{ maxWidth: 800, margin: "0 auto" }}>
-      <div style={{ marginBottom: 20 }}>
-        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#2a0015", letterSpacing: "0.35em", marginBottom: 8 }}>FINANCE // BENEFICIARIES</div>
-        <GlitchText text="BENEFICIARY INDEX" as="h1" intensity="low" color={ACCENT} className="text-2xl font-bold tracking-widest" />
-        <div style={{ height: 1, background: `linear-gradient(90deg, ${ACCENT}40, transparent)`, marginTop: 10 }} />
-      </div>
+      <PageHeader title="BENEFICIARY INDEX" accent={ACCENT} kicker="FINANCE // BENEFICIARIES" />
       <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
         {BENEFICIARIES.map((b, i) => {
           const id = `finance-ben-${b.id}`
@@ -47,16 +43,16 @@ export default function FinanceBeneficiariesPage() {
             >
               <div>
                 <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: b.confirmed ? ACCENT : "#999999", fontWeight: 700, marginBottom: 2 }}>{b.name}</div>
-                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333" }}>{b.alias}</div>
+                <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#646464" }}>{b.alias}</div>
               </div>
               <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: b.confirmed ? "#ddd" : "#444", fontWeight: 700 }}>{b.total}</div>
-              <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333" }}>{b.count} TX</div>
+              <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#646464" }}>{b.count} TX</div>
               <div>
                 {b.clue && (
                   <button onClick={() => handleSave(b)} disabled={isSaved} style={{
                     background: "transparent", border: `1px solid ${isSaved ? "#1a1a1a" : `${ACCENT}40`}`,
-                    color: isSaved ? "#2a2a2a" : ACCENT,
-                    fontFamily: "var(--font-mono)", fontSize: 9, letterSpacing: "0.08em",
+                    color: isSaved ? "#5e5e5e" : ACCENT,
+                    fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.08em",
                     padding: "5px 10px", cursor: isSaved ? "default" : "pointer",
                   }}>
                     {isSaved ? "SAVED" : "+ CLUE"}

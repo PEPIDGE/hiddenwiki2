@@ -79,13 +79,13 @@ function FSRow({
           opacity: item.locked ? 0.35 : 1,
         }}
       >
-        <span style={{ fontSize: 10, color, width: 12, flexShrink: 0, fontFamily: "monospace" }}>
+        <span style={{ fontSize: 10, color, width: 12, flexShrink: 0, fontFamily: "var(--font-mono)" }}>
           {icon}
         </span>
         <span style={{
           fontSize: 11,
           fontFamily: "var(--font-mono)",
-          color: hovered && !item.locked ? accentColor : item.type === "redacted" ? "#2a2a2a" : "#999999",
+          color: hovered && !item.locked ? accentColor : item.type === "redacted" ? "#5e5e5e" : "#999999",
           letterSpacing: "0.04em",
           flex: 1,
           overflow: "hidden",
@@ -95,18 +95,18 @@ function FSRow({
           {item.name}
         </span>
         {item.size && (
-          <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#222", marginLeft: "auto", flexShrink: 0 }}>
+          <span style={{ fontSize: 9.5, fontFamily: "var(--font-mono)", color: "#5a5a5a", marginLeft: "auto", flexShrink: 0 }}>
             {item.size}
           </span>
         )}
         {item.modified && (
-          <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#1e1e1e", flexShrink: 0, marginLeft: 12 }}>
+          <span style={{ fontSize: 9.5, fontFamily: "var(--font-mono)", color: "#6b6b6b", flexShrink: 0, marginLeft: 12 }}>
             {item.modified}
           </span>
         )}
         {item.classification && (
           <span style={{
-            fontSize: 7, fontFamily: "var(--font-mono)", color: "#FF3333",
+            fontSize: 9, fontFamily: "var(--font-mono)", color: "#FF3333",
             border: "1px solid #2a0000", padding: "1px 5px", letterSpacing: "0.1em",
             flexShrink: 0, marginLeft: 8,
           }}>
@@ -114,7 +114,7 @@ function FSRow({
           </span>
         )}
         {item.locked && (
-          <span style={{ fontSize: 8, color: "#FF0033", marginLeft: 8 }}>🔒</span>
+          <span style={{ fontSize: 9.5, color: "#FF0033", marginLeft: 8 }}>🔒</span>
         )}
       </div>
 
@@ -154,10 +154,10 @@ export function FileExplorer({ items, accentColor = "#00FF41", onFileOpen, title
             <div key={i} style={{ width: 8, height: 8, background: c, border: "1px solid #222" }} />
           ))}
         </div>
-        <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#333", letterSpacing: "0.2em", flex: 1, textAlign: "center" }}>
+        <span style={{ fontSize: 9.5, fontFamily: "var(--font-mono)", color: "#646464", letterSpacing: "0.2em", flex: 1, textAlign: "center" }}>
           {title}
         </span>
-        <span style={{ fontSize: 8, fontFamily: "var(--font-mono)", color: "#1a1a1a" }}>
+        <span style={{ fontSize: 9.5, fontFamily: "var(--font-mono)", color: "#565656" }}>
           {items.length} ITEMS
         </span>
       </div>
@@ -171,7 +171,7 @@ export function FileExplorer({ items, accentColor = "#00FF41", onFileOpen, title
         borderBottom: "1px solid #0e0e0e",
       }}>
         {["NAME", "SIZE", "MODIFIED", "CLASS"].map((h) => (
-          <span key={h} style={{ fontSize: 7, fontFamily: "var(--font-mono)", color: "#222", letterSpacing: "0.18em" }}>
+          <span key={h} style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#5a5a5a", letterSpacing: "0.18em" }}>
             {h}
           </span>
         ))}

@@ -1,12 +1,14 @@
 "use client"
 
-import { type ReactNode, useEffect } from "react"
+import { type CSSProperties, type ReactNode, useEffect, useState } from "react"
 import dynamic from "next/dynamic"
 import { motion, AnimatePresence } from "framer-motion"
 import { TorNav } from "@/components/tor/tor-nav"
 import { TorTopBar } from "@/components/tor/tor-top-bar"
+import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { addVisitedRoute } from "@/lib/game-state"
+import { ROUTES_CONFIG, addVisitedRoute } from "@/lib/game-state"
+import s from "./shell.module.css"
 
 interface TorShellProps {
   children: ReactNode
@@ -32,12 +34,10 @@ const EvidenceBoard = dynamic(
     loading: () => (
       <aside
         style={{
-          width: 230,
-          minWidth: 230,
+          width: 244,
           background: "var(--panel-bg)",
           borderLeft: "1px solid var(--panel-border)",
           height: "100%",
-          flexShrink: 0,
         }}
       />
     ),
@@ -46,10 +46,15 @@ const EvidenceBoard = dynamic(
 
 export function TorShell({ children, currentSite, siteColor = "#00FF41" }: TorShellProps) {
   const pathname = usePathname()
+  const [navOpen, setNavOpen] = useState(false)
+  const [evidenceOpen, setEvidenceOpen] = useState(false)
+  const section = ROUTES_CONFIG.find((r) => pathname?.startsWith(r.path))
 
   // Register each visited route so nav can reveal sublinks
   useEffect(() => {
     if (pathname) addVisitedRoute(pathname)
+    setNavOpen(false)
+    setEvidenceOpen(false)
   }, [pathname])
 
   return (
@@ -96,47 +101,53 @@ export function TorShell({ children, currentSite, siteColor = "#00FF41" }: TorSh
         }}
       />
 
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          height: "100dvh",
-          background: "var(--background)",
-          overflow: "hidden",
-        }}
-      >
-        {/* Top bar */}
-        <TorTopBar currentSite={currentSite} siteColor={siteColor} />
-
-        {/* Main layout: nav | content | evidence */}
-        <div
-          style={{
-            display: "flex",
-            flex: 1,
-            overflow: "hidden",
+      <div className={s.shell} style={{ "--site": siteColor } as CSSProperties}>
+        <TorTopBar
+          currentSite={currentSite}
+          siteColor={siteColor}
+          navOpen={navOpen}
+          evidenceOpen={evidenceOpen}
+          onToggleNav={() => {
+            setEvidenceOpen(false)
+            setNavOpen((o) => !o)
           }}
-        >
-          <TorNav />
+          onToggleEvidence={() => {
+            setNavOpen(false)
+            setEvidenceOpen((o) => !o)
+          }}
+        />
 
-          {/* Main content with Framer Motion transitions */}
-          <main
-            style={{
-              flex: 1,
-              overflowY: "auto",
-              overflowX: "hidden",
-              position: "relative",
+        <div className={s.body}>
+          <div className={s.navSlot} data-open={navOpen ? "" : undefined}>
+            <TorNav />
+          </div>
+
+          <button
+            type="button"
+            aria-label="Затвори менюто"
+            className={s.scrim}
+            data-show={navOpen || evidenceOpen ? "" : undefined}
+            onClick={() => {
+              setNavOpen(false)
+              setEvidenceOpen(false)
             }}
-          >
-            {/* Site accent line at top */}
-            <div
-              style={{
-                height: 2,
-                background: siteColor,
-                boxShadow: `0 0 16px ${siteColor}50`,
-                animation: "flicker 6s infinite",
-                flexShrink: 0,
-              }}
-            />
+          />
+
+          <main className={s.main}>
+            <div className={s.siteLine} />
+            {section && section.sublinks.length > 0 && (
+              <nav className={s.tabs} aria-label={section.label}>
+                <span className={s.tabsLabel}>{section.label}</span>
+                {["", ...section.sublinks].map((sub) => {
+                  const href = section.path + sub
+                  return (
+                    <Link key={href} href={href} className={s.tab} data-active={pathname === href ? "" : undefined}>
+                      {sub || "/index"}
+                    </Link>
+                  )
+                })}
+              </nav>
+            )}
 
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
@@ -146,14 +157,16 @@ export function TorShell({ children, currentSite, siteColor = "#00FF41" }: TorSh
                 animate="animate"
                 exit="exit"
                 transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-                style={{ padding: "24px 28px", minHeight: "100%" }}
+                className={s.page}
               >
                 {children}
               </motion.div>
             </AnimatePresence>
           </main>
 
-          <EvidenceBoard />
+          <div className={s.evidenceSlot} data-open={evidenceOpen ? "" : undefined}>
+            <EvidenceBoard />
+          </div>
         </div>
       </div>
     </>

@@ -1,10 +1,9 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import Link from "next/link"
-import { GlitchText } from "@/components/tor/glitch-text"
 import { motion, AnimatePresence } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
+import { PageHeader } from "@/components/tor/ui"
 
 const ACCENT = "#00FF41"
 
@@ -62,12 +61,7 @@ export default function CultRitualPage() {
 
   return (
     <div style={{ maxWidth: 700, margin: "0 auto" }}>
-      <div style={{ marginBottom: 24 }}>
-        <Link href="/hidden-wiki-2/cult" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333", textDecoration: "none" }}>← CULT</Link>
-        <div style={{ height: 1, background: "#111", margin: "10px 0" }} />
-        <GlitchText text="RITUAL" as="h2" intensity="medium" className="text-xl font-bold tracking-widest" color={ACCENT} />
-        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", marginTop: 6 }}>PUZZLE CR1 — Виж Доктрина D-05. Намери правилната последователност от 5 стъпки.</div>
-      </div>
+      <PageHeader title="RITUAL" accent={ACCENT} intensity="medium" kicker="CULT // RITUAL" intro="PUZZLE CR1 — Виж Доктрина D-05. Намери правилната последователност от 5 стъпки." />
 
       {/* Ritual circle */}
       <div style={{ display: "flex", justifyContent: "center", marginBottom: 28, position: "relative" }}>
@@ -83,7 +77,7 @@ export default function CultRitualPage() {
             return (
               <g key={step.id} onClick={() => handleStep(step.id)} style={{ cursor: "pointer" }}>
                 <rect x={x - 18} y={y - 9} width={36} height={18} fill={isActive ? `${ACCENT}18` : "#050505"} stroke={isActive ? ACCENT : `${ACCENT}25`} strokeWidth={0.5} rx={1} />
-                <text x={x} y={y + 4} textAnchor="middle" style={{ fontSize: "5px", fill: isActive ? ACCENT : `${ACCENT}50`, fontFamily: "monospace" }}>
+                <text x={x} y={y + 4} textAnchor="middle" style={{ fontSize: "5px", fill: isActive ? ACCENT : `${ACCENT}50`, fontFamily: "var(--font-mono)" }}>
                   {pos > 0 ? `#${pos} ` : ""}{step.label}
                 </text>
               </g>
@@ -96,7 +90,7 @@ export default function CultRitualPage() {
 
       {/* Progress */}
       <div style={{ padding: "12px 16px", border: `1px solid ${error ? "#FF003340" : solved ? `${ACCENT}40` : "#181818"}`, background: "#060208", marginBottom: 16, transition: "border-color 0.3s" }}>
-        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: error ? "#FF0033" : solved ? ACCENT : "#333", letterSpacing: "0.1em", marginBottom: 6 }}>
+        <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: error ? "#FF0033" : solved ? ACCENT : "#5e5e5e", letterSpacing: "0.1em", marginBottom: 6 }}>
           {error ? "WRONG SEQUENCE — RESET" : solved ? "[CR1 SOLVED] — RITUAL COMPLETE" : `SEQUENCE: ${progress}/5`}
         </div>
         <div style={{ display: "flex", gap: 3 }}>
@@ -114,9 +108,9 @@ export default function CultRitualPage() {
             <motion.div key={step.id} whileHover={{ scale: 1.01 }} onClick={() => handleStep(step.id)}
               style={{ padding: "12px 16px", background: pos > 0 ? `${ACCENT}08` : "#040404", border: `1px solid ${pos > 0 ? `${ACCENT}35` : "#111"}`, cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div>
-                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: pos > 0 ? `${ACCENT}70` : "#2a2a2a", marginBottom: 3 }}>СТЪПКА {step.id}</div>
+                <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: pos > 0 ? `${ACCENT}70` : "#2a2a2a", marginBottom: 3 }}>СТЪПКА {step.id}</div>
                 <div style={{ fontSize: 12, fontFamily: "var(--font-mono)", color: pos > 0 ? ACCENT : "#999999", fontWeight: 700 }}>{step.label}</div>
-                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", marginTop: 3 }}>{step.desc}</div>
+                <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#727272", marginTop: 3 }}>{step.desc}</div>
               </div>
               {pos > 0 && <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: ACCENT, fontWeight: 700 }}>#{pos}</div>}
             </motion.div>
@@ -128,13 +122,13 @@ export default function CultRitualPage() {
         {solved && (
           <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
             style={{ padding: "14px 16px", border: `1px solid ${ACCENT}40`, background: "#060208" }}>
-            <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: `${ACCENT}70`, letterSpacing: "0.15em", marginBottom: 8 }}>РИТУАЛЪТ Е ЗАВЪРШЕН</div>
-            <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", lineHeight: 1.7, marginBottom: 10 }}>
+            <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: `${ACCENT}70`, letterSpacing: "0.15em", marginBottom: 8 }}>РИТУАЛЪТ Е ЗАВЪРШЕН</div>
+            <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#909090", lineHeight: 1.7, marginBottom: 10 }}>
               Последователност: СИМВОЛ → ТОКЕН → ОГЛЕДАЛО → ПРЕХОД → ВРЕМЕТО<br />
               Подсказка за КРЪГЪТ код: следвай числата — 2,4,1,5,3.
             </div>
             <button onClick={handleSave} disabled={saved}
-              style={{ background: "transparent", border: `1px solid ${saved ? "#222" : `${ACCENT}40`}`, color: saved ? "#2a2a2a" : ACCENT, fontFamily: "var(--font-mono)", fontSize: 9, padding: "7px 18px", cursor: saved ? "default" : "pointer" }}>
+              style={{ background: "transparent", border: `1px solid ${saved ? "#222" : `${ACCENT}40`}`, color: saved ? "#5e5e5e" : ACCENT, fontFamily: "var(--font-mono)", fontSize: 10, padding: "7px 18px", cursor: saved ? "default" : "pointer" }}>
               {saved ? "ЗАПИСАНО В EVIDENCE BOARD" : "ЗАПАЗИ УЛИКА"}
             </button>
           </motion.div>

@@ -1,10 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import Link from "next/link"
-import { GlitchText } from "@/components/tor/glitch-text"
 import { motion } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
+import { PageHeader } from "@/components/tor/ui"
 
 const ACCENT = "#00FF41"
 
@@ -30,12 +29,7 @@ export default function EventsVenuesPage() {
 
   return (
     <div style={{ maxWidth: 820, margin: "0 auto" }}>
-      <div style={{ marginBottom: 24 }}>
-        <Link href="/hidden-wiki-2/events" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333", textDecoration: "none" }}>← EVENTS</Link>
-        <div style={{ height: 1, background: "#111", margin: "10px 0" }} />
-        <GlitchText text="VENUES" as="h2" intensity="low" className="text-xl font-bold tracking-widest" color={ACCENT} />
-        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", marginTop: 6 }}>4 локации — 2 с потвърдени аномалии.</div>
-      </div>
+      <PageHeader title="VENUES" accent={ACCENT} kicker="EVENTS // VENUES" intro="4 локации — 2 с потвърдени аномалии." />
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 2 }}>
         {VENUES.map((v, i) => {
@@ -46,23 +40,23 @@ export default function EventsVenuesPage() {
             <motion.div key={v.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.07 }}
               onClick={() => setSelected(isSelected ? null : v.id)}
               style={{ background: isSelected ? `${ACCENT}08` : "#040404", border: `1px solid ${isSelected ? `${ACCENT}35` : v.anomaly ? `${ACCENT}18` : "#111"}`, padding: "16px", cursor: "pointer" }}>
-              <div style={{ fontSize: 7, fontFamily: "var(--font-mono)", color: "#2a2a2a", marginBottom: 6 }}>{v.id}</div>
+              <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#5e5e5e", marginBottom: 6 }}>{v.id}</div>
               <div style={{ fontSize: 13, fontFamily: "var(--font-mono)", color: isSelected ? ACCENT : "#bbbbbb", fontWeight: 700, marginBottom: 8 }}>{v.name}</div>
               <div style={{ display: "flex", gap: 6, marginBottom: 8, flexWrap: "wrap" }}>
                 {[v.type, v.access].map((tag) => (
-                  <span key={tag} style={{ fontSize: 7, fontFamily: "var(--font-mono)", color: "#2a2a2a", border: "1px solid #181818", padding: "1px 5px" }}>{tag}</span>
+                  <span key={tag} style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#5e5e5e", border: "1px solid #181818", padding: "1px 5px" }}>{tag}</span>
                 ))}
               </div>
-              <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#2a2a2a" }}>VISITS: {v.visits} | {v.lat !== "N/A" && v.lat !== "[R]" ? `${v.lat}, ${v.lon}` : v.lat}</div>
+              <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#5e5e5e" }}>VISITS: {v.visits} | {v.lat !== "N/A" && v.lat !== "[R]" ? `${v.lat}, ${v.lon}` : v.lat}</div>
 
               {isSelected && v.clue && (
                 <div style={{ marginTop: 12 }}>
                   <div style={{ padding: "8px 12px", background: "#0a0300", border: `1px solid ${ACCENT}20`, marginBottom: 8 }}>
-                    <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#3a2000", marginBottom: 3 }}>УЛИКА</div>
+                    <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#a67130", marginBottom: 3 }}>УЛИКА</div>
                     <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: ACCENT }}>{v.clue}</div>
                   </div>
                   <button onClick={(e) => { e.stopPropagation(); handleSave(v) }} disabled={isSaved}
-                    style={{ background: "transparent", border: `1px solid ${isSaved ? "#222" : `${ACCENT}40`}`, color: isSaved ? "#2a2a2a" : ACCENT, fontFamily: "var(--font-mono)", fontSize: 9, padding: "6px 16px", cursor: isSaved ? "default" : "pointer" }}>
+                    style={{ background: "transparent", border: `1px solid ${isSaved ? "#222" : `${ACCENT}40`}`, color: isSaved ? "#5e5e5e" : ACCENT, fontFamily: "var(--font-mono)", fontSize: 10, padding: "6px 16px", cursor: isSaved ? "default" : "pointer" }}>
                     {isSaved ? "ЗАПИСАНО" : "ЗАПАЗИ"}
                   </button>
                 </div>

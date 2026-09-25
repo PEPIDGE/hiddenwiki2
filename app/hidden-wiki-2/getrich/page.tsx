@@ -1,9 +1,9 @@
 ﻿"use client"
 
 import { useState, useEffect } from "react"
-import { GlitchText } from "@/components/tor/glitch-text"
 import { getGameState, addCoins, getCoins } from "@/lib/game-state"
 import { motion, AnimatePresence } from "framer-motion"
+import { PageHeader } from "@/components/tor/ui"
 
 const ACCENT = "#00FF41"
 
@@ -128,13 +128,7 @@ export default function GetRichPage() {
   return (
     <div style={{ maxWidth: 900, margin: "0 auto" }}>
       {/* Header */}
-      <div style={{ marginBottom: 28 }}>
-        <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#bbbbbb", letterSpacing: "0.35em", marginBottom: 8 }}>
-          HIDDEN WIKI 2 // GETRICH // EARN HIDDEN COINS
-        </div>
-        <GlitchText text="GETRICH" as="h1" intensity="low" className="text-4xl font-bold tracking-widest" color={ACCENT} />
-        <div style={{ height: 1, background: `linear-gradient(90deg, ${ACCENT}, transparent)`, marginTop: 8 }} />
-      </div>
+      <PageHeader title="GETRICH" accent={ACCENT} kicker="HIDDEN WIKI 2 // GETRICH // EARN HIDDEN COINS" />
 
       {/* Balance */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 1, background: "#111", marginBottom: 28 }}>
@@ -203,7 +197,7 @@ export default function GetRichPage() {
               <div style={{ flex: 1 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
                   <span style={{
-                    fontSize: 9, fontFamily: "var(--font-mono)", letterSpacing: "0.15em",
+                    fontSize: 10, fontFamily: "var(--font-mono)", letterSpacing: "0.15em",
                     color: DIFF_COLORS[mission.difficulty], border: `1px solid ${DIFF_COLORS[mission.difficulty]}40`,
                     padding: "1px 7px",
                   }}>{mission.difficulty}</span>

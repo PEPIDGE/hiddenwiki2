@@ -55,7 +55,7 @@ export function GlitchText({
 
   return (
     <Tag
-      className={`font-mono ${className}`}
+      className={`font-display ${className}`}
       data-text={text}
       style={{
         position: "relative",

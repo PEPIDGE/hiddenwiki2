@@ -1,10 +1,10 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import Link from "next/link"
 import { GlitchText, TypewriterText } from "@/components/tor/glitch-text"
 import { motion, AnimatePresence } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
+import { PageHeader } from "@/components/tor/ui"
 
 const ACCENT = "#00FF41"
 
@@ -83,12 +83,7 @@ export default function ForumConfessionsPage() {
 
   return (
     <div style={{ maxWidth: 760, margin: "0 auto" }}>
-      <div style={{ marginBottom: 24 }}>
-        <Link href="/hidden-wiki-2/forum" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333", textDecoration: "none" }}>← FORUM</Link>
-        <div style={{ height: 1, background: "#111", margin: "10px 0" }} />
-        <GlitchText text="CONFESSIONS" as="h2" intensity="low" className="text-xl font-bold tracking-widest" color={ACCENT} />
-        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", marginTop: 6 }}>Анонимни изповеди. Натисни за разкриване — всяка изисква 5 секунди потвърждение.</div>
-      </div>
+      <PageHeader title="CONFESSIONS" accent={ACCENT} kicker="FORUM // CONFESSIONS" intro="Анонимни изповеди. Натисни за разкриване — всяка изисква 5 секунди потвърждение." />
 
       <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
         {CONFESSIONS.map((cf, i) => {
@@ -101,13 +96,13 @@ export default function ForumConfessionsPage() {
               {/* Header */}
               <div style={{ padding: "12px 16px", display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #0e0e0e" }}>
                 <div>
-                  <div style={{ fontSize: 7, fontFamily: "var(--font-mono)", color: cf.verified ? `${ACCENT}50` : "#2a2a2a", letterSpacing: "0.15em", marginBottom: 3 }}>{cf.id}</div>
-                  <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333" }}>{cf.anon} // {cf.timestamp}</div>
+                  <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: cf.verified ? `${ACCENT}50` : "#2a2a2a", letterSpacing: "0.15em", marginBottom: 3 }}>{cf.id}</div>
+                  <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#646464" }}>{cf.anon} // {cf.timestamp}</div>
                 </div>
                 {!isRev && (
                   <button onClick={() => handleReveal(cf.id)}
                     disabled={!!cd && cd > 0}
-                    style={{ background: "transparent", border: `1px solid ${cf.verified ? `${ACCENT}35` : "#222"}`, color: cf.verified ? ACCENT : "#333", fontFamily: "var(--font-mono)", fontSize: 9, padding: "5px 12px", cursor: "pointer", letterSpacing: "0.1em" }}>
+                    style={{ background: "transparent", border: `1px solid ${cf.verified ? `${ACCENT}35` : "#222"}`, color: cf.verified ? ACCENT : "#5e5e5e", fontFamily: "var(--font-mono)", fontSize: 10, padding: "5px 12px", cursor: "pointer", letterSpacing: "0.1em" }}>
                     {cd && cd > 0 ? `WAIT ${cd}s` : "REVEAL"}
                   </button>
                 )}
@@ -122,11 +117,11 @@ export default function ForumConfessionsPage() {
                     {cf.clue && (
                       <>
                         <div style={{ padding: "8px 12px", background: "#040c07", border: `1px solid ${ACCENT}20`, marginBottom: 8 }}>
-                          <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#1a3a2a", marginBottom: 3 }}>УЛИКА</div>
+                          <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#42946b", marginBottom: 3 }}>УЛИКА</div>
                           <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: ACCENT }}>{cf.clue}</div>
                         </div>
                         <button onClick={() => handleSave(cf)} disabled={isSaved}
-                          style={{ background: "transparent", border: `1px solid ${isSaved ? "#222" : `${ACCENT}40`}`, color: isSaved ? "#2a2a2a" : ACCENT, fontFamily: "var(--font-mono)", fontSize: 9, padding: "6px 16px", cursor: isSaved ? "default" : "pointer" }}>
+                          style={{ background: "transparent", border: `1px solid ${isSaved ? "#222" : `${ACCENT}40`}`, color: isSaved ? "#5e5e5e" : ACCENT, fontFamily: "var(--font-mono)", fontSize: 10, padding: "6px 16px", cursor: isSaved ? "default" : "pointer" }}>
                           {isSaved ? "ЗАПИСАНО" : "ЗАПАЗИ УЛИКА"}
                         </button>
                       </>
@@ -134,7 +129,7 @@ export default function ForumConfessionsPage() {
                   </motion.div>
                 ) : (
                   <div style={{ padding: "14px 16px" }}>
-                    <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#1a1a1a", letterSpacing: "0.05em" }}>
+                    <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#565656", letterSpacing: "0.05em" }}>
                       {"█".repeat(48)}
                     </div>
                   </div>

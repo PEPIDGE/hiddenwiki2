@@ -1,10 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import Link from "next/link"
-import { GlitchText } from "@/components/tor/glitch-text"
 import { motion, AnimatePresence } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
+import { PageHeader } from "@/components/tor/ui"
 
 const ACCENT = "#00FF41"
 
@@ -102,19 +101,14 @@ export default function ForumDeadLettersPage() {
 
   return (
     <div style={{ maxWidth: 760, margin: "0 auto" }}>
-      <div style={{ marginBottom: 24 }}>
-        <Link href="/hidden-wiki-2/forum" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333", textDecoration: "none" }}>← FORUM</Link>
-        <div style={{ height: 1, background: "#111", margin: "10px 0" }} />
-        <GlitchText text="DEAD LETTERS" as="h2" intensity="low" className="text-xl font-bold tracking-widest" color={ACCENT} />
-        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", marginTop: 6 }}>5 писма намерени в изтрита папка. Подреди 3-те реални в хронологичен ред.</div>
-      </div>
+      <PageHeader title="DEAD LETTERS" accent={ACCENT} kicker="FORUM // DEAD LETTERS" intro="5 писма намерени в изтрита папка. Подреди 3-те реални в хронологичен ред." />
 
       {/* ORDER PUZZLE */}
       <div style={{ padding: "14px 16px", border: `1px solid ${orderSolved ? `${ACCENT}40` : "#181818"}`, background: "#030803", marginBottom: 20 }}>
-        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.15em", marginBottom: 10 }}>
+        <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#3f8f52", letterSpacing: "0.15em", marginBottom: 10 }}>
           PUZZLE: ПОДРЕДИ ПИСМАТА
         </div>
-        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333", marginBottom: 10 }}>
+        <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#646464", marginBottom: 10 }}>
           Избери 3-те реални в правилния ред (хронологично):
         </div>
         <div style={{ display: "flex", gap: 4, flexWrap: "wrap", marginBottom: 8 }}>
@@ -122,7 +116,7 @@ export default function ForumDeadLettersPage() {
             const pos = order.indexOf(dl.id) + 1
             return (
               <button key={dl.id} onClick={() => toggleOrder(dl.id)}
-                style={{ background: pos > 0 ? `${ACCENT}12` : "transparent", border: `1px solid ${pos > 0 ? `${ACCENT}50` : "#2a2a2a"}`, color: pos > 0 ? ACCENT : "#444", fontFamily: "var(--font-mono)", fontSize: 9, padding: "5px 12px", cursor: "pointer", letterSpacing: "0.1em" }}>
+                style={{ background: pos > 0 ? `${ACCENT}12` : "transparent", border: `1px solid ${pos > 0 ? `${ACCENT}50` : "#2a2a2a"}`, color: pos > 0 ? ACCENT : "#444", fontFamily: "var(--font-mono)", fontSize: 10, padding: "5px 12px", cursor: "pointer", letterSpacing: "0.1em" }}>
                 {pos > 0 ? `#${pos} ` : ""}{dl.id}
               </button>
             )
@@ -131,13 +125,13 @@ export default function ForumDeadLettersPage() {
         <AnimatePresence>
           {orderSolved && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-              style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.12em" }}>
+              style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.12em" }}>
               [PUZZLE SOLVED] — SEQUENCE: DL-001 → DL-002 → DL-004 → TRACE-NODE
             </motion.div>
           )}
           {order.length === 3 && !orderSolved && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-              style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#FF0033" }}>
+              style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#FF0033" }}>
               INCORRECT ORDER — опитай отново
             </motion.div>
           )}
@@ -155,9 +149,9 @@ export default function ForumDeadLettersPage() {
               <motion.div initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.07 }}
                 onClick={() => setExpanded(isExp ? null : dl.id)}
                 style={{ padding: "12px 14px", background: isExp ? `${ACCENT}06` : "#040404", border: `1px solid ${isExp ? `${ACCENT}28` : dl.hasClue ? `${ACCENT}10` : "#0e0e0e"}`, cursor: "pointer" }}>
-                <div style={{ fontSize: 7, fontFamily: "var(--font-mono)", color: dl.hasClue ? `${ACCENT}50` : "#2a2a2a", marginBottom: 4 }}>{dl.id} // {dl.date}</div>
+                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: dl.hasClue ? `${ACCENT}50` : "#2a2a2a", marginBottom: 4 }}>{dl.id} // {dl.date}</div>
                 <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: isExp ? ACCENT : "#bbbbbb", fontWeight: dl.hasClue ? 700 : 400, marginBottom: 3 }}>{dl.subject}</div>
-                <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333" }}>TO: {dl.to} / FROM: {dl.from}</div>
+                <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#646464" }}>TO: {dl.to} / FROM: {dl.from}</div>
               </motion.div>
               <AnimatePresence>
                 {isExp && (
@@ -167,11 +161,11 @@ export default function ForumDeadLettersPage() {
                       {dl.clue && (
                         <>
                           <div style={{ padding: "7px 12px", background: "#040c05", border: `1px solid ${ACCENT}20`, marginBottom: 8 }}>
-                            <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#1a3a1a", marginBottom: 3 }}>УЛИКА</div>
+                            <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#3f8f52", marginBottom: 3 }}>УЛИКА</div>
                             <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: ACCENT }}>{dl.clue}</div>
                           </div>
                           <button onClick={(e) => { e.stopPropagation(); handleSave(dl) }} disabled={isSaved}
-                            style={{ background: "transparent", border: `1px solid ${isSaved ? "#222" : `${ACCENT}40`}`, color: isSaved ? "#2a2a2a" : ACCENT, fontFamily: "var(--font-mono)", fontSize: 9, padding: "6px 16px", cursor: isSaved ? "default" : "pointer" }}>
+                            style={{ background: "transparent", border: `1px solid ${isSaved ? "#222" : `${ACCENT}40`}`, color: isSaved ? "#5e5e5e" : ACCENT, fontFamily: "var(--font-mono)", fontSize: 10, padding: "6px 16px", cursor: isSaved ? "default" : "pointer" }}>
                             {isSaved ? "ЗАПИСАНО" : "ЗАПАЗИ"}
                           </button>
                         </>

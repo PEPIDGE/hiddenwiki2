@@ -1,0 +1,192 @@
+.page {
+  max-width: 980px;
+  margin: 0 auto;
+}
+.rec {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+}
+.recDot {
+  width: 9px;
+  height: 9px;
+  border: 1px solid #ff0033;
+}
+.recDot[data-on] {
+  background: #ff0033;
+  box-shadow: 0 0 10px #ff0033;
+}
+.signal {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  font-size: 10.5px;
+  letter-spacing: 0.15em;
+}
+.bars {
+  display: flex;
+  gap: 3px;
+  align-items: flex-end;
+  height: 36px;
+}
+.bars div {
+  width: 3px;
+  background: #ff0033;
+}
+
+.monitor {
+  position: relative;
+  margin-bottom: 28px;
+  background: #000;
+  border: 1px solid rgba(255, 0, 51, 0.45);
+  box-shadow: 0 0 60px -20px rgba(255, 0, 51, 0.5);
+}
+.monitorBar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 10px 14px;
+  background: linear-gradient(90deg, #1a0006, #080000);
+  border-bottom: 1px solid rgba(255, 0, 51, 0.25);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: #d0d0d0;
+}
+.live {
+  padding: 3px 10px 2px;
+  background: #ff0033;
+  color: #000;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  font-size: 10.5px;
+}
+.viewers {
+  margin-left: auto;
+  font-family: var(--font-pixel);
+  font-size: 20px;
+  line-height: 1;
+  color: #ff5070;
+}
+.screen {
+  position: relative;
+  aspect-ratio: 16 / 9;
+}
+.screen video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: none;
+  filter: brightness(0.85) contrast(1.1) saturate(0.7);
+}
+.scan {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0, 0, 0, 0.18) 3px, rgba(0, 0, 0, 0.18) 4px);
+}
+.noise {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  background: repeating-linear-gradient(0deg, rgba(255, 0, 51, 0.1) 0px, transparent 2px);
+}
+.corner {
+  position: absolute;
+  z-index: 4;
+  width: 22px;
+  height: 22px;
+  border: 0 solid rgba(255, 0, 51, 0.8);
+  pointer-events: none;
+}
+.corner:nth-of-type(1) { top: 10px; left: 10px; border-top-width: 2px; border-left-width: 2px; }
+.corner:nth-of-type(2) { top: 10px; right: 10px; border-top-width: 2px; border-right-width: 2px; }
+.corner:nth-of-type(3) { bottom: 56px; left: 10px; border-bottom-width: 2px; border-left-width: 2px; }
+.corner:nth-of-type(4) { bottom: 56px; right: 10px; border-bottom-width: 2px; border-right-width: 2px; }
+.wm {
+  position: absolute;
+  z-index: 4;
+  top: 14px;
+  font-family: var(--font-pixel);
+  font-size: 18px;
+  letter-spacing: 0.08em;
+  color: rgba(255, 60, 90, 0.7);
+  pointer-events: none;
+}
+.wmLeft {
+  left: 40px;
+}
+.wmRight {
+  right: 40px;
+}
+.monitorFoot {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px;
+  border-top: 1px solid #1a1a1a;
+  background: #080000;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  color: #c0c0c0;
+}
+.progress {
+  flex: 1;
+  height: 3px;
+  background: #1f1f1f;
+  position: relative;
+}
+.progress i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 62%;
+  background: linear-gradient(90deg, #ff0033, #ff003380);
+  box-shadow: 0 0 10px #ff0033;
+}
+
+.ctas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 12px;
+}
+.cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 20px 22px;
+  text-decoration: none;
+  background: linear-gradient(135deg, rgba(255, 0, 51, 0.12), rgba(255, 0, 51, 0.02) 60%), #080404;
+  border: 1px solid rgba(255, 0, 51, 0.4);
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+.cta:hover {
+  border-color: #ff0033;
+  box-shadow: 0 0 26px -6px rgba(255, 0, 51, 0.6);
+  transform: translateY(-2px);
+}
+.cta span {
+  font-family: var(--font-display);
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: 0.04em;
+  color: #ff0033;
+}
+.cta i {
+  font-style: normal;
+  font-family: var(--font-pixel);
+  font-size: 36px;
+  line-height: 0.6;
+  color: #ff0033;
+  transition: transform 0.2s;
+}
+.cta:hover i {
+  transform: translateX(6px);
+}

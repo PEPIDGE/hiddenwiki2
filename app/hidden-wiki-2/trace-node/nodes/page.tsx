@@ -2,9 +2,9 @@
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { GlitchText } from "@/components/tor/glitch-text"
 import { HackTerminal } from "@/components/tor/hack-terminal"
 import { getGameState, saveGameState, type GameState } from "@/lib/game-state"
+import { PageHeader } from "@/components/tor/ui"
 
 const ACCENT = "#00FF41"
 
@@ -30,13 +30,7 @@ export default function TraceNodesPage() {
 
   return (
     <div style={{ maxWidth: 880, margin: "0 auto" }}>
-      <div style={{ marginBottom: 20 }}>
-        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#1a3a1a", letterSpacing: "0.35em", marginBottom: 8 }}>
-          TRACE-NODE // NODE TOPOLOGY
-        </div>
-        <GlitchText text="NODE MAP" as="h1" intensity="low" color={ACCENT} className="text-2xl font-bold tracking-widest" />
-        <div style={{ height: 1, background: `linear-gradient(90deg, ${ACCENT}40, transparent)`, marginTop: 10 }} />
-      </div>
+      <PageHeader title="NODE MAP" accent={ACCENT} kicker="TRACE-NODE // NODE TOPOLOGY" />
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 240px", gap: 2 }}>
         {/* SVG Map */}
@@ -75,7 +69,7 @@ export default function TraceNodesPage() {
                     <circle cx={node.x + 4} cy={node.y - 4} r="1.2" fill={node.color} opacity="0.8" />
                   )}
                   <text x={node.x} y={node.y + 10} textAnchor="middle"
-                    style={{ fontSize: "3px", fill: node.color, fontFamily: "monospace", opacity: 0.7 }}>
+                    style={{ fontSize: "3px", fill: node.color, fontFamily: "var(--font-mono)", opacity: 0.7 }}>
                     {node.label}
                   </text>
                   {isHov && (
@@ -83,7 +77,7 @@ export default function TraceNodesPage() {
                   )}
                   {isHov && (
                     <text x={node.x} y={node.y - 9.5} textAnchor="middle"
-                      style={{ fontSize: "2.5px", fill: node.color, fontFamily: "monospace" }}>
+                      style={{ fontSize: "2.5px", fill: node.color, fontFamily: "var(--font-mono)" }}>
                       {node.id} — {node.active ? "ACTIVE" : "LOCKED"}
                     </text>
                   )}
@@ -110,14 +104,14 @@ export default function TraceNodesPage() {
             >
               <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
                 <div style={{ width: 5, height: 5, background: node.active ? node.color : "#222", flexShrink: 0 }} />
-                <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: node.color, letterSpacing: "0.1em", fontWeight: 700 }}>
+                <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: node.color, letterSpacing: "0.1em", fontWeight: 700 }}>
                   {node.id}
                 </span>
               </div>
-              <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#909090", paddingLeft: 13 }}>
+              <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#909090", paddingLeft: 13 }}>
                 {node.label}
               </div>
-              <div style={{ fontSize: 7, fontFamily: "var(--font-mono)", color: node.active ? "#1a3a1a" : "#2a2a2a", paddingLeft: 13, marginTop: 3, letterSpacing: "0.1em" }}>
+              <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: node.active ? "#3f8d3f" : "#5e5e5e", paddingLeft: 13, marginTop: 3, letterSpacing: "0.1em" }}>
                 {node.active ? "SIGNAL: ACTIVE" : "SIGNAL: PENDING"}
               </div>
             </motion.div>

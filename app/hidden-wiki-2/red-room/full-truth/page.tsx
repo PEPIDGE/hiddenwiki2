@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { GlitchText } from "@/components/tor/glitch-text"
+import { Lock, LockOpen } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
+import { PageHeader, ProgressPips } from "@/components/tor/ui"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
 
 const ACCENT = "#FF0033"
@@ -95,20 +96,13 @@ export default function FullTruthPage() {
   const savedCount = TRUTH_FRAGMENTS.filter((f) => savedClues.includes(`ft-${f.id}`)).length
 
   return (
-    <div style={{ maxWidth: 780, margin: "0 auto" }}>
-      {/* Header */}
-      <div style={{ marginBottom: 22 }}>
-        <Link href="/hidden-wiki-2/red-room" style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#bdbdbd", letterSpacing: "0.12em", textDecoration: "none" }}>
-          ← RED ROOM
-        </Link>
-        <div style={{ marginTop: 12, display: "flex", alignItems: "baseline", gap: 14, flexWrap: "wrap" }}>
-          <GlitchText text="ПЪЛНАТА ИСТИНА" as="h1" intensity="low" className="text-3xl font-bold tracking-widest" color={ACCENT} />
-          <span style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "#9a9a9a", letterSpacing: "0.1em" }}>
-            {savedCount}/3 ФРАГМЕНТА
-          </span>
-        </div>
-        <div style={{ height: 2, background: `linear-gradient(90deg, ${ACCENT}, transparent)`, marginTop: 10 }} />
-      </div>
+    <div style={{ maxWidth: 860, margin: "0 auto" }}>
+      <PageHeader
+        title="ПЪЛНАТА ИСТИНА"
+        accent={ACCENT}
+        kicker="RED ROOM // FULL TRUTH"
+        aside={<ProgressPips done={savedCount} total={3} accent={ACCENT} label="ФРАГМЕНТА" />}
+      />
 
       {/* Warning banner */}
       <div style={{ display: "flex", gap: 12, padding: "14px 16px", background: `${ACCENT}0a`, border: `1px solid ${ACCENT}40`, marginBottom: 26 }}>
@@ -130,7 +124,7 @@ export default function FullTruthPage() {
           <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: AMBER, letterSpacing: "0.2em", fontWeight: 700 }}>
             АНАЛИЗ // ВЕРСИЯ 1.0
           </span>
-          <span style={{ marginLeft: "auto", fontSize: 9, fontFamily: "var(--font-mono)", color: `${AMBER}aa`, letterSpacing: "0.12em" }}>
+          <span style={{ marginLeft: "auto", fontSize: 10, fontFamily: "var(--font-mono)", color: `${AMBER}aa`, letterSpacing: "0.12em" }}>
             UNVERIFIED
           </span>
         </div>
@@ -166,12 +160,10 @@ export default function FullTruthPage() {
                   background: isUnlocked ? `${edgeColor}0a` : "transparent",
                   gap: 3,
                 }}>
-                  <span style={{ fontSize: 18, fontFamily: "var(--font-mono)", fontWeight: 700, color: isUnlocked ? edgeColor : "#2e2e2e" }}>
+                  <span style={{ fontSize: 30, lineHeight: 0.9, fontFamily: "var(--font-pixel)", fontWeight: 700, color: isUnlocked ? edgeColor : "#4a4a4a" }}>
                     {String(idx + 1).padStart(2, "0")}
                   </span>
-                  <span style={{ fontSize: 12, color: isUnlocked ? edgeColor : "#2e2e2e" }}>
-                    {isUnlocked ? "🔓" : "🔒"}
-                  </span>
+                  {isUnlocked ? <LockOpen size={14} color={edgeColor} /> : <Lock size={14} color="#4a4a4a" />}
                 </div>
 
                 {/* Body */}
@@ -181,12 +173,12 @@ export default function FullTruthPage() {
                       FRAGMENT {String(idx + 1).padStart(2, "0")} / {isUnlocked ? "DECRYPTED" : "LOCKED"}
                     </span>
                     {frag.isBait && isUnlocked && (
-                      <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: AMBER, border: `1px solid ${AMBER}55`, padding: "1px 7px", letterSpacing: "0.12em" }}>
+                      <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: AMBER, border: `1px solid ${AMBER}55`, padding: "1px 7px", letterSpacing: "0.12em" }}>
                         UNVERIFIED
                       </span>
                     )}
                   </div>
-                  <div style={{ fontSize: 15, fontFamily: "var(--font-mono)", color: isUnlocked ? "#f0f0f0" : "#3a3a3a", fontWeight: 700, marginBottom: isUnlocked ? 10 : 0, letterSpacing: "0.04em" }}>
+                  <div style={{ fontSize: 15, fontFamily: "var(--font-mono)", color: isUnlocked ? "#f0f0f0" : "#5e5e5e", fontWeight: 700, marginBottom: isUnlocked ? 10 : 0, letterSpacing: "0.04em" }}>
                     {isUnlocked ? frag.title : "████████████"}
                   </div>
                   {isUnlocked ? (
@@ -209,7 +201,7 @@ export default function FullTruthPage() {
                       </div>
                     </motion.div>
                   ) : (
-                    <div style={{ fontSize: 11, color: "#555", fontFamily: "var(--font-mono)", marginTop: 4, letterSpacing: "0.04em" }}>
+                    <div style={{ fontSize: 11, color: "#7c7c7c", fontFamily: "var(--font-mono)", marginTop: 4, letterSpacing: "0.04em" }}>
                       [Отключва се след предишния фрагмент]
                     </div>
                   )}

@@ -1,10 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import Link from "next/link"
-import { GlitchText } from "@/components/tor/glitch-text"
 import { motion, AnimatePresence } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
+import { PageHeader } from "@/components/tor/ui"
 
 const ACCENT = "#00FF41"
 
@@ -77,12 +76,7 @@ export default function ForumThreadsPage() {
 
   return (
     <div style={{ maxWidth: 820, margin: "0 auto" }}>
-      <div style={{ marginBottom: 24 }}>
-        <Link href="/hidden-wiki-2/forum" style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333", textDecoration: "none" }}>← FORUM</Link>
-        <div style={{ height: 1, background: "#111", margin: "10px 0" }} />
-        <GlitchText text="THREADS" as="h2" intensity="low" className="text-xl font-bold tracking-widest" color={ACCENT} />
-        <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#444", marginTop: 6 }}>Разгърни нишка за да прочетеш всички постове.</div>
-      </div>
+      <PageHeader title="THREADS" accent={ACCENT} kicker="FORUM // THREADS" intro="Разгърни нишка за да прочетеш всички постове." />
 
       <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
         {THREADS.map((t, i) => {
@@ -96,12 +90,12 @@ export default function ForumThreadsPage() {
                 style={{ padding: "12px 14px", background: isExp ? `${ACCENT}07` : "#040404", border: `1px solid ${isExp ? `${ACCENT}30` : t.flagged ? `${ACCENT}12` : "#0e0e0e"}`, cursor: "pointer" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <div>
-                    <div style={{ fontSize: 7, fontFamily: "var(--font-mono)", color: t.flagged ? ACCENT : "#2a2a2a", marginBottom: 4 }}>{t.id} // {t.author}</div>
+                    <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: t.flagged ? ACCENT : "#5e5e5e", marginBottom: 4 }}>{t.id} // {t.author}</div>
                     <div style={{ fontSize: 12, fontFamily: "var(--font-mono)", color: isExp ? ACCENT : "#bbbbbb", fontWeight: t.flagged ? 700 : 400 }}>{t.title}</div>
                   </div>
                   <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 3 }}>
-                    <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#333" }}>{t.replies} replies</span>
-                    {isSaved && <span style={{ fontSize: 6, fontFamily: "var(--font-mono)", color: `${ACCENT}60`, border: `1px solid ${ACCENT}20`, padding: "1px 4px" }}>SAVED</span>}
+                    <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#646464" }}>{t.replies} replies</span>
+                    {isSaved && <span style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: `${ACCENT}60`, border: `1px solid ${ACCENT}20`, padding: "1px 4px" }}>SAVED</span>}
                   </div>
                 </div>
               </motion.div>
@@ -112,7 +106,7 @@ export default function ForumThreadsPage() {
                     <div style={{ background: "#030a06", border: `1px solid ${ACCENT}18`, borderTop: "none" }}>
                       {t.posts.map((post, pi) => (
                         <div key={post.id} style={{ padding: "10px 16px", borderBottom: pi < t.posts.length - 1 ? "1px solid #0e0e0e" : "none" }}>
-                          <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: post.author === t.author ? `${ACCENT}70` : "#2a2a2a", marginBottom: 5 }}>
+                          <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: post.author === t.author ? `${ACCENT}70` : "#2a2a2a", marginBottom: 5 }}>
                             {post.author} // {post.time}
                           </div>
                           <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#999999", lineHeight: 1.7 }}>{post.text}</div>
@@ -121,11 +115,11 @@ export default function ForumThreadsPage() {
                       {t.clue && (
                         <div style={{ padding: "10px 16px", borderTop: "1px solid #111" }}>
                           <div style={{ padding: "7px 10px", background: "#040c07", border: `1px solid ${ACCENT}20`, marginBottom: 8 }}>
-                            <div style={{ fontSize: 9, fontFamily: "var(--font-mono)", color: "#1a3a2a", marginBottom: 3 }}>ПОТЕНЦИАЛНА УЛИКА</div>
+                            <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#42946b", marginBottom: 3 }}>ПОТЕНЦИАЛНА УЛИКА</div>
                             <div style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: ACCENT }}>{t.clue}</div>
                           </div>
                           <button onClick={(e) => { e.stopPropagation(); handleSave(t) }} disabled={isSaved}
-                            style={{ background: "transparent", border: `1px solid ${isSaved ? "#222" : `${ACCENT}40`}`, color: isSaved ? "#2a2a2a" : ACCENT, fontFamily: "var(--font-mono)", fontSize: 9, padding: "6px 16px", cursor: isSaved ? "default" : "pointer" }}>
+                            style={{ background: "transparent", border: `1px solid ${isSaved ? "#222" : `${ACCENT}40`}`, color: isSaved ? "#5e5e5e" : ACCENT, fontFamily: "var(--font-mono)", fontSize: 10, padding: "6px 16px", cursor: isSaved ? "default" : "pointer" }}>
                             {isSaved ? "ЗАПИСАНО" : "ЗАПАЗИ УЛИКА"}
                           </button>
                         </div>
