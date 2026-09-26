@@ -10,7 +10,7 @@ const ACCENT = "#00FF41"
 const CALENDAR_EVENTS = [
   { date: "2025-09-01", time: "22:00", title: "Братство — вътрешна среща", note: "Ритуална. Локация неизвестна.", highlight: false, clue: null },
   { date: "2025-09-21", time: "19:00", title: "Огледален преход — NDK", note: "40+ участника. Лора Костова присъства.", highlight: true, clue: "Огледален преход 21.09 в NDK — три секти + Лора Костова (гражданска)" },
-  { date: "2025-09-21", time: "23:30", title: "Частно събирание след NDK", note: "Наблюдавани: ToxicBabe, OutsiderX, GothGirl", highlight: false, clue: null },
+  { date: "2025-09-21", time: "23:30", title: "Частно събирание след NDK", note: "Наблюдавани: ShameBroker (Апекс), UmbraSix (Кръг на лунното затъмнение), GoldVeil (Златния Предел)", highlight: false, clue: null },
   { date: "2025-10-08", time: "20:00", title: "Нощен сигнал — дебрифинг", note: "Отменено — причина неизвестна.", highlight: false, clue: null },
   { date: "2025-10-12", time: "14:00", title: "GothGirl — последна активност в чат", note: "3 дни преди промяната на паролата", highlight: true, clue: "GothGirl последно активна в чат на 12.10.2025 — паролата сменена 3 дни по-рано от 15.10" },
   { date: "2025-10-15", time: "22:07", title: "Р. Алексиев — зареждане Shell, ул. Бенковски", note: "Само 800м от дома на Лора", highlight: true, clue: "Shell зареждане 22:07 на 15.10 — 800м от Лора. Предишни покупки: тетрабеназин без рецепта" },

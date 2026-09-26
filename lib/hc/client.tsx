@@ -5,11 +5,12 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useRef,
   useState,
   type ReactNode,
 } from "react"
-import type { PublicPlayerState, PublicTask, StoredClue } from "./types"
+import { usePathname } from "next/navigation"
+import { clearGameState, flushGameState, hydrateGameState } from "@/lib/game-state"
+import type { PublicPlayerState, PublicTask } from "./types"
 
 interface ClaimResult {
   ok: boolean
@@ -19,27 +20,29 @@ interface ClaimResult {
 }
 
 interface HcContextValue {
-  loading: boolean
+  ready: boolean // player + progress loaded from the database
   authenticated: boolean
   player: PublicPlayerState | null
   tasks: PublicTask[]
   coins: number
   refresh: () => Promise<void>
-  login: (code: string) => Promise<{ ok: boolean; error?: string }>
   logout: () => Promise<void>
   claim: (taskId: string, answer: string) => Promise<ClaimResult>
-  saveClue: (clue: Omit<StoredClue, "timestamp">) => Promise<void>
-  removeClue: (clueId: string) => Promise<void>
-  unlockRoute: (route: string) => Promise<void>
 }
 
 const HcContext = createContext<HcContextValue | null>(null)
 
-async function api(path: string, body?: unknown) {
+function goToLogin() {
+  const here = window.location.pathname + window.location.search
+  const query = here.startsWith("/login") ? "" : "?next=" + encodeURIComponent(here)
+  window.location.replace("/login" + query)
+}
+
+async function postJson(path: string, body: unknown) {
   const res = await fetch(path, {
-    method: body === undefined ? "GET" : "POST",
-    headers: body === undefined ? undefined : { "Content-Type": "application/json" },
-    body: body === undefined ? undefined : JSON.stringify(body),
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
     cache: "no-store",
   })
   const data = await res.json().catch(() => ({}))
@@ -47,87 +50,69 @@ async function api(path: string, body?: unknown) {
 }
 
 export function HcProvider({ children }: { children: ReactNode }) {
-  const [loading, setLoading] = useState(true)
-  const [authenticated, setAuthenticated] = useState(false)
+  const pathname = usePathname() ?? ""
+  const onLoginPage = pathname.startsWith("/login")
+
+  const [ready, setReady] = useState(false)
   const [player, setPlayer] = useState<PublicPlayerState | null>(null)
   const [tasks, setTasks] = useState<PublicTask[]>([])
-  const didInit = useRef(false)
 
   const refresh = useCallback(async () => {
     try {
-      const { data } = await api("/api/hc/state")
-      setAuthenticated(Boolean(data?.authenticated))
-      setPlayer(data?.player ?? null)
-      if (Array.isArray(data?.tasks)) setTasks(data.tasks)
+      const res = await fetch("/api/hc/state", { cache: "no-store" })
+      if (res.status === 401) {
+        clearGameState()
+        goToLogin()
+        return
+      }
+      const data = await res.json()
+      if (data?.authenticated && data.player) {
+        hydrateGameState(data.player.progress)
+        setPlayer(data.player)
+        if (Array.isArray(data.tasks)) setTasks(data.tasks)
+        setReady(true)
+      }
     } catch {
-      // Offline / API down — keep whatever we had.
-    } finally {
-      setLoading(false)
+      // Network hiccup — the ready screen stays up until the next try.
     }
   }, [])
 
   useEffect(() => {
-    if (didInit.current) return
-    didInit.current = true
+    if (onLoginPage || ready) return
     refresh()
-  }, [refresh])
-
-  const login = useCallback(async (code: string) => {
-    const { res, data } = await api("/api/hc/login", { code })
-    if (res.ok && data?.ok) {
-      setAuthenticated(true)
-      setPlayer(data.player ?? null)
-      return { ok: true }
-    }
-    return { ok: false, error: data?.error ?? "Неуспешен вход." }
-  }, [])
+  }, [onLoginPage, ready, refresh])
 
   const logout = useCallback(async () => {
-    await api("/api/hc/logout", {})
-    setAuthenticated(false)
+    flushGameState()
+    await postJson("/api/hc/logout", {}).catch(() => null)
+    clearGameState()
     setPlayer(null)
+    setReady(false)
+    window.location.replace("/login")
   }, [])
 
   const claim = useCallback(async (taskId: string, answer: string): Promise<ClaimResult> => {
-    const { res, data } = await api("/api/hc/claim", { taskId, answer })
-    if (data?.player) setPlayer(data.player)
-    if (!res.ok) return { ok: false, error: data?.error ?? "Грешка." }
-    return {
-      ok: Boolean(data?.ok),
-      outcome: data?.outcome,
-      reward: data?.reward,
-      error: data?.error,
+    const { res, data } = await postJson("/api/hc/claim", { taskId, answer })
+    if (res.status === 401) {
+      goToLogin()
+      return { ok: false, error: "Сесията изтече." }
     }
-  }, [])
-
-  const saveClue = useCallback(async (clue: Omit<StoredClue, "timestamp">) => {
-    const { data } = await api("/api/hc/clue", { action: "save", clue })
-    if (data?.player) setPlayer(data.player)
-  }, [])
-
-  const removeClue = useCallback(async (clueId: string) => {
-    const { data } = await api("/api/hc/clue", { action: "remove", clueId })
-    if (data?.player) setPlayer(data.player)
-  }, [])
-
-  const unlockRoute = useCallback(async (route: string) => {
-    const { data } = await api("/api/hc/unlock", { route })
-    if (data?.player) setPlayer(data.player)
+    if (typeof data?.coins === "number" && Array.isArray(data?.completedTasks)) {
+      setPlayer((p) => (p ? { ...p, coins: data.coins, completedTasks: data.completedTasks } : p))
+    }
+    if (!res.ok) return { ok: false, error: data?.error ?? "Грешка." }
+    return { ok: Boolean(data?.ok), outcome: data?.outcome, reward: data?.reward, error: data?.error }
   }, [])
 
   const value: HcContextValue = {
-    loading,
-    authenticated,
+    ready,
+    authenticated: ready && player !== null,
     player,
     tasks,
     coins: player?.coins ?? 0,
     refresh,
-    login,
     logout,
     claim,
-    saveClue,
-    removeClue,
-    unlockRoute,
   }
 
   return <HcContext.Provider value={value}>{children}</HcContext.Provider>
@@ -135,8 +120,6 @@ export function HcProvider({ children }: { children: ReactNode }) {
 
 export function usePlayer(): HcContextValue {
   const ctx = useContext(HcContext)
-  if (!ctx) {
-    throw new Error("usePlayer must be used within <HcProvider>")
-  }
+  if (!ctx) throw new Error("usePlayer must be used within <HcProvider>")
   return ctx
 }

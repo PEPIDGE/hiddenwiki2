@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from "next/server"
-import { HC_COOKIE, HC_SESSION_TTL_MS } from "@/lib/hc/config"
-import { createToken } from "@/lib/hc/session"
+import { HC_COOKIE } from "@/lib/hc/config"
+import { createToken, SESSION_COOKIE_OPTIONS } from "@/lib/hc/session"
 import { getPlayer } from "@/lib/hc/store"
-import { toPublicPlayer } from "@/lib/hc/types"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
 
-// Simple in-memory brute-force guard: max 8 tries / 10 min per IP.
+// Brute-force guard: max 8 tries per 10 minutes per IP (per instance).
 const attempts = new Map<string, { count: number; first: number }>()
 const WINDOW_MS = 10 * 60 * 1000
 const MAX_ATTEMPTS = 8
@@ -23,45 +22,35 @@ function tooMany(ip: string): boolean {
   return rec.count > MAX_ATTEMPTS
 }
 
+const CODE_PATTERN = /^[A-Z0-9-]{4,64}$/
+
 export async function POST(req: NextRequest) {
-  const ip =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "local"
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "local"
 
   if (tooMany(ip)) {
-    return NextResponse.json(
-      { error: "Твърде много опити. Опитай пак по-късно." },
-      { status: 429 },
-    )
+    return NextResponse.json({ error: "Твърде много опити. Опитай пак след малко." }, { status: 429 })
   }
 
   let code = ""
   try {
     const body = await req.json()
-    code = (body?.code ?? "").toString().trim()
+    code = String(body?.code ?? "").trim().toUpperCase()
   } catch {
     return NextResponse.json({ error: "Невалидна заявка." }, { status: 400 })
   }
 
-  if (!code || code.length > 64) {
-    return NextResponse.json({ error: "Въведи валиден код." }, { status: 400 })
+  if (!CODE_PATTERN.test(code)) {
+    return NextResponse.json({ error: "Невалиден код." }, { status: 400 })
   }
 
-  // Codes are pre-issued; unknown codes cannot self-register.
+  // Codes are pre-issued; an unknown code cannot create an account.
   const player = await getPlayer(code)
   if (!player) {
-    return NextResponse.json(
-      { error: "Непознат код за достъп." },
-      { status: 401 },
-    )
+    return NextResponse.json({ error: "Непознат код." }, { status: 401 })
   }
 
-  const res = NextResponse.json({ ok: true, player: toPublicPlayer(player) })
-  res.cookies.set(HC_COOKIE, createToken(player.code), {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
-    maxAge: Math.floor(HC_SESSION_TTL_MS / 1000),
-  })
+  attempts.delete(ip)
+  const res = NextResponse.json({ ok: true })
+  res.cookies.set(HC_COOKIE, await createToken(player.code), SESSION_COOKIE_OPTIONS)
   return res
 }

@@ -2,19 +2,19 @@
 
 // ============================================================
 // TORSHELL — GAME STATE MODEL
+//
+// The player's progress lives in the database (see lib/hc). This module
+// keeps an in-memory copy for the current tab: it is hydrated from the
+// server right after login (HcProvider) and every saveGameState() is
+// pushed back to /api/hc/progress. Nothing is kept in localStorage, so
+// two players on the same browser never see each other's progress.
 // ============================================================
 
-export type ClueStatus = "unverified" | "confirmed" | "suspicious"
+import { emptyProgress, INITIAL_UNLOCKED_ROUTES } from "@/lib/hc/config"
+import type { ClueStatus, FinalOutput, PlayerProgress, StoredClue } from "@/lib/hc/types"
 
-export interface Clue {
-  id: string
-  title: string
-  text: string
-  sourceRoute: string
-  confidence: number // 0-5
-  status: ClueStatus
-  timestamp?: number
-}
+export type { ClueStatus }
+export type Clue = StoredClue
 
 export interface GameState {
   unlockedRoutes: string[]
@@ -24,58 +24,20 @@ export interface GameState {
   clues: Clue[]
   attempts: Record<string, number>
   cooldownUntil: Record<string, number>
+  finalOutput: FinalOutput | null
   progress: number
-  hiddenCoins: number
 }
 
 export const INITIAL_STATE: GameState = {
-  unlockedRoutes: [
-    "/hidden-wiki-2/moneytasks",
-    "/hidden-wiki-2/moneytasks/services",
-    "/hidden-wiki-2/moneytasks/puzzels",
-    "/hidden-wiki-2/moneytasks/trivia",
-    "/hidden-wiki-2/red-room",
-    "/hidden-wiki-2/leaks",
-    "/hidden-wiki-2/cult",
-    "/hidden-wiki-2/events",
-    "/hidden-wiki-2/forum",
-    "/hidden-wiki-2/finance",
-    "/hidden-wiki-2/getrich",
-    "/hidden-wiki-2/trace-node",
-    "/hidden-wiki-2/trace-node/terminal",
-    "/hidden-wiki-2/trace-node/nodes",
-    "/hidden-wiki-2/trace-node/trace",
-    "/hidden-wiki-2/trace-node/output",
-    "/hidden-wiki-2/trace-node/verification",
-    "/hidden-wiki-2/red-room/full-truth",
-    "/hidden-wiki-2/red-room/donors",
-    "/hidden-wiki-2/red-room/chat-replay",
-    "/hidden-wiki-2/red-room/signal-log",
-    "/hidden-wiki-2/leaks/docs",
-    "/hidden-wiki-2/leaks/archive",
-    "/hidden-wiki-2/leaks/vehicles",
-    "/hidden-wiki-2/leaks/cards",
-    "/hidden-wiki-2/leaks/passwords",
-    "/hidden-wiki-2/cult/operators",
-    "/hidden-wiki-2/cult/chat-system",
-    "/hidden-wiki-2/events/calendar",
-    "/hidden-wiki-2/events/albums",
-    "/hidden-wiki-2/events/guestbook",
-    "/hidden-wiki-2/forum/threads",
-    "/hidden-wiki-2/forum/confessions",
-    "/hidden-wiki-2/forum/deadletters",
-    "/hidden-wiki-2/finance/transactions",
-    "/hidden-wiki-2/finance/anomalies",
-    "/hidden-wiki-2/finance/beneficiaries",
-  ],
+  unlockedRoutes: [...INITIAL_UNLOCKED_ROUTES],
   visitedRoutes: [],
   solvedPuzzles: [],
   tokens: {},
   clues: [],
   attempts: {},
   cooldownUntil: {},
+  finalOutput: null,
   progress: 0,
-  hiddenCoins: 1000000,
 }
 
 // ============================================================
@@ -155,15 +117,6 @@ export const ROUTES_CONFIG = [
     sublinks: ["/transactions", "/anomalies", "/beneficiaries"],
   },
   {
-    id: "getrich",
-    path: "/hidden-wiki-2/getrich",
-    label: "GETRICH",
-    accentColor: PALETTE.green,
-    status: "ACTIVE",
-    locked: false,
-    sublinks: [],
-  },
-  {
     id: "trace-node",
     path: "/hidden-wiki-2/trace-node",
     label: "TRACE-NODE",
@@ -196,20 +149,111 @@ export const CANON_ANCHORS = [
   { id: "anchor-5", label: "Р. Алексиев / RedFox", description: "Организаторът — тетрабеназин" },
 ]
 
-export function getGameState(): GameState {
-  if (typeof window === "undefined") return INITIAL_STATE
-  try {
-    const raw = localStorage.getItem("torshell_state")
-    if (!raw) return INITIAL_STATE
-    return { ...INITIAL_STATE, ...JSON.parse(raw) }
-  } catch {
-    return INITIAL_STATE
+// ============================================================
+// SERVER-BACKED STATE
+// ============================================================
+
+let cache: GameState | null = null
+let syncTimer: ReturnType<typeof setTimeout> | null = null
+let pending = false
+const SYNC_DELAY_MS = 350
+
+const clone = <T,>(v: T): T => JSON.parse(JSON.stringify(v)) as T
+
+function toProgress(state: GameState): PlayerProgress {
+  return {
+    unlockedRoutes: state.unlockedRoutes,
+    visitedRoutes: state.visitedRoutes,
+    solvedPuzzles: state.solvedPuzzles,
+    tokens: state.tokens,
+    clues: state.clues,
+    attempts: state.attempts,
+    cooldownUntil: state.cooldownUntil,
+    finalOutput: state.finalOutput,
   }
+}
+
+function pushToServer(keepalive = false) {
+  if (!cache || !pending) return
+  pending = false
+  const body = JSON.stringify({ progress: toProgress(cache) })
+  fetch("/api/hc/progress", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body,
+    keepalive: keepalive && body.length < 60_000,
+  }).catch(() => {
+    pending = true // retry with the next change / flush
+  })
+}
+
+function scheduleSync() {
+  pending = true
+  if (syncTimer) clearTimeout(syncTimer)
+  syncTimer = setTimeout(() => {
+    syncTimer = null
+    pushToServer()
+  }, SYNC_DELAY_MS)
+}
+
+// Send anything unsaved before the tab goes away.
+export function flushGameState() {
+  if (syncTimer) {
+    clearTimeout(syncTimer)
+    syncTimer = null
+  }
+  pushToServer(true)
+}
+
+if (typeof window !== "undefined") {
+  window.addEventListener("pagehide", flushGameState)
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") flushGameState()
+  })
+  // Legacy local copies from before progress moved to the database.
+  try {
+    localStorage.removeItem("torshell_state")
+    localStorage.removeItem("torshell_final_output")
+    localStorage.removeItem("gr_claimed")
+  } catch {
+    // storage blocked — nothing to clean
+  }
+}
+
+// Called once after login with the progress stored in the database.
+export function hydrateGameState(progress: PlayerProgress | null | undefined) {
+  const p = progress ?? emptyProgress()
+  const state: GameState = {
+    ...INITIAL_STATE,
+    ...clone(p),
+    unlockedRoutes: p.unlockedRoutes?.length ? [...p.unlockedRoutes] : [...INITIAL_UNLOCKED_ROUTES],
+    progress: 0,
+  }
+  state.progress = calculateProgress(state)
+  cache = state
+  pending = false
+}
+
+export function isGameStateHydrated(): boolean {
+  return cache !== null
+}
+
+// Wipe the in-memory copy (logout).
+export function clearGameState() {
+  if (syncTimer) clearTimeout(syncTimer)
+  syncTimer = null
+  pending = false
+  cache = null
+}
+
+export function getGameState(): GameState {
+  return clone(cache ?? INITIAL_STATE)
 }
 
 export function saveGameState(state: GameState): void {
   if (typeof window === "undefined") return
-  localStorage.setItem("torshell_state", JSON.stringify(state))
+  cache = clone(state)
+  scheduleSync()
 }
 
 export function isRouteUnlocked(_path: string, _state: GameState): boolean {
@@ -225,7 +269,7 @@ export function hasCooldown(puzzleId: string, state: GameState): number {
 
 export function addVisitedRoute(path: string): GameState {
   const state = getGameState()
-  if (state.visitedRoutes.includes(path)) return state
+  if (!cache || state.visitedRoutes.includes(path)) return state
   const newState = { ...state, visitedRoutes: [...state.visitedRoutes, path] }
   saveGameState(newState)
   return newState
@@ -250,23 +294,6 @@ export function removeClue(state: GameState, clueId: string): GameState {
   newState.progress = calculateProgress(newState)
   saveGameState(newState)
   return newState
-}
-
-export function addCoins(state: GameState, amount: number): GameState {
-  const newState = { ...state, hiddenCoins: (state.hiddenCoins ?? 0) + amount }
-  saveGameState(newState)
-  return newState
-}
-
-export function spendCoins(state: GameState, amount: number): GameState | null {
-  if ((state.hiddenCoins ?? 0) < amount) return null
-  const newState = { ...state, hiddenCoins: (state.hiddenCoins ?? 0) - amount }
-  saveGameState(newState)
-  return newState
-}
-
-export function getCoins(state: GameState): number {
-  return state.hiddenCoins ?? 0
 }
 
 export function calculateProgress(state: GameState): number {

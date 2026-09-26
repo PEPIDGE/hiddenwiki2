@@ -300,7 +300,7 @@ export default async function CultDetailPage({
         </Link>
       </nav>
 
-      <CultOperatorsPanel cultName={cult.name} sourceRoute={sourceRoute} />
+      <CultOperatorsPanel cultName={cult.name} sourceRoute={sourceRoute} cultSlug={cult.slug} />
     </article>
   )
 }

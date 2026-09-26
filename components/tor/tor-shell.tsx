@@ -8,6 +8,7 @@ import { TorTopBar } from "@/components/tor/tor-top-bar"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { ROUTES_CONFIG, addVisitedRoute } from "@/lib/game-state"
+import { usePlayer } from "@/lib/hc/client"
 import s from "./shell.module.css"
 
 interface TorShellProps {
@@ -49,10 +50,14 @@ export function TorShell({ children, currentSite, siteColor = "#00FF41" }: TorSh
   const [navOpen, setNavOpen] = useState(false)
   const [evidenceOpen, setEvidenceOpen] = useState(false)
   const section = ROUTES_CONFIG.find((r) => pathname?.startsWith(r.path))
+  const { ready } = usePlayer()
 
-  // Register each visited route so nav can reveal sublinks
+  // Register each visited route (stored with the player's progress)
   useEffect(() => {
-    if (pathname) addVisitedRoute(pathname)
+    if (ready && pathname) addVisitedRoute(pathname)
+  }, [pathname, ready])
+
+  useEffect(() => {
     setNavOpen(false)
     setEvidenceOpen(false)
   }, [pathname])

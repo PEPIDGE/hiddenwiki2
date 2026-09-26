@@ -1,33 +1,28 @@
 import { NextResponse } from "next/server"
-import { getSessionCode } from "@/lib/hc/session"
+import { HC_COOKIE } from "@/lib/hc/config"
+import { getSessionCode, SESSION_COOKIE_OPTIONS } from "@/lib/hc/session"
 import { getPlayer } from "@/lib/hc/store"
-import { toPublicPlayer } from "@/lib/hc/types"
 import { getPublicTasks } from "@/lib/hc/tasks"
+import { toPublicPlayer } from "@/lib/hc/types"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
 
-// Returns the logged-in player's own state + the public task catalog.
+// The logged-in player's own state (coins, rewarded tasks, full progress)
+// plus the public task catalog. proxy.ts already rejects missing sessions.
 export async function GET() {
   const code = await getSessionCode()
-  if (!code) {
-    return NextResponse.json(
-      { authenticated: false, tasks: getPublicTasks() },
-      { status: 200 },
-    )
-  }
+  const player = code ? await getPlayer(code) : null
 
-  const player = await getPlayer(code)
   if (!player) {
-    return NextResponse.json(
-      { authenticated: false, tasks: getPublicTasks() },
-      { status: 200 },
-    )
+    // Signed cookie for a player that no longer exists — end the session.
+    const res = NextResponse.json({ authenticated: false }, { status: 401 })
+    res.cookies.set(HC_COOKIE, "", { ...SESSION_COOKIE_OPTIONS, maxAge: 0 })
+    return res
   }
 
-  return NextResponse.json({
-    authenticated: true,
-    player: toPublicPlayer(player),
-    tasks: getPublicTasks(),
-  })
+  return NextResponse.json(
+    { authenticated: true, player: toPublicPlayer(player), tasks: getPublicTasks() },
+    { headers: { "Cache-Control": "no-store" } },
+  )
 }

@@ -11,10 +11,13 @@ import {
   type CultChatMessage,
 } from "@/lib/cult-chats"
 import { addClue, getGameState, saveGameState } from "@/lib/game-state"
+import { SIDE_OPERATORS } from "@/lib/cult-members"
 
 const ACCENT = "#00FF41"
+const BROTHERHOOD_SLUG = "bratstvoto-na-tretoto-probuzhdane"
 
-const OPERATORS = [
+// Main-case operators — shown only on the Brotherhood dossier.
+const BROTHERHOOD_OPERATORS = [
   {
     id: "OP-001",
     callsign: "RedFox",
@@ -120,6 +123,28 @@ const STATUS_COLOR: Record<string, string> = {
   DECOY: "#333",
 }
 
+type OperatorRow = (typeof BROTHERHOOD_OPERATORS)[number]
+
+// Each dossier lists its own sect's operators.
+function operatorsFor(cultSlug: string, cultName: string): { rows: OperatorRow[]; clueKey: (id: string) => string } {
+  if (cultSlug === BROTHERHOOD_SLUG) {
+    return { rows: BROTHERHOOD_OPERATORS, clueKey: (id) => `cult-op-${id}` }
+  }
+  const rows: OperatorRow[] = (SIDE_OPERATORS[cultSlug] ?? []).map((o, i) => ({
+    id: `OP-${String(i + 1).padStart(3, "0")}`,
+    callsign: o.handle,
+    level: o.level,
+    cult: cultName,
+    status: o.status,
+    lastSeen: o.lastSeen,
+    relay: o.relay,
+    note: o.note,
+    anomaly: o.anomaly,
+    clue: o.clue,
+  }))
+  return { rows, clueKey: (id) => `cult-op-${cultSlug}-${id}` }
+}
+
 interface CultPanelProps {
   cultName: string
   sourceRoute: string
@@ -129,16 +154,17 @@ interface CultChatSystemPanelProps extends CultPanelProps {
   cultSlug: string
 }
 
-export function CultOperatorsPanel({ cultName, sourceRoute }: CultPanelProps) {
+export function CultOperatorsPanel({ cultName, sourceRoute, cultSlug }: CultChatSystemPanelProps) {
   const [selected, setSelected] = useState<string | null>(null)
   const [saved, setSaved] = useState<string[]>([])
+  const { rows: OPERATORS, clueKey } = operatorsFor(cultSlug, cultName)
 
   useEffect(() => {
     setSaved(getGameState().clues.map((c) => c.id))
   }, [])
 
-  const handleSave = (op: typeof OPERATORS[number]) => {
-    const id = `cult-op-${op.id}`
+  const handleSave = (op: OperatorRow) => {
+    const id = clueKey(op.id)
     if (saved.includes(id)) return
 
     saveGameState(addClue(getGameState(), {
@@ -162,7 +188,7 @@ export function CultOperatorsPanel({ cultName, sourceRoute }: CultPanelProps) {
 
       <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
         {OPERATORS.map((op, index) => {
-          const id = `cult-op-${op.id}`
+          const id = clueKey(op.id)
           const isSaved = saved.includes(id)
           const isSelected = selected === op.id
 

@@ -4,7 +4,7 @@ import { type ReactNode } from "react"
 import { TorShell } from "@/components/tor/tor-shell"
 import { usePathname } from "next/navigation"
 import { ROUTES_CONFIG } from "@/lib/game-state"
-import { LoginGate } from "@/components/hc/login-gate"
+import { SessionReady } from "@/components/hc/session-ready"
 
 export default function HiddenWiki2Layout({ children }: { children: ReactNode }) {
   const pathname = usePathname() ?? ""
@@ -16,7 +16,7 @@ export default function HiddenWiki2Layout({ children }: { children: ReactNode })
 
   return (
     <TorShell currentSite={currentSite} siteColor={siteColor}>
-      <LoginGate>{children}</LoginGate>
+      <SessionReady>{children}</SessionReady>
     </TorShell>
   )
 }

@@ -23,7 +23,7 @@ const THREADS = [
     id: "T-002", author: "null_user", title: "GothGirl е компрометирана", replies: 4, flagged: true,
     posts: [
       { id: "P1", author: "null_user", time: "01:14", text: "Паролата на GothGirl е сменена без нейно знание на 12.10. Тя не знае. Някой е влязъл в акаунта й." },
-      { id: "P2", author: "DataCracker6_real", time: "01:19", text: "Потвърждавам. Логовете показват вход от непознат IP в 03:17 на 12.10." },
+      { id: "P2", author: "CardCatalog", time: "01:19", text: "Потвърждавам. Логовете показват вход от непознат IP в 03:17 на 12.10." },
       { id: "P3", author: "null_user", time: "01:24", text: "Новата парола може да се разбие. Вижте /blackmarket — BruteForce." },
       { id: "P4", author: "mod_01", time: "02:00", text: "[MOD] Тема маркирана." },
     ],

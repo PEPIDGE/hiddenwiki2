@@ -234,9 +234,8 @@ export default function TraceNodePage() {
   useEffect(() => {
     const gs = getGameState()
     setGameState(gs)
-    if (gs.solvedPuzzles.includes("trace-verified")) {
-      const saved = localStorage.getItem("torshell_final_output")
-      if (saved) setOutput(JSON.parse(saved))
+    if (gs.solvedPuzzles.includes("trace-verified") && gs.finalOutput) {
+      setOutput(gs.finalOutput)
     }
   }, [])
 
@@ -264,14 +263,14 @@ export default function TraceNodePage() {
     setTimeout(() => {
       const gs = getGameState()
       const caseId = `CASE-${Date.now().toString(36).toUpperCase()}`
+      const finalOutput = { clues: selected, verdict: verdict.trim(), caseId }
       if (!gs.solvedPuzzles.includes("trace-verified")) {
         gs.solvedPuzzles.push("trace-verified")
         gs.progress = 100
-        saveGameState(gs)
-        setGameState(gs)
       }
-      const finalOutput = { clues: selected, verdict: verdict.trim(), caseId }
-      localStorage.setItem("torshell_final_output", JSON.stringify(finalOutput))
+      gs.finalOutput = finalOutput
+      saveGameState(gs)
+      setGameState(gs)
       setOutput(finalOutput)
       setSubmitting(false)
     }, 2000)
