@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { useRouter, usePathname } from "next/navigation"
 import { FolderSearch, Menu, X } from "lucide-react"
+import { HcBalance } from "@/components/hc/hc-balance"
 import s from "./shell.module.css"
 
 interface TopBarProps {
@@ -86,6 +87,8 @@ export function TorTopBar({ currentSite, navOpen, evidenceOpen, onToggleNav, onT
       </div>
 
       <div className={s.spacer} />
+
+      <HcBalance />
 
       <div className={s.clock} suppressHydrationWarning>
         {time}

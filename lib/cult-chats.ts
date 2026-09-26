@@ -78,6 +78,27 @@ const MEMBER_OVERRIDES: Record<string, Partial<CultChatMember>> = {
     role: "АНАЛИТИК",
     statusLine: "компрометиран relay",
   },
+  // ── Нови членове на странични секти (заместват Братство-камеата) ──
+  SummitCold: {
+    password: "summit_c0ld",
+    role: "ВЪНШЕН КЛИЕНТ",
+    statusLine: "Апекс // купува услуги от по-долни групи",
+  },
+  PackAlpha: {
+    password: "p@ck_alph4",
+    role: "ОХРАНА",
+    statusLine: "Примати // мускул под наем",
+  },
+  ShameBroker: {
+    password: "sh@me_br0k3r",
+    role: "ОПЕРАТОР",
+    statusLine: "Апекс // покани и компромати",
+  },
+  EclipseWard: {
+    password: "3clipse_w@rd",
+    role: "ВЕРБОВЧИК",
+    statusLine: "Кръг // посочва размекнати профили",
+  },
 }
 
 function makeMemberPassword(username: string, cultSlug: string, index: number) {
@@ -510,8 +531,8 @@ export const CULT_CHAT_ARCHIVES: Record<string, CultChatArchive> = {
       },
     ],
   },
-  "parvichnia-pat": {
-    cultSlug: "parvichnia-pat",
+  "privichnia-pat": {
+    cultSlug: "privichnia-pat",
     owner: {
       handle: "TrailFather",
       displayName: "Боян",
@@ -658,11 +679,11 @@ export const CULT_CHAT_ARCHIVES: Record<string, CultChatArchive> = {
         id: "service-corridor",
         title: "Сервизен коридор",
         kind: "group",
-        participants: ["Threshold.7", "BasementEye", "PhotoNull", "Black-Voyvoda"],
+        participants: ["Threshold.7", "BasementEye", "PhotoNull", "SummitCold"],
         lastActivity: "2025-10-15 21:48",
         unread: 5,
         messages: [
-          { id: "01", time: "21:02", author: "Black-Voyvoda", text: "Трябва ми тих вход и изход до 22:30." },
+          { id: "01", time: "21:02", author: "SummitCold", text: "Трябва ми тих вход и изход до 22:30." },
           { id: "02", time: "21:09", author: "Threshold.7", text: "Сервизният коридор има две слепи точки, но не чака никого." },
           { id: "03", time: "21:27", author: "BasementEye", text: "Вратата за двора скърца." },
           { id: "04", time: "21:48", author: "Threshold.7", text: "Скърцането е добре. Хората помнят звука, не лицата." },
@@ -738,13 +759,13 @@ export const CULT_CHAT_ARCHIVES: Record<string, CultChatArchive> = {
         id: "private-salon",
         title: "Частен салон",
         kind: "group",
-        participants: ["Apex.V", "Investor_0", "Black-Voyvoda", "ToxicBabe"],
+        participants: ["Apex.V", "Investor_0", "PackAlpha", "ShameBroker"],
         lastActivity: "2025-10-15 18:52",
         unread: 3,
         messages: [
-          { id: "01", time: "18:11", author: "ToxicBabe", text: "Поканите за Огледален преход са готови. Някои имена са чувствителни." },
+          { id: "01", time: "18:11", author: "ShameBroker", text: "Поканите за Огледален преход са готови. Някои имена са чувствителни." },
           { id: "02", time: "18:18", author: "Apex.V", text: "Чувствителните имена са най-ценни. Дайте им по-тих вход." },
-          { id: "03", time: "18:39", author: "Black-Voyvoda", text: "Аз пазя задния коридор, ако плащането е потвърдено." },
+          { id: "03", time: "18:39", author: "PackAlpha", text: "Аз пазя задния коридор, ако плащането е потвърдено." },
           { id: "04", time: "18:52", author: "Apex.V", text: "Потвърдено. Няма директна връзка между нас.", highlighted: true },
         ],
       },
@@ -762,7 +783,7 @@ export const CULT_CHAT_ARCHIVES: Record<string, CultChatArchive> = {
         id: "gym",
         title: "Зала след 23",
         kind: "group",
-        participants: ["KamenGate", "BruteForce", "MiroGrip", "Black-Voyvoda"],
+        participants: ["KamenGate", "BruteForce", "MiroGrip", "SummitCold"],
         lastActivity: "2025-10-05 23:36",
         unread: 1,
         messages: [
@@ -774,15 +795,15 @@ export const CULT_CHAT_ARCHIVES: Record<string, CultChatArchive> = {
       },
       {
         id: "black-voyvoda",
-        title: "Black-Voyvoda",
+        title: "SummitCold",
         kind: "direct",
-        participants: ["KamenGate", "Black-Voyvoda"],
+        participants: ["KamenGate", "SummitCold"],
         lastActivity: "2025-10-10 17:22",
         unread: 0,
         messages: [
-          { id: "01", time: "16:49", author: "Black-Voyvoda", text: "Ще ми трябват двама за вход. Без приказки." },
+          { id: "01", time: "16:49", author: "SummitCold", text: "Ще ми трябват двама за вход. Без приказки." },
           { id: "02", time: "16:55", author: "KamenGate", text: "Имам двама, които слушат от първия път." },
-          { id: "03", time: "17:11", author: "Black-Voyvoda", text: "Не искам символи, не искам ритуални глупости." },
+          { id: "03", time: "17:11", author: "SummitCold", text: "Не искам символи, не искам ритуални глупости." },
           { id: "04", time: "17:22", author: "KamenGate", text: "Ние сме стената. Другите си носят символите." },
         ],
       },
@@ -818,13 +839,13 @@ export const CULT_CHAT_ARCHIVES: Record<string, CultChatArchive> = {
         id: "perimeter",
         title: "Периметър",
         kind: "group",
-        participants: ["KamenGate", "BruteForce", "Black-Voyvoda", "Threshold.7"],
+        participants: ["KamenGate", "BruteForce", "SummitCold", "Threshold.7"],
         lastActivity: "2025-10-15 22:27",
         unread: 5,
         messages: [
           { id: "01", time: "21:56", author: "Threshold.7", text: "Сервизният вход е тих, но не е празен." },
           { id: "02", time: "22:03", author: "KamenGate", text: "Празно не ни трябва. Контролирано ни трябва." },
-          { id: "03", time: "22:19", author: "Black-Voyvoda", text: "Никой да не влиза след 22:30 без знак." },
+          { id: "03", time: "22:19", author: "SummitCold", text: "Никой да не влиза след 22:30 без знак." },
           { id: "04", time: "22:27", author: "KamenGate", text: "Разбрано. Стената се затваря.", highlighted: true },
         ],
       },
@@ -898,11 +919,11 @@ export const CULT_CHAT_ARCHIVES: Record<string, CultChatArchive> = {
         id: "handoff",
         title: "След прожекция",
         kind: "group",
-        participants: ["FrameLast", "ToxicBabe", "PulseLog", "DriftDoc"],
+        participants: ["FrameLast", "EclipseWard", "PulseLog", "DriftDoc"],
         lastActivity: "2025-10-14 23:19",
         unread: 4,
         messages: [
-          { id: "01", time: "22:44", author: "ToxicBabe", text: "Трябват ми двама, които вече са размекнати. Без паника, само търсят обяснение." },
+          { id: "01", time: "22:44", author: "EclipseWard", text: "Трябват ми двама, които вече са размекнати. Без паника, само търсят обяснение." },
           { id: "02", time: "22:52", author: "FrameLast", text: "Имам един профил след последната прожекция. Говори тихо и чака знак." },
           { id: "03", time: "23:06", author: "PulseLog", text: "Да пратя реакционния лист?" },
           { id: "04", time: "23:19", author: "FrameLast", text: "Само първата дума и часа. Останалото остава при нас.", highlighted: true },

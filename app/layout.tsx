@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Handjet, Martian_Mono, Tektur } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { HcProvider } from '@/lib/hc/client'
 import './globals.css'
 
 const martianMono = Martian_Mono({
@@ -34,7 +35,7 @@ export default function RootLayout({
   return (
     <html lang="bg" className={`${martianMono.variable} ${tektur.variable} ${handjet.variable}`}>
       <body className="font-mono antialiased bg-background text-foreground">
-        {children}
+        <HcProvider>{children}</HcProvider>
         <Analytics />
       </body>
     </html>

@@ -12,23 +12,23 @@ type FilterType = "ALL" | "EDITED" | "REMOVED" | "REPLIES" | "USERS"
 const CHAT_MESSAGES = [
   { id: "M-001", user: "NightKiller", time: "2025-10-14 21:33", text: "Потвърдено за утре. 18:30. Знаеш кой.", edited: false, removed: false, replies: ["M-002"], replyTo: null, important: true, original: null },
   { id: "M-002", user: "GothGirl", time: "2025-10-14 21:34", text: "Разбрах. Тя е готова. Очаква покана.", edited: false, removed: false, replies: [], replyTo: "M-001", important: true, original: null },
-  { id: "M-003", user: "anon_viewer_441", time: "2025-10-14 21:40", text: "Кога следващото?", edited: false, removed: false, replies: [], replyTo: null, important: false, original: null },
+  { id: "M-003", user: "EclipseWard", time: "2025-10-14 21:40", text: "Кога следващото? Кръгът има двама размекнати за прехвърляне.", edited: false, removed: false, replies: [], replyTo: null, important: false, original: null },
   { id: "M-004", user: "ToxicBabe", time: "2025-10-14 22:00", text: "Маршрут минава покрай парка. [РЕДАКТИРАНО]", edited: true, removed: false, replies: ["M-005"], replyTo: null, important: true, original: "Маршрут минава покрай Западен парк. Ще оставим вещта там." },
   { id: "M-005", user: "Black-Voyvoda", time: "2025-10-14 22:02", text: "Разбрах.", edited: false, removed: false, replies: [], replyTo: "M-004", important: false, original: null },
   { id: "M-006", user: "RedFox", time: "2025-10-14 22:17", text: "[ИЗТРИТО]", edited: false, removed: true, replies: [], replyTo: null, important: true, original: "DC6 — изчисти всичко след 22:17. Без следи." },
-  { id: "M-007", user: "viewer_8812", time: "2025-10-14 22:20", text: "10/10 stream", edited: false, removed: false, replies: [], replyTo: null, important: false, original: null },
+  { id: "M-007", user: "LoopWarden", time: "2025-10-14 22:20", text: "10/10 stream", edited: false, removed: false, replies: [], replyTo: null, important: false, original: null },
   { id: "M-008", user: "GothGirl", time: "2025-10-14 22:45", text: "Телефонът е изключен. Всичко е наред.", edited: false, removed: false, replies: ["M-009"], replyTo: null, important: true, original: null },
   { id: "M-009", user: "NightKiller", time: "2025-10-14 22:46", text: "✓", edited: false, removed: false, replies: [], replyTo: "M-008", important: false, original: null },
   { id: "M-010", user: "OutsiderX", time: "2025-10-14 23:00", text: "Чакайте — кой е DC6 и защо чисти след 22:17? Някой го ли знае?", edited: false, removed: false, replies: ["M-011"], replyTo: null, important: true, original: null },
   { id: "M-011", user: "DataCracker6", time: "2025-10-14 23:01", text: "[ИЗТРИТО]", edited: false, removed: true, replies: [], replyTo: "M-010", important: true, original: "Не питай. Изтривам и тебе." },
   { id: "M-012", user: "ToxicBabe", time: "2025-10-15 00:15", text: "Лора е тиха. Добре.", edited: false, removed: false, replies: [], replyTo: null, important: true, original: null },
   { id: "M-013", user: "RedFox", time: "2025-10-15 03:17", text: "[РЕДАКТИРАНО]", edited: true, removed: false, replies: [], replyTo: null, important: true, original: "Транзакцията е потвърдена. NODE-7. DC-0077." },
-  { id: "M-014", user: "anon_patron", time: "2025-10-15 09:00", text: "Благодаря за снощи", edited: false, removed: false, replies: [], replyTo: null, important: false, original: null },
+  { id: "M-014", user: "AshSeed", time: "2025-10-15 09:00", text: "Благодаря за снощи", edited: false, removed: false, replies: [], replyTo: null, important: false, original: null },
 ]
 
 const AMBER = "#FFB000"
-const USERS = ["NightKiller", "GothGirl", "ToxicBabe", "Black-Voyvoda", "RedFox", "DataCracker6", "OutsiderX"]
-// Palette only: red = core perpetrators, amber = involved, green/gray = peripheral
+const USERS = ["NightKiller", "GothGirl", "ToxicBabe", "Black-Voyvoda", "RedFox", "DataCracker6", "OutsiderX", "EclipseWard", "LoopWarden", "AshSeed"]
+// Palette only: red = core perpetrators, amber = involved, green/gray = peripheral (incl. side-sect lurkers)
 const USER_COLORS: Record<string, string> = {
   "NightKiller": "#FF0033",
   "RedFox": "#FF0033",
@@ -37,6 +37,9 @@ const USER_COLORS: Record<string, string> = {
   "DataCracker6": AMBER,
   "OutsiderX": "#00FF41",
   "Black-Voyvoda": "#bbbbbb",
+  "EclipseWard": "#00FF41",
+  "LoopWarden": "#00FF41",
+  "AshSeed": "#00FF41",
 }
 
 export default function ChatReplayPage() {

@@ -30,6 +30,10 @@ export interface GameState {
 
 export const INITIAL_STATE: GameState = {
   unlockedRoutes: [
+    "/hidden-wiki-2/moneytasks",
+    "/hidden-wiki-2/moneytasks/services",
+    "/hidden-wiki-2/moneytasks/puzzels",
+    "/hidden-wiki-2/moneytasks/trivia",
     "/hidden-wiki-2/red-room",
     "/hidden-wiki-2/leaks",
     "/hidden-wiki-2/cult",
@@ -87,6 +91,15 @@ export const PALETTE = {
 } as const
 
 export const ROUTES_CONFIG = [
+  {
+    id: "moneytasks",
+    path: "/hidden-wiki-2/moneytasks",
+    label: "MONEYTASKS",
+    accentColor: PALETTE.green,
+    status: "ACTIVE",
+    locked: false,
+    sublinks: ["/services", "/puzzels", "/trivia"],
+  },
   {
     id: "red-room",
     path: "/hidden-wiki-2/red-room",
