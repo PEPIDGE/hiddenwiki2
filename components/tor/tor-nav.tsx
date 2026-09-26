@@ -6,8 +6,11 @@ import { usePathname } from "next/navigation"
 import { ROUTES_CONFIG, getGameState, type GameState } from "@/lib/game-state"
 import { motion, AnimatePresence } from "framer-motion"
 import s from "./shell.module.css"
+import { usePlayer } from "@/lib/hc/client"
+import { MARKET_MISSION } from "@/lib/blackmarket/catalog"
 
 export function TorNav() {
+  const { player, logout } = usePlayer()
   const pathname = usePathname()
   const [gameState, setGameState] = useState<GameState | null>(null)
   const [expandedRoute, setExpandedRoute] = useState<string | null>("red-room")
@@ -29,6 +32,7 @@ export function TorNav() {
   }, [pathname])
 
   const isUnlocked = (routeId: string) => {
+    if (routeId === "blackmarket") return player?.completedTasks.includes(MARKET_MISSION) ?? false
     if (!gameState) return true // optimistic — show everything before state loads
     const config = ROUTES_CONFIG.find((r) => r.id === routeId)
     if (!config) return false
@@ -53,7 +57,7 @@ export function TorNav() {
       <div className={s.navMeta}>
         NODE INDEX
         <b>
-          {ROUTES_CONFIG.filter((r) => !r.locked).length}/{ROUTES_CONFIG.length} ACTIVE
+          {ROUTES_CONFIG.filter((r) => isUnlocked(r.id)).length}/{ROUTES_CONFIG.length} ACTIVE
         </b>
       </div>
 
@@ -73,10 +77,10 @@ export function TorNav() {
                 <span className={s.rowIdx}>{String(idx + 1).padStart(2, "0")}</span>
                 <span className={s.dot} />
                 <Link
-                  href={unlocked ? route.path : "#"}
+                  href={route.path}
                   className={s.rowLink}
                   onClick={(e) => {
-                    if (!unlocked) { e.preventDefault(); return }
+                    if (!unlocked) return
                     // If clicking active route, just toggle dropdown
                     if (active) { e.preventDefault(); setExpandedRoute(expanded ? null : route.id) }
                     else setExpandedRoute(route.id)
@@ -96,7 +100,7 @@ export function TorNav() {
                     ▼
                   </button>
                 ) : (
-                  <span className={s.status}>{route.status}</span>
+                  <span className={s.status}>{unlocked ? "ACTIVE" : "LOCKED"}</span>
                 )}
               </div>
 
@@ -141,6 +145,7 @@ export function TorNav() {
       </div>
 
       <div className={s.navFoot}>
+        <button className={s.mobileLogout} onClick={() => void logout()}>ИЗХОД</button>
         <span>HW2 v2.4.1</span>
         <span suppressHydrationWarning>SID: {sessionId}</span>
       </div>

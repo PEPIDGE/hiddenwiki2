@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { getGameState, saveGameState } from "@/lib/game-state"
 import { PageHeader } from "@/components/tor/ui"
+import { useMarket } from "@/lib/blackmarket/client"
 
 const ACCENT = "#00FF41"
 const PROMPT = "analyst@hw2:~$"
@@ -27,6 +28,7 @@ interface Line {
 }
 
 export default function TerminalPage() {
+  const { reload } = useMarket()
   const [lines, setLines] = useState<Line[]>([])
   const [input, setInput] = useState("")
   const [history, setHistory] = useState<string[]>([])
@@ -91,6 +93,7 @@ export default function TerminalPage() {
         body: JSON.stringify({ cmd, args }),
       })
       const data = await res.json()
+      if (["patch", "reset"].includes(cmd)) void reload()
 
       if (data.clear) {
         setLines([])
@@ -101,7 +104,7 @@ export default function TerminalPage() {
       const isSuccess = data.success === true
       const responseLines: Line[] = (data.lines as string[]).map((t: string, i: number) => ({
         text: t,
-        type: isSuccess && i >= (data.lines.length - 3) ? "success" : "output",
+        type: !res.ok || data.success === false ? "error" : isSuccess && i >= (data.lines.length - 3) ? "success" : "output",
       }))
       print(responseLines)
 

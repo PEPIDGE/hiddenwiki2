@@ -26,6 +26,15 @@ export function normalizeAnswer(raw: string): string {
 }
 
 const TASKS: ServerTask[] = [
+  {
+    id: "bm-dead-drop", kind: "mission", category: "services",
+    title: "Специална мисия: Некро пощенско клеймо",
+    brief: "Blackmarket приема само разследващи с покана. В /forum/deadletters намери писмото от relay_ash. Вземи първите две части от клеймото, а обърнатата трета част разчети в TRACE-NODE / terminal. Съедини ги с тирета. Награда: постоянен достъп до цялата Blackmarket и 50 HC за първата услуга.",
+    reward: 50, difficulty: "MEDIUM",
+    requires: ["/hidden-wiki-2/forum/deadletters", "/hidden-wiki-2/trace-node/terminal"],
+    answerHint: "DL-006 съдържа ASH и 17. В терминала използвай decode reverse RORRIM. Формат: ASH-17-дума.",
+    answerLabel: "Клеймо: ___-__-______", answers: ["ash-17-mirror"],
+  },
   // ── MISSIONS (services) — dark-web "contracts" for the side sects ──
   {
     id: "ms-01",

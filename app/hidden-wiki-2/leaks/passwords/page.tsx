@@ -5,6 +5,7 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
 import { PageHeader } from "@/components/tor/ui"
+import { PasswordTool } from "@/components/blackmarket/integration"
 
 const ACCENT = "#FFB000"
 
@@ -61,6 +62,7 @@ export default function LeaksPasswordsPage() {
   return (
     <div style={{ maxWidth: 960, margin: "0 auto" }}>
       <PageHeader title="PASSWORDS" accent={ACCENT} kicker="LEAKS // PASSWORDS" />
+      <PasswordTool />
 
       <div style={{ padding: "12px 16px", background: "#0a0a06", border: `1px solid ${ACCENT}33`, marginBottom: 16 }}>
         <p style={{ fontSize: 12, color: "#d6d6d6", margin: 0, fontFamily: "var(--font-mono)", lineHeight: 1.7 }}>

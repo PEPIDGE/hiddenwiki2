@@ -29,6 +29,9 @@ export default function MoneyTasksPage() {
       />
 
       {/* Balance strip */}
+      <Link href="/hidden-wiki-2/moneytasks/services#bm-dead-drop" style={{ display: "block", marginBottom: 24, padding: "18px 20px", border: "1px solid #58613c", background: "#161c0e", color: "#d5e78b", fontSize: 12 }}>
+        СПЕЦИАЛНА МИСИЯ ↗ Некро пощенско клеймо<br /><span style={{ fontSize: 10, color: "#a6b18c" }}>Отключи BLACKMARKET + вземи 50 HC за първата си услуга.</span>
+      </Link>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 1, background: "#111", marginBottom: 24 }}>
         {[
           { label: "БАЛАНС", value: `${coins.toLocaleString("bg-BG")} HC`, color: ACCENT },

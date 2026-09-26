@@ -4,6 +4,7 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
 import { PageHeader } from "@/components/tor/ui"
+import { MembershipRegister } from "@/components/blackmarket/integration"
 
 const ACCENT = "#00FF41"
 
@@ -33,6 +34,7 @@ export default function EventsTicketsPage() {
   return (
     <div style={{ maxWidth: 820, margin: "0 auto" }}>
       <PageHeader title="TICKETS" accent={ACCENT} kicker="EVENTS // TICKETS" intro="5 билета — 3 с потенциални улики." />
+      <MembershipRegister />
 
       <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
         <div style={{ display: "grid", gridTemplateColumns: "80px 1fr 80px 110px 80px", gap: 8, padding: "6px 12px", background: "#0a0a0a", borderBottom: "1px solid #181818" }}>

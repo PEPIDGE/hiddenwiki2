@@ -8,6 +8,9 @@ import { PageHeader } from "@/components/tor/ui"
 const ACCENT = "#00FF41"
 
 const DEAD_LETTERS = [
+  { id: "DL-006", to: "Разследващия", from: "relay_ash", subject: "Некро пощенско клеймо / покана",
+    body: "Няма публичен вход за Blackmarket. Клеймото има три части: ASH / 17 / RORRIM. Последната е написана наобратно. TRACE-NODE / terminal разбира командата decode reverse. Подай сглобеното клеймо с тирета в специалната мисия на MONEYTASKS / services. Получателят купува достъп до липсващите части — не до истината.",
+    date: "2025-10-18", clue: "Покана за Blackmarket: ASH / 17 / огледалната дума RORRIM. Мисията е в MONEYTASKS / services.", hasClue: true },
   {
     id: "DL-001",
     to: "[НЕИЗВЕСТЕН]",

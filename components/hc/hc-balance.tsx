@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { usePlayer } from "@/lib/hc/client"
+import s from "@/components/tor/shell.module.css"
 
 const ACCENT = "#00FF41"
 
@@ -18,7 +19,7 @@ export function HcBalance() {
   }
 
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+    <div className={s.balance} style={{ display: "flex", alignItems: "center", gap: 10 }}>
       <Link
         href="/hidden-wiki-2/moneytasks"
         title="Hidden Coins — отвори мисиите"
@@ -34,12 +35,14 @@ export function HcBalance() {
         {coins.toLocaleString("bg-BG")} HC
       </Link>
       <span
+        className={s.accountName}
         title={player?.handle}
         style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#8a8a8a", letterSpacing: "0.08em", maxWidth: 90, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
       >
         {player?.handle}
       </span>
       <button
+        className={s.accountLogout}
         type="button"
         onClick={() => logout()}
         title="Изход"

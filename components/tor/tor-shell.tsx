@@ -10,6 +10,7 @@ import { usePathname } from "next/navigation"
 import { ROUTES_CONFIG, addVisitedRoute } from "@/lib/game-state"
 import { usePlayer } from "@/lib/hc/client"
 import s from "./shell.module.css"
+import { PageIdentity, MarketNotifications } from "@/components/blackmarket/integration"
 
 interface TorShellProps {
   children: ReactNode
@@ -65,6 +66,7 @@ export function TorShell({ children, currentSite, siteColor = "#00FF41" }: TorSh
   return (
     <>
       <CursorTrail />
+      <MarketNotifications />
 
       {/* Scanlines overlay */}
       <div
@@ -140,7 +142,7 @@ export function TorShell({ children, currentSite, siteColor = "#00FF41" }: TorSh
 
           <main className={s.main}>
             <div className={s.siteLine} />
-            {section && section.sublinks.length > 0 && (
+            {section && section.id !== "blackmarket" && section.sublinks.length > 0 && (
               <nav className={s.tabs} aria-label={section.label}>
                 <span className={s.tabsLabel}>{section.label}</span>
                 {["", ...section.sublinks].map((sub) => {
@@ -165,6 +167,7 @@ export function TorShell({ children, currentSite, siteColor = "#00FF41" }: TorSh
                 className={s.page}
               >
                 {children}
+                <PageIdentity />
               </motion.div>
             </AnimatePresence>
           </main>

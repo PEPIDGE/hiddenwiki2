@@ -8,6 +8,7 @@ const securityHeaders = [
 ]
 
 const nextConfig = {
+  distDir: process.env.HW2_BUILD_DIR || '.next',
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -22,6 +23,8 @@ const nextConfig = {
     return [
       // Old browser-only coin page → server-verified Hidden Coin tasks.
       { source: '/hidden-wiki-2/getrich', destination: '/hidden-wiki-2/moneytasks', permanent: false },
+      { source: '/hidden-wiki-2/finance/:path*', destination: '/hidden-wiki-2/blackmarket', permanent: false },
+      { source: '/blackmarket/:path*', destination: '/hidden-wiki-2/blackmarket/:path*', permanent: false },
     ]
   },
 }

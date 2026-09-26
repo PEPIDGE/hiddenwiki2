@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { getGameState, saveGameState, addClue } from "@/lib/game-state"
 import { PageHeader } from "@/components/tor/ui"
+import Link from "next/link"
 
 const ACCENT = "#00FF41"
 
@@ -108,6 +109,11 @@ export default function EventsGuestbookPage() {
   return (
     <div style={{ maxWidth: 860, margin: "0 auto" }}>
       <PageHeader title="GUESTBOOK" accent={ACCENT} kicker="EVENTS // GUESTBOOK" />
+      <div style={{ marginBottom: 22, padding: 18, border: "1px solid #444b31", background: "#14190e", fontSize: 11, color: "#beca9f" }}>
+        <b>ПОВРЕДЕНО КОПИЕ / СЛУЖЕБЕН ОПИС</b>
+        <table style={{ width: "100%", textAlign: "left", margin: "14px 0", lineHeight: 2 }}><thead><tr><th>Организация</th><th>Поле</th><th>Съдържание</th></tr></thead><tbody><tr><td>Огледален преход</td><td>Вход / час</td><td>[ЗАЛИЧЕНО]</td></tr><tr><td>Примати</td><td>Отговорник</td><td>[РЕДАКТИРАНО]</td></tr><tr><td>Апекс</td><td>Покани</td><td>[СКРИТО]</td></tr></tbody></table>
+        Копирай PAGE CODE в долната част и го изпрати на <Link href="/hidden-wiki-2/blackmarket/services/pageghost" style={{ color: "#d5e78b" }}>PageGhost ↗</Link> за възстановяване на архивната версия.
+      </div>
 
       <div style={{ padding: "10px 14px", background: "#0d0500", border: `1px solid ${ACCENT}20`, marginBottom: 20 }}>
         <p style={{ fontSize: 11, color: "#c0c0c0", margin: 0, fontFamily: "var(--font-mono)", lineHeight: 1.7 }}>

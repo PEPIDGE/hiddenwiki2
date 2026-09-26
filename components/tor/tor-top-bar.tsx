@@ -6,6 +6,7 @@ import { useRouter, usePathname } from "next/navigation"
 import { FolderSearch, Menu, X } from "lucide-react"
 import { HcBalance } from "@/components/hc/hc-balance"
 import s from "./shell.module.css"
+import { InboxBadge } from "@/components/blackmarket/integration"
 
 interface TopBarProps {
   currentSite?: string
@@ -62,7 +63,7 @@ export function TorTopBar({ currentSite, navOpen, evidenceOpen, onToggleNav, onT
         {navOpen ? <X size={15} /> : <Menu size={15} />}
       </button>
 
-      <button type="button" className={s.iconBtn} onClick={goUp} disabled={atRoot} title="Назад">
+      <button type="button" className={`${s.iconBtn} ${s.backButton}`} onClick={goUp} disabled={atRoot} title="Назад">
         ‹ НАЗАД
       </button>
 
@@ -89,6 +90,7 @@ export function TorTopBar({ currentSite, navOpen, evidenceOpen, onToggleNav, onT
       <div className={s.spacer} />
 
       <HcBalance />
+      <InboxBadge />
 
       <div className={s.clock} suppressHydrationWarning>
         {time}

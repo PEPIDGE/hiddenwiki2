@@ -58,7 +58,7 @@ function TaskCard({ task }: { task: PublicTask }) {
   const diffColor = DIFF[task.difficulty] ?? "#cccccc"
 
   return (
-    <div style={{ border: `1px solid ${done ? `${ACCENT}40` : "#1e1e1e"}`, background: done ? "#060f06" : "#0a0a0a" }}>
+    <div id={task.id} style={{ scrollMarginTop: 24, border: `1px solid ${done ? `${ACCENT}40` : "#1e1e1e"}`, background: done ? "#060f06" : "#0a0a0a" }}>
       <div style={{ padding: "16px 18px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8, flexWrap: "wrap" }}>
           <span style={{ fontSize: 10, fontFamily: "var(--font-mono)", letterSpacing: "0.14em", color: diffColor, border: `1px solid ${diffColor}44`, padding: "1px 7px" }}>
@@ -120,7 +120,7 @@ function TaskCard({ task }: { task: PublicTask }) {
           </>
         ) : (
           <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.12em" }}>
-            НАГРАДАТА Е ПОЛУЧЕНА
+            {task.id === "bm-dead-drop" ? <a href="/hidden-wiki-2/blackmarket">BLACKMARKET Е ОТКЛЮЧЕН → ВЛЕЗ</a> : "НАГРАДАТА Е ПОЛУЧЕНА"}
           </div>
         )}
 

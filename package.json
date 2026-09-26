@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
+    "typecheck": "tsc --noEmit -p tsconfig.check.json",
+    "test:blackmarket": "node scripts/blackmarket-smoke.mjs",
     "hc": "node --env-file=.env.local scripts/hc-player.mjs"
   },
   "dependencies": {

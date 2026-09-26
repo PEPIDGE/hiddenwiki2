@@ -347,8 +347,19 @@
   font-weight: 700;
 }
 .row[data-locked] .rowLink {
-  color: #3c3c3c;
-  pointer-events: none;
+  color: #899171;
+}
+
+.mobileLogout { display: none; }
+@media (max-width: 1100px) {
+  .brand b, .brand i, .accountName { display: none; }
+}
+@media (max-width: 620px) {
+  .topbar { gap: 6px; padding: 0 8px; }
+  .brand { flex: 1; flex-shrink: 1; display: block; overflow: hidden; text-overflow: ellipsis; font-size: 11px; }
+  .backButton, .online, .spacer, .accountLogout { display: none; }
+  .balance { flex-shrink: 0; white-space: nowrap; }
+  .mobileLogout { display: inline; border: 1px solid #333; color: #bdbdbd; background: transparent; padding: 5px 8px; cursor: pointer; }
 }
 .toggle {
   background: none;

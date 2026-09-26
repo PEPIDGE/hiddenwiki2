@@ -17,6 +17,7 @@ import { neon, type NeonQueryFunction } from "@neondatabase/serverless"
 import { emptyProgress } from "./config"
 import { normalizeStoredProgress } from "./progress"
 import type { PlayerProgress, PlayerRecord } from "./types"
+import { emptyMarket, type MarketState } from "@/lib/blackmarket/types"
 
 // ── Seed player ────────────────────────────────────────────────────
 // In development a default test code exists. In production a seed player
@@ -40,6 +41,7 @@ interface Backend {
   createPlayer(code: string, handle: string): Promise<PlayerRecord>
   awardTask(code: string, taskId: string, amount: number): Promise<AwardResult | null>
   saveProgress(code: string, progress: PlayerProgress): Promise<PlayerRecord | null>
+  saveMarket(expected: PlayerRecord, market: MarketState, cost: number): Promise<boolean>
 }
 
 // ── Neon backend ───────────────────────────────────────────────────
@@ -50,6 +52,7 @@ interface PlayerRow {
   coins: number
   completed_tasks: unknown
   progress: unknown
+  blackmarket: MarketState | null
   created_at: string | Date
   updated_at: string | Date
 }
@@ -61,6 +64,7 @@ function rowToPlayer(r: PlayerRow): PlayerRecord {
     coins: Number(r.coins) || 0,
     completedTasks: Array.isArray(r.completed_tasks) ? (r.completed_tasks as string[]) : [],
     progress: normalizeStoredProgress(r.progress),
+    blackmarket: { ...emptyMarket(), ...r.blackmarket },
     createdAt: new Date(r.created_at).getTime(),
     updatedAt: new Date(r.updated_at).getTime(),
   }
@@ -92,6 +96,7 @@ function neonBackend(url: string): Backend {
             created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
             UNIQUE (code, task_id)
           )`
+        await sql`ALTER TABLE hc_players ADD COLUMN IF NOT EXISTS blackmarket JSONB NOT NULL DEFAULT '{}'::jsonb`
         const seed = seedCode()
         if (seed) {
           await sql`
@@ -115,6 +120,19 @@ function neonBackend(url: string): Backend {
 
   return {
     getPlayer,
+
+    async saveMarket(expected, market, cost) {
+      await init()
+      // Optimistic transaction: debit and deliver together. A competing request
+      // retries from fresh state, preventing duplicate purchases and lost messages.
+      const rows = await sql`
+        UPDATE hc_players
+        SET coins = coins - ${cost}, blackmarket = ${JSON.stringify(market)}::jsonb, updated_at = now()
+        WHERE code = ${expected.code} AND coins = ${expected.coins} AND coins >= ${cost}
+          AND COALESCE((blackmarket->>'revision')::int, 0) = ${expected.blackmarket.revision}
+        RETURNING code`
+      return rows.length === 1
+    },
 
     async createPlayer(code, handle) {
       await init()
@@ -164,75 +182,98 @@ function neonBackend(url: string): Backend {
 // ── File backend (local development) ──────────────────────────────
 
 function fileBackend(): Backend {
-  const dataDir = path.join(process.cwd(), ".data")
+  const dataDir = path.resolve(process.env.HW2_DATA_DIR || path.join(process.cwd(), ".data"))
   const dataFile = path.join(dataDir, "hc-players.json")
-  let cache: Record<string, PlayerRecord> | null = null
-  let writeQueue: Promise<void> = Promise.resolve()
 
   const fresh = (code: string, handle: string): PlayerRecord => {
     const now = Date.now()
-    return { code, handle, coins: 0, completedTasks: [], progress: emptyProgress(), createdAt: now, updatedAt: now }
+    return { code, handle, coins: 0, completedTasks: [], blackmarket: emptyMarket(), progress: emptyProgress(), createdAt: now, updatedAt: now }
   }
 
   const load = async () => {
-    if (cache) return cache
     let db: Record<string, PlayerRecord> = {}
     try {
       db = JSON.parse(await fs.readFile(dataFile, "utf-8"))
-    } catch {
-      db = {}
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error
     }
     for (const p of Object.values(db)) {
       p.completedTasks = Array.isArray(p.completedTasks) ? p.completedTasks : []
       p.progress = normalizeStoredProgress(p.progress)
+      p.blackmarket = { ...emptyMarket(), ...p.blackmarket }
     }
     const seed = seedCode()
     if (seed && !db[seed]) db[seed] = fresh(seed, SEED_HANDLE)
-    cache = db
-    return cache
+    return db
   }
 
-  const persist = () => {
-    writeQueue = writeQueue.then(async () => {
-      if (!cache) return
-      await fs.mkdir(dataDir, { recursive: true })
+  // RSC and API handlers can have different module instances. Read fresh data
+  // and serialize file writes across them, just as the database does in production.
+  const update = async <T,>(change: (db: Record<string, PlayerRecord>) => T): Promise<T> => {
+    await fs.mkdir(dataDir, { recursive: true })
+    const lockFile = `${dataFile}.lock`
+    let lock: Awaited<ReturnType<typeof fs.open>> | undefined
+    for (let attempt = 0; attempt < 200; attempt++) {
+      try { lock = await fs.open(lockFile, "wx"); break }
+      catch (error) {
+        if ((error as NodeJS.ErrnoException).code !== "EEXIST") throw error
+        await new Promise((resolve) => setTimeout(resolve, 10))
+      }
+    }
+    if (!lock) throw new Error("Player store is busy. Retry the request.")
+    try {
+      const db = await load()
+      const result = change(db)
       const tmp = `${dataFile}.tmp`
-      await fs.writeFile(tmp, JSON.stringify(cache, null, 2), "utf-8")
+      await fs.writeFile(tmp, JSON.stringify(db, null, 2), "utf-8")
       await fs.rename(tmp, dataFile)
-    })
-    return writeQueue
+      return result
+    } finally {
+      await lock.close()
+      await fs.unlink(lockFile)
+    }
   }
 
   return {
+    async saveMarket(expected, market, cost) {
+      return update((db) => {
+        const p = db[expected.code]
+        if (!p || p.coins !== expected.coins || p.coins < cost || p.blackmarket.revision !== expected.blackmarket.revision) return false
+        p.coins -= cost
+        p.blackmarket = market
+        p.updatedAt = Date.now()
+        return true
+      })
+    },
     async getPlayer(code) {
-      return (await load())[code] ?? null
+      const p = (await load())[code]
+      return p ? structuredClone(p) : null
     },
     async createPlayer(code, handle) {
-      const db = await load()
-      if (!db[code]) {
-        db[code] = fresh(code, handle)
-        await persist()
-      }
-      return db[code]
+      return update((db) => {
+        if (!db[code]) db[code] = fresh(code, handle)
+        return db[code]
+      })
     },
     async awardTask(code, taskId, amount) {
-      const p = (await load())[code]
-      if (!p) return null
-      // Node runs this synchronously between awaits, so check+write is atomic.
-      if (p.completedTasks.includes(taskId)) return { player: p, awarded: false }
-      p.coins += amount
-      p.completedTasks.push(taskId)
-      p.updatedAt = Date.now()
-      await persist()
-      return { player: p, awarded: true }
+      return update((db) => {
+        const p = db[code]
+        if (!p) return null
+        if (p.completedTasks.includes(taskId)) return { player: p, awarded: false }
+        p.coins += amount
+        p.completedTasks.push(taskId)
+        p.updatedAt = Date.now()
+        return { player: p, awarded: true }
+      })
     },
     async saveProgress(code, progress) {
-      const p = (await load())[code]
-      if (!p) return null
-      p.progress = progress
-      p.updatedAt = Date.now()
-      await persist()
-      return p
+      return update((db) => {
+        const p = db[code]
+        if (!p) return null
+        p.progress = progress
+        p.updatedAt = Date.now()
+        return p
+      })
     },
   }
 }
@@ -259,3 +300,4 @@ export const getPlayer = (code: string) => getBackend().getPlayer(code)
 export const createPlayer = (code: string, handle: string) => getBackend().createPlayer(code, handle)
 export const awardTask = (code: string, taskId: string, amount: number) => getBackend().awardTask(code, taskId, amount)
 export const saveProgress = (code: string, progress: PlayerProgress) => getBackend().saveProgress(code, progress)
+export const saveMarket = (expected: PlayerRecord, market: MarketState, cost: number) => getBackend().saveMarket(expected, market, cost)

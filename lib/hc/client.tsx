@@ -9,7 +9,7 @@ import {
   type ReactNode,
 } from "react"
 import { usePathname } from "next/navigation"
-import { clearGameState, flushGameState, hydrateGameState } from "@/lib/game-state"
+import { clearGameState, flushGameState, hydrateGameState, isGameStateHydrated } from "@/lib/game-state"
 import type { PublicPlayerState, PublicTask } from "./types"
 
 interface ClaimResult {
@@ -67,7 +67,7 @@ export function HcProvider({ children }: { children: ReactNode }) {
       }
       const data = await res.json()
       if (data?.authenticated && data.player) {
-        hydrateGameState(data.player.progress)
+        if (!isGameStateHydrated()) hydrateGameState(data.player.progress)
         setPlayer(data.player)
         if (Array.isArray(data.tasks)) setTasks(data.tasks)
         setReady(true)

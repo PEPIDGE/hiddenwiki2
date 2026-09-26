@@ -2,6 +2,8 @@
 // HIDDEN COIN — shared types (safe to import on client & server)
 // ============================================================
 
+import type { MarketState } from "@/lib/blackmarket/types"
+
 export type ClueStatus = "unverified" | "confirmed" | "suspicious"
 
 export interface StoredClue {
@@ -39,6 +41,7 @@ export interface PlayerRecord {
   handle: string // display name for the player
   coins: number // only ever changed by the server (claim)
   completedTasks: string[] // HC task ids already rewarded (one-time)
+  blackmarket: MarketState
   progress: PlayerProgress
   createdAt: number
   updatedAt: number

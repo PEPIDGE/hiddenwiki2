@@ -8,7 +8,6 @@ const SITES = [
   { id: "events", label: "EVENTS", color: "#FF6B00", sublinks: ["/calendar", "/albums", "/tickets", "/venues"], step: 4 },
   { id: "cult", label: "CULT", color: "#CC44FF", sublinks: ["/doctrine", "/ritual", "/status", "/forum"], step: 4 },
   { id: "forum", label: "FORUM", color: "#00FF9F", sublinks: ["/threads", "/confessions", "/deadletters"], step: 5 },
-  { id: "finance", label: "FINANCE", color: "#FF3366", sublinks: ["/transactions", "/anomalies", "/beneficiaries"], step: 5, locked: true },
   { id: "trace-node", label: "TRACE-NODE", color: "#00FF41", sublinks: ["/terminal", "/nodes", "/trace", "/verification", "/output"], step: 6, locked: true },
 ]
 
@@ -51,5 +50,4 @@ export function LeaksPage() { return <PlaceholderPage siteId="leaks" /> }
 export function EventsPage() { return <PlaceholderPage siteId="events" /> }
 export function CultPage() { return <PlaceholderPage siteId="cult" /> }
 export function ForumPage() { return <PlaceholderPage siteId="forum" /> }
-export function FinancePage() { return <PlaceholderPage siteId="finance" /> }
 export function TraceNodePage() { return <PlaceholderPage siteId="trace-node" /> }

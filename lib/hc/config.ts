@@ -18,7 +18,6 @@ export const INITIAL_UNLOCKED_ROUTES: string[] = [
   "/hidden-wiki-2/cult",
   "/hidden-wiki-2/events",
   "/hidden-wiki-2/forum",
-  "/hidden-wiki-2/finance",
   "/hidden-wiki-2/trace-node",
   "/hidden-wiki-2/trace-node/terminal",
   "/hidden-wiki-2/trace-node/nodes",
@@ -42,9 +41,6 @@ export const INITIAL_UNLOCKED_ROUTES: string[] = [
   "/hidden-wiki-2/forum/threads",
   "/hidden-wiki-2/forum/confessions",
   "/hidden-wiki-2/forum/deadletters",
-  "/hidden-wiki-2/finance/transactions",
-  "/hidden-wiki-2/finance/anomalies",
-  "/hidden-wiki-2/finance/beneficiaries",
 ]
 
 export function emptyProgress(): PlayerProgress {

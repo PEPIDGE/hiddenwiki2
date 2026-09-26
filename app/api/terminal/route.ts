@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
+import { getSessionCode } from "@/lib/hc/session"
+import { getPlayer } from "@/lib/hc/store"
+import { comparePages, hasMarketAccess, MarketError, mutateMarket } from "@/lib/blackmarket/server"
 
 // ─── HIDDEN WIKI 2 — TERMINAL API ───────────────────────────────────────────
 // Secret codes and puzzle answers are validated server-side here.
@@ -55,6 +58,10 @@ const HELP_TEXT = [
   "                          — crack a gate token",
   "  verify coords           — verify coordinates",
   "  clear                   — clear screen",
+  "  patch install mailbox-v1 — install a received Blackmarket patch",
+  "  mailbox                 — read recovered mailbox fragments",
+  "  fingerprint <code> <code> — compare archive signatures",
+  "  reset access            — deactivate patches; keep purchases",
   "─────────────────────────────────────────────",
   "Secrets are case-insensitive. Type 'scan' to start.",
 ]
@@ -92,10 +99,34 @@ function rot13(str: string): string {
 
 export async function POST(req: NextRequest) {
   try {
+    const code = await getSessionCode()
+    if (!code) return NextResponse.json({ lines: ["Влез в профила си."], success: false }, { status: 401 })
     const body = await req.json()
     const { cmd, args = [] }: { cmd: string; args: string[] } = body
 
     const command = cmd?.toLowerCase()?.trim()
+
+    if (["patch", "mailbox", "fingerprint", "reset"].includes(command)) {
+      const player = await getPlayer(code)
+      if (!player || !hasMarketAccess(player)) return NextResponse.json({ lines: ["Blackmarket е заключен. Изпълни мисията „Некро пощенско клеймо“ в MONEYTASKS."], success: false }, { status: 403 })
+      if (command === "patch") {
+        if (args[0] !== "install" || !["mailbox-v1", "password-v1"].includes(args[1])) return NextResponse.json({ lines: ["Употреба: patch install <mailbox-v1|password-v1>"] })
+        await mutateMarket(code, { action: "install", patch: args[1] })
+        return NextResponse.json({ lines: [`Patch ${args[1]} е инсталиран.`, args[1] === "mailbox-v1" ? "Изпълни: mailbox" : "Отвори /leaks/passwords и анализирай GothGirl."], success: true })
+      }
+      if (command === "mailbox") {
+        if (!player.blackmarket.installed.includes("mailbox-v1")) return NextResponse.json({ lines: ["Нужен е инсталиран mailbox-v1. Вземи го от PageGhost, после: patch install mailbox-v1"], success: false })
+        const artifacts = player.blackmarket.orders.find((o) => o.service === "pageghost")?.messages.filter((m) => m.artifact) ?? []
+        return NextResponse.json({ lines: ["MAILBOX / ВЪЗСТАНОВЕНИ ФРАГМЕНТИ", ...artifacts.flatMap((m) => [m.artifact!.title, ...m.artifact!.rows.map((row) => row.join(" | ")), ""])], success: true })
+      }
+      if (command === "fingerprint") {
+        const result = comparePages(player, args[0] ?? "", args[1] ?? "")
+        return NextResponse.json({ lines: [`${result.left}: ${result.first}`, `${result.right}: ${result.second}`, result.samePage ? "Една и съща страница." : result.match ? "MATCH / общ архивен подпис MIRROR." : "NO MATCH / различни източници."], success: result.match && !result.samePage })
+      }
+      if (args[0] !== "access") return NextResponse.json({ lines: ["Употреба: reset access. Деактивира модулите; поръчките и уликите остават."] })
+      await mutateMarket(code, { action: "reset" })
+      return NextResponse.json({ lines: ["Достъпът е нулиран. Можеш да инсталираш получените patches отново."], success: true })
+    }
 
     if (!command) {
       return NextResponse.json({ lines: ["No command received."] })
@@ -317,6 +348,7 @@ export async function POST(req: NextRequest) {
       lines: [`bash: ${command}: command not found — type 'help'`],
     })
   } catch (err) {
+    if (err instanceof MarketError) return NextResponse.json({ lines: [err.message], success: false }, { status: err.status })
     return NextResponse.json({ lines: ["Internal server error."] }, { status: 500 })
   }
 }

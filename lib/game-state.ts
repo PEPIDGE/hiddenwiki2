@@ -108,13 +108,13 @@ export const ROUTES_CONFIG = [
     sublinks: ["/threads", "/confessions", "/deadletters"],
   },
   {
-    id: "finance",
-    path: "/hidden-wiki-2/finance",
-    label: "FINANCE",
-    accentColor: PALETTE.green,
-    status: "ACTIVE",
-    locked: false,
-    sublinks: ["/transactions", "/anomalies", "/beneficiaries"],
+    id: "blackmarket",
+    path: "/hidden-wiki-2/blackmarket",
+    label: "BLACKMARKET",
+    accentColor: "#d5e78b",
+    status: "LOCKED",
+    locked: true,
+    sublinks: ["/services", "/inbox", "/weapons", "/substances", "/policy"],
   },
   {
     id: "trace-node",
@@ -134,7 +134,7 @@ export function routeColor(route: string): string {
   return PALETTE.green
 }
 
-// Clues store routes inconsistently ("/leaks/archive" vs "/hidden-wiki-2/finance").
+// Clues store routes inconsistently ("/leaks/archive" vs "/hidden-wiki-2/blackmarket").
 // Normalize so navigation always lands on a real page.
 export function resolveClueRoute(route: string): string {
   if (!route) return "/hidden-wiki-2"

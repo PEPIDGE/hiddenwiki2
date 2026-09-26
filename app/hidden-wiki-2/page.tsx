@@ -7,19 +7,22 @@ import { ROUTES_CONFIG, getGameState, type GameState } from "@/lib/game-state"
 import { motion, AnimatePresence } from "framer-motion"
 import type { CSSProperties } from "react"
 import s from "./hub.module.css"
+import { usePlayer } from "@/lib/hc/client"
+import { MARKET_MISSION } from "@/lib/blackmarket/catalog"
 
 const BOOT_LINES: { text: string; delay: number; color?: string }[] = [
   { text: "$ ./boot_hidden_wiki2.sh --session=new --hops=3", delay: 0, color: "#00FF41" },
   { text: "  [OK] Establishing encrypted relay...", delay: 320 },
-  { text: "  [OK] Loading node map: 7 nodes found", delay: 560 },
+  { text: "  [OK] Loading node map: 8 nodes found", delay: 560 },
   { text: "  [OK] Entropy pool: HIGH (512bit)", delay: 760 },
   { text: "  [OK] Session token: " + Math.random().toString(36).slice(2, 10).toUpperCase(), delay: 940 },
-  { text: "  [!!] 2 anomalous transactions in ledger", delay: 1180, color: "#FF0033" },
+  { text: "  [!!] BLACKMARKET — invitation required", delay: 1180, color: "#d5e78b" },
   { text: "  [OK] Evidence index decrypted — Лора Костова / 15.10.2025", delay: 1380 },
-  { text: "$ HIDDEN WIKI 2 — ready. 8 portals online.", delay: 1600, color: "#00FF41" },
+  { text: "$ HIDDEN WIKI 2 — ready. Node map loaded.", delay: 1600, color: "#00FF41" },
 ]
 
 export default function HiddenWiki2Page() {
+  const { player } = usePlayer()
   const [visibleLines, setVisibleLines] = useState<number>(0)
   const [bootDone, setBootDone] = useState(false)
   const [gameState, setGameState] = useState<GameState | null>(null)
@@ -98,23 +101,23 @@ export default function HiddenWiki2Page() {
 
             <div className={s.grid}>
               {ROUTES_CONFIG.map((route, idx) => {
-                const unlocked = gameState
+                const unlocked = route.id === "blackmarket" ? player?.completedTasks.includes(MARKET_MISSION) ?? false : gameState
                   ? !route.locked || gameState.unlockedRoutes.includes(route.path)
                   : !route.locked
 
                 return (
                   <Link
                     key={route.id}
-                    href={unlocked ? route.path : "#"}
+                    href={route.path}
                     className={s.portal}
                     data-locked={unlocked ? undefined : ""}
                     style={{ "--accent": route.accentColor } as CSSProperties}
                   >
                     <div className={s.top}>
                       <span className={s.idx}>{String(idx + 1).padStart(2, "0")}</span>
-                      <span className={s.status}>{route.status}</span>
+                      <span className={s.status}>{unlocked ? "ACTIVE" : "LOCKED"}</span>
                     </div>
-                    <div className={s.label}>{route.locked && !unlocked ? "[LOCKED]" : route.label}</div>
+                    <div className={s.label}>{route.label}</div>
                     {route.sublinks.length > 0 && (
                       <div className={s.subs}>
                         {route.sublinks.map((sub) => (
@@ -125,7 +128,7 @@ export default function HiddenWiki2Page() {
                     <div className={s.foot}>
                       <span>
                         {route.sublinks.length} NODES
-                        {route.locked && !unlocked && <b> — ИЗИСКВА УЛИКИ</b>}
+                        {route.locked && !unlocked && <b> — МИСИЯ В MONEYTASKS</b>}
                       </span>
                       <span className={s.arrow}>→</span>
                     </div>
