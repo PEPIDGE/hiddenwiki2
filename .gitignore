@@ -9,6 +9,9 @@ node_modules/
 .env*.local
 .DS_Store
 .vercel
+*.tsbuildinfo
+.next-dev*.log
+next-env.d.ts
 
 # Hidden Coin local player store
 .data/
