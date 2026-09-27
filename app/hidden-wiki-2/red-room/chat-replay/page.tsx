@@ -14,9 +14,9 @@ const CHAT_MESSAGES = [
   { id: "M-002", user: "GothGirl", time: "2025-10-14 21:34", text: "Разбрах. Тя е готова. Очаква покана.", edited: false, removed: false, replies: [], replyTo: "M-001", important: true, original: null },
   { id: "M-003", user: "EclipseWard", time: "2025-10-14 21:40", text: "Кога следващото? Институтът има двама зависими доброволци за прехвърляне.", edited: false, removed: false, replies: [], replyTo: null, important: false, original: null },
   { id: "M-004", user: "ToxicBabe", time: "2025-10-14 22:00", text: "Маршрут минава покрай парка. [РЕДАКТИРАНО]", edited: true, removed: false, replies: ["M-005"], replyTo: null, important: true, original: "Маршрут минава покрай Западен парк. Ще оставим вещта там." },
-  { id: "M-005", user: "ServiceHatch", time: "2025-10-14 22:02", text: "Разбрах.", edited: false, removed: false, replies: [], replyTo: "M-004", important: false, original: null },
+  { id: "M-005", user: "PaleCourier", time: "2025-10-14 22:02", text: "Разбрах.", edited: false, removed: false, replies: [], replyTo: "M-004", important: false, original: null },
   { id: "M-006", user: "RedFox", time: "2025-10-14 22:17", text: "[ИЗТРИТО]", edited: false, removed: true, replies: [], replyTo: null, important: true, original: "DC6 — изчисти всичко след 22:17. Без следи." },
-  { id: "M-007", user: "LoopWarden", time: "2025-10-14 22:20", text: "10/10 stream", edited: false, removed: false, replies: [], replyTo: null, important: false, original: null },
+  { id: "M-007", user: "DormKey", time: "2025-10-14 22:20", text: "10/10 stream", edited: false, removed: false, replies: [], replyTo: null, important: false, original: null },
   { id: "M-008", user: "GothGirl", time: "2025-10-14 22:45", text: "Телефонът е изключен. Всичко е наред.", edited: false, removed: false, replies: ["M-009"], replyTo: null, important: true, original: null },
   { id: "M-009", user: "NightKiller", time: "2025-10-14 22:46", text: "✓", edited: false, removed: false, replies: [], replyTo: "M-008", important: false, original: null },
   { id: "M-010", user: "OutsiderX", time: "2025-10-14 23:00", text: "Чакайте — кой е DC6 и защо чисти след 22:17? Някой го ли знае?", edited: false, removed: false, replies: ["M-011"], replyTo: null, important: true, original: null },
@@ -27,7 +27,7 @@ const CHAT_MESSAGES = [
 ]
 
 const AMBER = "#FFB000"
-const USERS = ["NightKiller", "GothGirl", "ToxicBabe", "RedFox", "DataCracker6", "OutsiderX", "EclipseWard", "LoopWarden", "ServiceHatch", "CapitalZero"]
+const USERS = ["NightKiller", "GothGirl", "ToxicBabe", "RedFox", "DataCracker6", "OutsiderX", "EclipseWard", "DormKey", "PaleCourier", "CapitalZero"]
 // Palette only: red = core perpetrators, amber = involved, green/gray = peripheral (incl. side-sect lurkers)
 const USER_COLORS: Record<string, string> = {
   "NightKiller": "#FF0033",
@@ -38,8 +38,8 @@ const USER_COLORS: Record<string, string> = {
   "OutsiderX": "#00FF41",
   "Black-Voyvoda": "#bbbbbb",
   "EclipseWard": "#00FF41",
-  "LoopWarden": "#00FF41",
-  "ServiceHatch": "#00FF41",
+  "DormKey": "#00FF41",
+  "PaleCourier": "#00FF41",
   "CapitalZero": "#00FF41",
 }
 
