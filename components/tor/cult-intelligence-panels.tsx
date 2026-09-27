@@ -94,7 +94,7 @@ const BROTHERHOOD_OPERATORS = [
     id: "OP-007",
     callsign: "NullSyn",
     level: "АНАЛИТИК",
-    cult: "Кръг / Архивът на сенките",
+    cult: "Чистата формула / Архивът на сенките",
     status: "ACTIVE",
     lastSeen: "2025-10-15 19:00",
     relay: "HOPS=2",
@@ -105,14 +105,14 @@ const BROTHERHOOD_OPERATORS = [
   {
     id: "OP-008",
     callsign: "OutsiderX",
-    level: "ЛИДЕР",
-    cult: "Кръг на лунното затъмнение",
+    level: "ДИРЕКТОР",
+    cult: "Институтът на Чистата формула",
     status: "INACTIVE",
     lastSeen: "2025-09-30 09:00",
     relay: "N/A",
-    note: "Неактивен от октомври. Кръгът е отделна секта — слаба връзка със случая.",
+    note: "Неактивен от октомври. Институтът е отделна секта — слаба връзка със случая.",
     anomaly: false,
-    clue: "OutsiderX — лидер на Кръга. Неактивен от 30.09.2025.",
+    clue: "OutsiderX — директор на Института. Неактивен от 30.09.2025.",
   },
 ]
 

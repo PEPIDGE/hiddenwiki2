@@ -12,7 +12,7 @@ type FilterType = "ALL" | "EDITED" | "REMOVED" | "REPLIES" | "USERS"
 const CHAT_MESSAGES = [
   { id: "M-001", user: "NightKiller", time: "2025-10-14 21:33", text: "Потвърдено за утре. 18:30. Знаеш кой.", edited: false, removed: false, replies: ["M-002"], replyTo: null, important: true, original: null },
   { id: "M-002", user: "GothGirl", time: "2025-10-14 21:34", text: "Разбрах. Тя е готова. Очаква покана.", edited: false, removed: false, replies: [], replyTo: "M-001", important: true, original: null },
-  { id: "M-003", user: "EclipseWard", time: "2025-10-14 21:40", text: "Кога следващото? Кръгът има двама размекнати за прехвърляне.", edited: false, removed: false, replies: [], replyTo: null, important: false, original: null },
+  { id: "M-003", user: "EclipseWard", time: "2025-10-14 21:40", text: "Кога следващото? Институтът има двама зависими доброволци за прехвърляне.", edited: false, removed: false, replies: [], replyTo: null, important: false, original: null },
   { id: "M-004", user: "ToxicBabe", time: "2025-10-14 22:00", text: "Маршрут минава покрай парка. [РЕДАКТИРАНО]", edited: true, removed: false, replies: ["M-005"], replyTo: null, important: true, original: "Маршрут минава покрай Западен парк. Ще оставим вещта там." },
   { id: "M-005", user: "ServiceHatch", time: "2025-10-14 22:02", text: "Разбрах.", edited: false, removed: false, replies: [], replyTo: "M-004", important: false, original: null },
   { id: "M-006", user: "RedFox", time: "2025-10-14 22:17", text: "[ИЗТРИТО]", edited: false, removed: true, replies: [], replyTo: null, important: true, original: "DC6 — изчисти всичко след 22:17. Без следи." },

@@ -16,21 +16,21 @@ const EVENTS_GUESTS = [
     location: "NDK, Sofia",
     guests: [
       { name: "ToxicBabe", org: "Братство на третото пробуждане", status: "ПОТВЪРДЕН", note: "Организатор" },
-      { name: "OutsiderX", org: "Кръг на лунното затъмнение", status: "ПОТВЪРДЕН", note: "Представен като гост-лектор" },
+      { name: "OutsiderX", org: "Институтът на Чистата формула", status: "ПОТВЪРДЕН", note: "Представен като гост-лектор" },
       { name: "NightKiller", org: "Нощен сигнал", status: "ПОТВЪРДЕН", note: "Технически персонал" },
-      { name: "Silverback", org: "Примати", status: "ПОТВЪРДЕН", note: "Охрана на входа" },
+      { name: "Silverback", org: "Легионът на Първия закон", status: "ПОТВЪРДЕН", note: "Охрана на входа" },
       { name: "GothGirl", org: "Братство / Нощен сигнал", status: "ПОТВЪРДЕН", note: "Регистрация" },
-      { name: "NullSyn", org: "Кръг на лунното затъмнение", status: "ПОТВЪРДЕН", note: "" },
-      { name: "LastReel", org: "Последното видение", status: "ПОТВЪРДЕН", note: "Видеозапис (официален)" },
-      { name: "ShameBroker", org: "Апекс", status: "ПОТВЪРДЕН", note: "Спонсорски покани" },
-      { name: "GoldVeil", org: "Златния Предел", status: "ПОТВЪРДЕН", note: "Лектор — „тишината“" },
-      { name: "EclipseWard", org: "Кръг на лунното затъмнение", status: "ПОТВЪРДЕН", note: "Наблюдава новите" },
+      { name: "NullSyn", org: "Институтът на Чистата формула", status: "ПОТВЪРДЕН", note: "" },
+      { name: "LastReel", org: "Архивът на Второто тяло", status: "ПОТВЪРДЕН", note: "Видеозапис (официален)" },
+      { name: "ShameBroker", org: "Палатата на Белия прилив", status: "ПОТВЪРДЕН", note: "Спонсорски покани" },
+      { name: "GoldVeil", org: "Хорът на Второто небе", status: "ПОТВЪРДЕН", note: "Лектор — „тишината“" },
+      { name: "EclipseWard", org: "Институтът на Чистата формула", status: "ПОТВЪРДЕН", note: "Наблюдава новите" },
       { name: "Лора Костова", org: "—", status: "РЕГИСТРИРАН", note: "⚠ Гражданско лице — не е член. Поканена от GothGirl.", key: true },
       { name: "М. Петрова", org: "—", status: "РЕГИСТРИРАН", note: "Гражданско лице" },
       { name: "Т. Борисов", org: "—", status: "РЕГИСТРИРАН", note: "Гражданско лице" },
       { name: "RedFox", org: "Братство на третото пробуждане", status: "НЕПОТВЪРДЕН", note: "Не е регистриран лично — комуникира дистанционно" },
     ],
-    clue: "Огледален преход 21.09.2025 — поне шест секти на едно място (Братство, Кръг, Апекс, Примати, Златния Предел, Последното видение). Лора Костова поканена от GothGirl",
+    clue: "Огледален преход 21.09.2025 — поне шест секти на едно място (Братство, Чистата формула, Белия прилив, Първия закон, Второто небе, Второто тяло). Лора Костова поканена от GothGirl",
     warning: true,
   },
   {
@@ -51,8 +51,8 @@ const EVENTS_GUESTS = [
     eventName: "Кръг — месечна среща, октомври 2025",
     location: "Неизвестна",
     guests: [
-      { name: "OutsiderX", org: "Кръг на лунното затъмнение", status: "ПОТВЪРДЕН", note: "Председател" },
-      { name: "NullSyn", org: "Кръг на лунното затъмнение", status: "ПОТВЪРДЕН", note: "" },
+      { name: "OutsiderX", org: "Институтът на Чистата формула", status: "ПОТВЪРДЕН", note: "Директор" },
+      { name: "NullSyn", org: "Институтът на Чистата формула", status: "ПОТВЪРДЕН", note: "" },
     ],
     clue: "Кръгова среща, октомври 2025 — слаба връзка с основния случай",
     warning: false,
@@ -61,14 +61,14 @@ const EVENTS_GUESTS = [
 
 const ORG_COLORS: Record<string, string> = {
   "Братство на третото пробуждане": "#FF0033",
-  "Кръг на лунното затъмнение": "#00FF41",
+  "Институтът на Чистата формула": "#00FF41",
   "Нощен сигнал": ACCENT,
   "Братство / Нощен сигнал": "#FF6B33",
   "Братство на третото пробуждане / Нощен сигнал": ACCENT,
-  "Примати": "#FF6B33",
-  "Апекс": "#FFB000",
-  "Златния Предел": "#FFD700",
-  "Последното видение": "#bbbbbb",
+  "Легионът на Първия закон": "#FF6B33",
+  "Палатата на Белия прилив": "#FFB000",
+  "Хорът на Второто небе": "#FFD700",
+  "Архивът на Второто тяло": "#bbbbbb",
   "—": "#909090",
 }
 
@@ -111,7 +111,7 @@ export default function EventsGuestbookPage() {
       <PageHeader title="GUESTBOOK" accent={ACCENT} kicker="EVENTS // GUESTBOOK" />
       <div style={{ marginBottom: 22, padding: 18, border: "1px solid #444b31", background: "#14190e", fontSize: 11, color: "#beca9f" }}>
         <b>ПОВРЕДЕНО КОПИЕ / СЛУЖЕБЕН ОПИС</b>
-        <table style={{ width: "100%", textAlign: "left", margin: "14px 0", lineHeight: 2 }}><thead><tr><th>Организация</th><th>Поле</th><th>Съдържание</th></tr></thead><tbody><tr><td>Огледален преход</td><td>Вход / час</td><td>[ЗАЛИЧЕНО]</td></tr><tr><td>Примати</td><td>Отговорник</td><td>[РЕДАКТИРАНО]</td></tr><tr><td>Апекс</td><td>Покани</td><td>[СКРИТО]</td></tr></tbody></table>
+        <table style={{ width: "100%", textAlign: "left", margin: "14px 0", lineHeight: 2 }}><thead><tr><th>Организация</th><th>Поле</th><th>Съдържание</th></tr></thead><tbody><tr><td>Огледален преход</td><td>Вход / час</td><td>[ЗАЛИЧЕНО]</td></tr><tr><td>Първия закон</td><td>Отговорник</td><td>[РЕДАКТИРАНО]</td></tr><tr><td>Белия прилив</td><td>Покани</td><td>[СКРИТО]</td></tr></tbody></table>
         Копирай PAGE CODE в долната част и го изпрати на <Link href="/hidden-wiki-2/blackmarket/services/pageghost" style={{ color: "#d5e78b" }}>PageGhost ↗</Link> за възстановяване на архивната версия.
       </div>
 
