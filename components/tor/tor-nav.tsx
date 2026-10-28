@@ -49,8 +49,8 @@ export function TorNav() {
     <nav className={s.nav}>
       <div className={s.navHead}>
         <Link href="/" className={s.navLogo}>
-          HW//2
-          <small>HIDDEN WIKI 2</small>
+          HW//
+          <small>HIDDEN WIKI</small>
         </Link>
       </div>
 
@@ -146,7 +146,7 @@ export function TorNav() {
 
       <div className={s.navFoot}>
         <button className={s.mobileLogout} onClick={() => void logout()}>ИЗХОД</button>
-        <span>HW2 v2.4.1</span>
+        <span>HW v2.4.1</span>
         <span suppressHydrationWarning>SID: {sessionId}</span>
       </div>
     </nav>

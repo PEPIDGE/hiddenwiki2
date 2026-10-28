@@ -22,7 +22,7 @@ import { emptyMarket, type MarketState } from "@/lib/blackmarket/types"
 // ── Seed player ────────────────────────────────────────────────────
 // In development a default test code exists. In production a seed player
 // is created only when HC_SEED_CODE is explicitly configured.
-const DEV_SEED_CODE = "HW2-ALPHA-7731"
+const DEV_SEED_CODE = "HW-ALPHA-7731"
 const SEED_HANDLE = "agent-01"
 
 function seedCode(): string | null {
@@ -182,7 +182,7 @@ function neonBackend(url: string): Backend {
 // ── File backend (local development) ──────────────────────────────
 
 function fileBackend(): Backend {
-  const dataDir = path.resolve(process.env.HW2_DATA_DIR || path.join(process.cwd(), ".data"))
+  const dataDir = path.resolve(process.env.HIDDEN_WIKI_DATA_DIR || process.env.HW2_DATA_DIR || path.join(process.cwd(), ".data"))
   const dataFile = path.join(dataDir, "hc-players.json")
 
   const fresh = (code: string, handle: string): PlayerRecord => {

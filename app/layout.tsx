@@ -23,7 +23,7 @@ const handjet = Handjet({
 })
 
 export const metadata: Metadata = {
-  title: 'HIDDEN WIKI 2',
+  title: 'HIDDEN WIKI',
   description: 'Разследване. Декриптиране. Истината чака.',
   generator: 'v0.app',
 }

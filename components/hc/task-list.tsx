@@ -81,7 +81,7 @@ function TaskCard({ task }: { task: PublicTask }) {
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 12 }}>
             {task.requires.map((r) => (
               <Link key={r} href={r} style={{ fontSize: 10, fontFamily: "var(--font-mono)", color: "#9a9a9a", border: "1px solid #262626", padding: "2px 8px", textDecoration: "none", letterSpacing: "0.04em" }}>
-                → {r.replace("/hidden-wiki-2", "")}
+                → {r.replace("/hidden-wiki", "")}
               </Link>
             ))}
           </div>
@@ -120,7 +120,7 @@ function TaskCard({ task }: { task: PublicTask }) {
           </>
         ) : (
           <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.12em" }}>
-            {task.id === "bm-dead-drop" ? <a href="/hidden-wiki-2/blackmarket">BLACKMARKET Е ОТКЛЮЧЕН → ВЛЕЗ</a> : "НАГРАДАТА Е ПОЛУЧЕНА"}
+            {task.id === "bm-dead-drop" ? <a href="/hidden-wiki/blackmarket">BLACKMARKET Е ОТКЛЮЧЕН → ВЛЕЗ</a> : "НАГРАДАТА Е ПОЛУЧЕНА"}
           </div>
         )}
 

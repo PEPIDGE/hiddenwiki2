@@ -7,7 +7,7 @@
 // never change them through this path.
 // ============================================================
 
-import { emptyProgress } from "./config"
+import { GAME_ROOT, LEGACY_GAME_ROOT, canonicalGameRoute, emptyProgress } from "./config"
 import type { ClueStatus, FinalOutput, PlayerProgress, StoredClue } from "./types"
 
 const LIMITS = {
@@ -79,7 +79,7 @@ function clue(v: unknown): StoredClue | null {
     id,
     title: str(c.title, LIMITS.clueTitle) || id,
     text: str(c.text, LIMITS.clueText),
-    sourceRoute: str(c.sourceRoute, LIMITS.routeLen),
+    sourceRoute: canonicalGameRoute(str(c.sourceRoute, LIMITS.routeLen)),
     confidence,
     status,
     timestamp,
@@ -110,15 +110,22 @@ function finalOutput(v: unknown): FinalOutput | null {
   return { clues: clueList(f.clues, 3), verdict, caseId }
 }
 
-const isGameRoute = (s: string) => s.startsWith("/hidden-wiki-2") || s === "/"
+const isGameRoute = (s: string) =>
+  s === "/" ||
+  s === GAME_ROOT ||
+  s.startsWith(`${GAME_ROOT}/`) ||
+  s === LEGACY_GAME_ROOT ||
+  s.startsWith(`${LEGACY_GAME_ROOT}/`)
+
+const canonicalRoutes = (routes: string[]) => [...new Set(routes.map(canonicalGameRoute))]
 
 export function sanitizeProgress(input: unknown): PlayerProgress {
   const base = emptyProgress()
   if (!input || typeof input !== "object") return base
   const p = input as Record<string, unknown>
   return {
-    unlockedRoutes: strList(p.unlockedRoutes, LIMITS.routes, LIMITS.routeLen, isGameRoute),
-    visitedRoutes: strList(p.visitedRoutes, LIMITS.routes, LIMITS.routeLen, isGameRoute),
+    unlockedRoutes: canonicalRoutes(strList(p.unlockedRoutes, LIMITS.routes, LIMITS.routeLen, isGameRoute)),
+    visitedRoutes: canonicalRoutes(strList(p.visitedRoutes, LIMITS.routes, LIMITS.routeLen, isGameRoute)),
     solvedPuzzles: strList(p.solvedPuzzles, LIMITS.puzzles, LIMITS.keyLen),
     tokens: boolRecord(p.tokens),
     clues: clueList(p.clues, LIMITS.clues),

@@ -97,7 +97,7 @@ export function PasswordTool() {
           id: "bm-password-gothgirl",
           title: "Възстановен достъп / GothGirl",
           text,
-          sourceRoute: "/hidden-wiki-2/leaks/passwords",
+          sourceRoute: "/hidden-wiki/leaks/passwords",
           confidence: 4,
           status: "unverified",
         }),
@@ -132,7 +132,7 @@ export function PasswordTool() {
             {result}
             <br />
             Записано в досието.{" "}
-            <Link href="/hidden-wiki-2/cult/chat-system">
+            <Link href="/hidden-wiki/cult/chat-system">
               Към чат архива ↗
             </Link>
           </div>
@@ -191,7 +191,7 @@ export function MembershipRegister() {
                     id: "bm-mirror-register",
                     title: "MIRROR / служебен регистър",
                     text: "15.10.2025: GothGirl — регистрация 21:45; NightKiller — транспорт 22:09; RedFox — западно крило, стая 9.",
-                    sourceRoute: "/hidden-wiki-2/events/tickets",
+                    sourceRoute: "/hidden-wiki/events/tickets",
                     confidence: 4,
                     status: "unverified",
                   }),

@@ -1,9 +1,9 @@
 // ============================================================
 // Hidden Coin — player admin (Neon)
 //
-//   npm run hc -- add HW2-ABCD-1234 agent-02   add a player code
+//   npm run hc -- add HW-ABCD-1234 agent-02   add a player code
 //   npm run hc -- list                         list players + balances
-//   npm run hc -- remove HW2-ABCD-1234         delete a player (and ledger)
+//   npm run hc -- remove HW-ABCD-1234         delete a player (and ledger)
 //
 // Reads DATABASE_URL from .env.local.
 // ============================================================

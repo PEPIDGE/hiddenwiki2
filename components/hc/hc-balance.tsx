@@ -21,7 +21,7 @@ export function HcBalance() {
   return (
     <div className={s.balance} style={{ display: "flex", alignItems: "center", gap: 10 }}>
       <Link
-        href="/hidden-wiki-2/moneytasks"
+        href="/hidden-wiki/moneytasks"
         title="Hidden Coins — отвори мисиите"
         style={{
           display: "inline-flex", alignItems: "center", gap: 6,

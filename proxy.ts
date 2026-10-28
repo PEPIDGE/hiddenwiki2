@@ -1,5 +1,5 @@
 // ============================================================
-// HIDDEN WIKI 2 — access gate (Next.js 16 proxy, runs before routing)
+// HIDDEN WIKI — access gate (Next.js 16 proxy, runs before routing)
 //
 // Nothing is served without a valid, signed session cookie: every page
 // (including statically prerendered ones) redirects to /login, every API
@@ -25,7 +25,7 @@ function isSameOrigin(req: NextRequest): boolean {
 
 function safeNext(pathname: string, search: string): string {
   const target = `${pathname}${search}`
-  return target.startsWith("/") && !target.startsWith("//") ? target : "/hidden-wiki-2"
+  return target.startsWith("/") && !target.startsWith("//") ? target : "/hidden-wiki"
 }
 
 export async function proxy(req: NextRequest) {
@@ -45,7 +45,7 @@ export async function proxy(req: NextRequest) {
       const next = req.nextUrl.searchParams.get("next")
       const url = req.nextUrl.clone()
       url.search = ""
-      url.pathname = next && next.startsWith("/") && !next.startsWith("//") && !next.startsWith("/login") ? next : "/hidden-wiki-2"
+      url.pathname = next && next.startsWith("/") && !next.startsWith("//") && !next.startsWith("/login") ? next : "/hidden-wiki"
       return NextResponse.redirect(url)
     }
     return NextResponse.next()

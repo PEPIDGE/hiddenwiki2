@@ -1,6 +1,6 @@
 "use client"
 
-import { type CSSProperties, type ReactNode, useEffect, useState } from "react"
+import { type CSSProperties, type ReactNode, useEffect, useRef, useState } from "react"
 import dynamic from "next/dynamic"
 import { motion, AnimatePresence } from "framer-motion"
 import { TorNav } from "@/components/tor/tor-nav"
@@ -11,6 +11,7 @@ import { ROUTES_CONFIG, addVisitedRoute } from "@/lib/game-state"
 import { usePlayer } from "@/lib/hc/client"
 import s from "./shell.module.css"
 import { PageIdentity, MarketNotifications } from "@/components/blackmarket/integration"
+import { SourceInspector } from "@/components/tor/source-inspector"
 
 interface TorShellProps {
   children: ReactNode
@@ -50,6 +51,7 @@ export function TorShell({ children, currentSite, siteColor = "#00FF41" }: TorSh
   const pathname = usePathname()
   const [navOpen, setNavOpen] = useState(false)
   const [evidenceOpen, setEvidenceOpen] = useState(false)
+  const mainRef = useRef<HTMLElement>(null)
   const section = ROUTES_CONFIG.find((r) => pathname?.startsWith(r.path))
   const { ready } = usePlayer()
 
@@ -140,36 +142,40 @@ export function TorShell({ children, currentSite, siteColor = "#00FF41" }: TorSh
             }}
           />
 
-          <main className={s.main}>
-            <div className={s.siteLine} />
-            {section && section.id !== "blackmarket" && section.sublinks.length > 0 && (
-              <nav className={s.tabs} aria-label={section.label}>
-                <span className={s.tabsLabel}>{section.label}</span>
-                {["", ...section.sublinks].map((sub) => {
-                  const href = section.path + sub
-                  return (
-                    <Link key={href} href={href} className={s.tab} data-active={pathname === href ? "" : undefined}>
-                      {sub || "/index"}
-                    </Link>
-                  )
-                })}
-              </nav>
-            )}
+          <main ref={mainRef} className={s.main}>
+            <div className={s.mainScroll}>
+              <div className={s.siteLine} />
+              {section && section.id !== "blackmarket" && section.sublinks.length > 0 && (
+                <nav className={s.tabs} aria-label={section.label}>
+                  <span className={s.tabsLabel}>{section.label}</span>
+                  {["", ...section.sublinks].map((sub) => {
+                    const href = section.path + sub
+                    return (
+                      <Link key={href} href={href} className={s.tab} data-active={pathname === href ? "" : undefined}>
+                        {sub || "/index"}
+                      </Link>
+                    )
+                  })}
+                </nav>
+              )}
 
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div
-                key={pathname}
-                variants={PAGE_VARIANTS}
-                initial="initial"
-                animate="animate"
-                exit="exit"
-                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-                className={s.page}
-              >
-                {children}
-                <PageIdentity />
-              </motion.div>
-            </AnimatePresence>
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={pathname}
+                  variants={PAGE_VARIANTS}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                  className={s.page}
+                  data-page-source-root
+                >
+                  {children}
+                  <PageIdentity />
+                </motion.div>
+              </AnimatePresence>
+            </div>
+            <SourceInspector scopeRef={mainRef} />
           </main>
 
           <div className={s.evidenceSlot} data-open={evidenceOpen ? "" : undefined}>

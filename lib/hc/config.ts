@@ -6,41 +6,52 @@ import type { PlayerProgress } from "./types"
 
 export const HC_COOKIE = "hc_session"
 export const HC_SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 30 // 30 days
+export const GAME_ROOT = "/hidden-wiki"
+export const LEGACY_GAME_ROOT = "/hidden-wiki-2"
+
+// Keep old saved progress and bookmarks working after the site rename.
+export function canonicalGameRoute(route: string): string {
+  if (route === LEGACY_GAME_ROOT) return GAME_ROOT
+  if (route.startsWith(`${LEGACY_GAME_ROOT}/`)) {
+    return `${GAME_ROOT}${route.slice(LEGACY_GAME_ROOT.length)}`
+  }
+  return route
+}
 
 // Routes every player can reach from the start.
 export const INITIAL_UNLOCKED_ROUTES: string[] = [
-  "/hidden-wiki-2/moneytasks",
-  "/hidden-wiki-2/moneytasks/services",
-  "/hidden-wiki-2/moneytasks/puzzels",
-  "/hidden-wiki-2/moneytasks/trivia",
-  "/hidden-wiki-2/red-room",
-  "/hidden-wiki-2/leaks",
-  "/hidden-wiki-2/cult",
-  "/hidden-wiki-2/events",
-  "/hidden-wiki-2/forum",
-  "/hidden-wiki-2/trace-node",
-  "/hidden-wiki-2/trace-node/terminal",
-  "/hidden-wiki-2/trace-node/nodes",
-  "/hidden-wiki-2/trace-node/trace",
-  "/hidden-wiki-2/trace-node/output",
-  "/hidden-wiki-2/trace-node/verification",
-  "/hidden-wiki-2/red-room/full-truth",
-  "/hidden-wiki-2/red-room/donors",
-  "/hidden-wiki-2/red-room/chat-replay",
-  "/hidden-wiki-2/red-room/signal-log",
-  "/hidden-wiki-2/leaks/docs",
-  "/hidden-wiki-2/leaks/archive",
-  "/hidden-wiki-2/leaks/vehicles",
-  "/hidden-wiki-2/leaks/cards",
-  "/hidden-wiki-2/leaks/passwords",
-  "/hidden-wiki-2/cult/operators",
-  "/hidden-wiki-2/cult/chat-system",
-  "/hidden-wiki-2/events/calendar",
-  "/hidden-wiki-2/events/albums",
-  "/hidden-wiki-2/events/guestbook",
-  "/hidden-wiki-2/forum/threads",
-  "/hidden-wiki-2/forum/confessions",
-  "/hidden-wiki-2/forum/deadletters",
+  "/hidden-wiki/moneytasks",
+  "/hidden-wiki/moneytasks/services",
+  "/hidden-wiki/moneytasks/puzzels",
+  "/hidden-wiki/moneytasks/trivia",
+  "/hidden-wiki/red-room",
+  "/hidden-wiki/leaks",
+  "/hidden-wiki/cult",
+  "/hidden-wiki/events",
+  "/hidden-wiki/forum",
+  "/hidden-wiki/trace-node",
+  "/hidden-wiki/trace-node/terminal",
+  "/hidden-wiki/trace-node/nodes",
+  "/hidden-wiki/trace-node/trace",
+  "/hidden-wiki/trace-node/output",
+  "/hidden-wiki/trace-node/verification",
+  "/hidden-wiki/red-room/full-truth",
+  "/hidden-wiki/red-room/donors",
+  "/hidden-wiki/red-room/chat-replay",
+  "/hidden-wiki/red-room/signal-log",
+  "/hidden-wiki/leaks/docs",
+  "/hidden-wiki/leaks/archive",
+  "/hidden-wiki/leaks/vehicles",
+  "/hidden-wiki/leaks/cards",
+  "/hidden-wiki/leaks/passwords",
+  "/hidden-wiki/cult/operators",
+  "/hidden-wiki/cult/chat-system",
+  "/hidden-wiki/events/calendar",
+  "/hidden-wiki/events/albums",
+  "/hidden-wiki/events/guestbook",
+  "/hidden-wiki/forum/threads",
+  "/hidden-wiki/forum/confessions",
+  "/hidden-wiki/forum/deadletters",
 ]
 
 export function emptyProgress(): PlayerProgress {

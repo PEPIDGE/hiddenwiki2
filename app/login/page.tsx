@@ -6,7 +6,7 @@ const ACCENT = "#00FF41"
 const RED = "#FF0033"
 
 function safeNext(raw: string | null): string {
-  if (!raw || !raw.startsWith("/") || raw.startsWith("//") || raw.startsWith("/login")) return "/hidden-wiki-2"
+  if (!raw || !raw.startsWith("/") || raw.startsWith("//") || raw.startsWith("/login")) return "/hidden-wiki"
   return raw
 }
 
@@ -44,7 +44,7 @@ function LoginForm() {
       <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "12px 16px", borderBottom: `1px solid ${ACCENT}30`, background: `${ACCENT}0a` }}>
         <span style={{ width: 7, height: 7, background: ACCENT, boxShadow: `0 0 8px ${ACCENT}` }} />
         <span style={{ fontSize: 12, fontFamily: "var(--font-mono)", color: ACCENT, letterSpacing: "0.22em", fontWeight: 700 }}>
-          HIDDEN WIKI 2 // ACCESS
+          HIDDEN WIKI // ACCESS
         </span>
       </div>
 
@@ -61,7 +61,7 @@ function LoginForm() {
           value={code}
           onChange={(e) => setCode(e.target.value.toUpperCase())}
           onKeyDown={(e) => e.key === "Enter" && submit()}
-          placeholder="HW2-XXXX-XXXX"
+          placeholder="HW-XXXX-XXXX"
           autoFocus
           autoComplete="off"
           spellCheck={false}

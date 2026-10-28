@@ -1,4 +1,4 @@
-// Run after: $env:HW2_BUILD_DIR='.next-blackmarket'; npm run build
+// Run after: $env:HIDDEN_WIKI_BUILD_DIR='.next-blackmarket'; npm run build
 // Uses a temporary file store and its own server. Never touches the real DB.
 import assert from "node:assert/strict";
 import { mkdtemp, writeFile, readFile } from "node:fs/promises";
@@ -7,7 +7,7 @@ import path from "node:path";
 import { spawn } from "node:child_process";
 import { randomUUID } from "node:crypto";
 
-const dataDir = await mkdtemp(path.join(tmpdir(), "hw2-blackmarket-test-"));
+const dataDir = await mkdtemp(path.join(tmpdir(), "hidden-wiki-blackmarket-test-"));
 const now = Date.now();
 const fixture = (code, coins = 0, completedTasks = []) => ({
   code,
@@ -21,19 +21,19 @@ const fixture = (code, coins = 0, completedTasks = []) => ({
 await writeFile(
   path.join(dataDir, "hc-players.json"),
   JSON.stringify({
-    "HW2-TEST-ALPHA": fixture("HW2-TEST-ALPHA"),
-    "HW2-TEST-OTHER": fixture("HW2-TEST-OTHER", 500),
-    "HW2-TEST-BUYER": fixture("HW2-TEST-BUYER", 100, ["bm-dead-drop"]),
+    "HW-TEST-ALPHA": fixture("HW-TEST-ALPHA"),
+    "HW-TEST-OTHER": fixture("HW-TEST-OTHER", 500),
+    "HW-TEST-BUYER": fixture("HW-TEST-BUYER", 100, ["bm-dead-drop"]),
   }),
 );
 const base = "http://127.0.0.1:3107";
 const env = {
   ...process.env,
   DATABASE_URL: "",
-  HW2_DATA_DIR: dataDir,
-  HW2_BUILD_DIR: ".next-blackmarket",
+  HIDDEN_WIKI_DATA_DIR: dataDir,
+  HIDDEN_WIKI_BUILD_DIR: ".next-blackmarket",
   HC_SESSION_SECRET: "isolated-blackmarket-tests-only-secret-2026",
-  HC_SEED_CODE: "HW2-TEST-ALPHA",
+  HC_SEED_CODE: "HW-TEST-ALPHA",
 };
 let server,
   logs = "";
@@ -98,8 +98,8 @@ try {
   start();
   await ready();
   assert.equal((await fetch(`${base}/api/blackmarket`)).status, 401);
-  const alpha = await login("HW2-TEST-ALPHA"),
-    other = await login("HW2-TEST-OTHER");
+  const alpha = await login("HW-TEST-ALPHA"),
+    other = await login("HW-TEST-OTHER");
   const market = (body, status = 200) =>
     api(alpha, "/api/blackmarket", body, status);
   const claim = (taskId, answer) =>
@@ -109,7 +109,7 @@ try {
   await market({ action: "purchase", service: "pageghost" }, 403);
   await api(alpha, "/api/hc/progress", {
     progress: {
-      unlockedRoutes: ["/hidden-wiki-2/blackmarket"],
+      unlockedRoutes: ["/hidden-wiki/blackmarket"],
       tokens: { blackmarket: true },
       blackmarket: { membership: true },
       coins: 99999,
@@ -138,14 +138,14 @@ try {
   await market({ action: "password" }, 403);
   const foreign = await api(other, "/api/blackmarket");
   assert.notEqual(
-    state.codes["/hidden-wiki-2/events/guestbook"],
-    foreign.codes["/hidden-wiki-2/events/guestbook"],
+    state.codes["/hidden-wiki/events/guestbook"],
+    foreign.codes["/hidden-wiki/events/guestbook"],
   );
   await market(
     {
       action: "message",
       service: "pageghost",
-      text: foreign.codes["/hidden-wiki-2/events/guestbook"],
+      text: foreign.codes["/hidden-wiki/events/guestbook"],
       requestId: randomUUID(),
     },
     400,
@@ -153,13 +153,13 @@ try {
   const message = (service, text, requestId = randomUUID()) =>
     market({ action: "message", service, text, requestId });
   const codes = state.codes;
-  await message("pageghost", codes["/hidden-wiki-2/events/guestbook"]);
-  await message("pageghost", codes["/hidden-wiki-2/forum/deadletters"]);
+  await message("pageghost", codes["/hidden-wiki/events/guestbook"]);
+  await message("pageghost", codes["/hidden-wiki/forum/deadletters"]);
   assert.ok((await market()).market.patches.includes("mailbox-v1"));
   const compared = await market({
     action: "compare",
-    a: codes["/hidden-wiki-2/events/guestbook"],
-    b: codes["/hidden-wiki-2/forum/deadletters"],
+    a: codes["/hidden-wiki/events/guestbook"],
+    b: codes["/hidden-wiki/forum/deadletters"],
   });
   assert.equal(compared.comparison.match, true);
   assert.equal(compared.comparison.samePage, false);
@@ -175,8 +175,8 @@ try {
   for (const service of ["cardforge", "celltrace", "live-eye", "bruteforce"])
     await market({ action: "purchase", service });
   assert.equal((await market()).coins, 50);
-  await message("cardforge", codes["/hidden-wiki-2/events/tickets"]);
-  await message("bruteforce", codes["/hidden-wiki-2/leaks/passwords"]);
+  await message("cardforge", codes["/hidden-wiki/events/tickets"]);
+  await message("bruteforce", codes["/hidden-wiki/leaks/passwords"]);
   assert.equal((await market({ action: "password" })).password, "g0th.g1rl!26");
   await market(
     {
@@ -203,7 +203,7 @@ try {
   );
   await message("celltrace", "+359 88 *** 1221");
   assert.equal((await market()).coins, 40);
-  await message("live-eye", codes["/hidden-wiki-2/red-room/signal-log"]);
+  await message("live-eye", codes["/hidden-wiki/red-room/signal-log"]);
   assert.equal(
     (await market()).market.orders
       .find((o) => o.service === "live-eye")
@@ -256,7 +256,7 @@ try {
   const persisted = JSON.parse(
     await readFile(path.join(dataDir, "hc-players.json"), "utf8"),
   );
-  assert.equal(persisted["HW2-TEST-OTHER"].coins, 500);
+  assert.equal(persisted["HW-TEST-OTHER"].coins, 500);
   console.log("PASS persistence after server restart and player isolation");
 
   if (process.argv.includes("--browser")) {
@@ -292,7 +292,7 @@ try {
       "/substances",
       "/policy",
     ]) {
-      await page.goto(`${base}/hidden-wiki-2/blackmarket${sub}`);
+      await page.goto(`${base}/hidden-wiki/blackmarket${sub}`);
       await page.getByRole("link", { name: /ОТВОРИ МИСИЯТА/ }).waitFor();
     }
     await page.getByRole("link", { name: /ОТВОРИ МИСИЯТА/ }).click();
@@ -302,36 +302,36 @@ try {
     await mission.getByRole("link", { name: /BLACKMARKET Е ОТКЛЮЧЕН/ }).click();
     await page.getByRole("heading", { name: /Липсващото/ }).waitFor();
     await setSession(alpha);
-    await page.goto(`${base}/hidden-wiki-2/blackmarket`);
+    await page.goto(`${base}/hidden-wiki/blackmarket`);
     await page.getByRole("heading", { name: /Липсващото/ }).waitFor();
     await page.screenshot({
       path: path.join(dataDir, "blackmarket-desktop.png"),
       fullPage: true,
     });
-    await page.goto(`${base}/hidden-wiki-2/blackmarket/inbox?thread=pageghost`);
+    await page.goto(`${base}/hidden-wiki/blackmarket/inbox?thread=pageghost`);
     await page.getByRole("button", { name: "ИЗПРАТИ", exact: true }).waitFor();
     await page
       .getByRole("textbox", { name: "Задание до изпълнителя" })
-      .fill(codes["/hidden-wiki-2/leaks/docs"]);
+      .fill(codes["/hidden-wiki/leaks/docs"]);
     await page.getByRole("button", { name: "ИЗПРАТИ", exact: true }).click();
     await page
       .getByText("Редакция / транспортен опис", { exact: true })
       .waitFor();
-    await page.goto(`${base}/hidden-wiki-2/leaks/passwords`);
+    await page.goto(`${base}/hidden-wiki/leaks/passwords`);
     await page.getByRole("button", { name: "АНАЛИЗИРАЙ GOTHGIRL" }).click();
     await page
       .getByRole("status")
       .filter({ hasText: "g0th.g1rl!26" })
       .waitFor();
-    await page.goto(`${base}/hidden-wiki-2/events/tickets`);
+    await page.goto(`${base}/hidden-wiki/events/tickets`);
     await page.getByRole("heading", { name: "Картата е приета." }).waitFor();
-    const buyer = await login("HW2-TEST-BUYER");
+    const buyer = await login("HW-TEST-BUYER");
     await setSession(buyer);
-    await page.goto(`${base}/hidden-wiki-2/blackmarket/services/pageghost`);
+    await page.goto(`${base}/hidden-wiki/blackmarket/services/pageghost`);
     await page.getByRole("button", { name: /ПЛАТИ 50 HC/ }).click();
     await page.waitForURL("**/inbox?thread=pageghost");
     await page.getByText(/Готов съм да изпълня задачата/).waitFor();
-    await page.goto(`${base}/hidden-wiki-2/blackmarket/services/celltrace`);
+    await page.goto(`${base}/hidden-wiki/blackmarket/services/celltrace`);
     await page.getByRole("button", { name: /ПЛАТИ 150 HC/ }).waitFor();
     assert.equal(
       await page.getByRole("button", { name: /ПЛАТИ 150 HC/ }).isDisabled(),
@@ -347,7 +347,7 @@ try {
       "/policy",
       "/inbox",
     ]) {
-      await page.goto(`${base}/hidden-wiki-2/blackmarket${sub}`);
+      await page.goto(`${base}/hidden-wiki/blackmarket${sub}`);
       await page.locator("main h1").waitFor();
       assert.equal(
         await page.evaluate(
@@ -366,7 +366,7 @@ try {
         "Mobile toolbar controls must remain on screen",
       );
     }
-    await page.goto(`${base}/hidden-wiki-2/blackmarket`);
+    await page.goto(`${base}/hidden-wiki/blackmarket`);
     await page.getByRole("heading", { name: /Липсващото/ }).waitFor();
     await page.screenshot({
       path: path.join(dataDir, "blackmarket-mobile.png"),

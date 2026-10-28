@@ -17,7 +17,7 @@ interface TopBarProps {
   onToggleEvidence?: () => void
 }
 
-const ROOT = "/hidden-wiki-2"
+const ROOT = "/hidden-wiki"
 
 export function TorTopBar({ currentSite, navOpen, evidenceOpen, onToggleNav, onToggleEvidence }: TopBarProps) {
   const [time, setTime] = useState("")
@@ -68,7 +68,7 @@ export function TorTopBar({ currentSite, navOpen, evidenceOpen, onToggleNav, onT
       </button>
 
       <Link href={ROOT} className={s.brand}>
-        HIDDEN WIKI 2
+        HIDDEN WIKI
         {currentSite && (
           <>
             <i>/</i>
@@ -78,7 +78,7 @@ export function TorTopBar({ currentSite, navOpen, evidenceOpen, onToggleNav, onT
       </Link>
 
       <div className={s.crumb}>
-        hw2://
+        hw://
         {crumbs.map((c, i) => (
           <span key={i}>
             {i > 0 && "/"}

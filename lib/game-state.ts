@@ -10,7 +10,7 @@
 // two players on the same browser never see each other's progress.
 // ============================================================
 
-import { emptyProgress, INITIAL_UNLOCKED_ROUTES } from "@/lib/hc/config"
+import { GAME_ROOT, canonicalGameRoute, emptyProgress, INITIAL_UNLOCKED_ROUTES } from "@/lib/hc/config"
 import type { ClueStatus, FinalOutput, PlayerProgress, StoredClue } from "@/lib/hc/types"
 
 export type { ClueStatus }
@@ -55,7 +55,7 @@ export const PALETTE = {
 export const ROUTES_CONFIG = [
   {
     id: "moneytasks",
-    path: "/hidden-wiki-2/moneytasks",
+    path: "/hidden-wiki/moneytasks",
     label: "MONEYTASKS",
     accentColor: PALETTE.green,
     status: "ACTIVE",
@@ -64,7 +64,7 @@ export const ROUTES_CONFIG = [
   },
   {
     id: "red-room",
-    path: "/hidden-wiki-2/red-room",
+    path: "/hidden-wiki/red-room",
     label: "RED ROOM",
     accentColor: PALETTE.red,
     status: "ENTRY",
@@ -73,7 +73,7 @@ export const ROUTES_CONFIG = [
   },
   {
     id: "leaks",
-    path: "/hidden-wiki-2/leaks",
+    path: "/hidden-wiki/leaks",
     label: "LEAKS",
     accentColor: PALETTE.amber,
     status: "ACTIVE",
@@ -82,7 +82,7 @@ export const ROUTES_CONFIG = [
   },
   {
     id: "cult",
-    path: "/hidden-wiki-2/cult",
+    path: "/hidden-wiki/cult",
     label: "CULT",
     accentColor: PALETTE.green,
     status: "ACTIVE",
@@ -91,7 +91,7 @@ export const ROUTES_CONFIG = [
   },
   {
     id: "events",
-    path: "/hidden-wiki-2/events",
+    path: "/hidden-wiki/events",
     label: "EVENTS",
     accentColor: PALETTE.green,
     status: "ACTIVE",
@@ -100,7 +100,7 @@ export const ROUTES_CONFIG = [
   },
   {
     id: "forum",
-    path: "/hidden-wiki-2/forum",
+    path: "/hidden-wiki/forum",
     label: "FORUM",
     accentColor: PALETTE.green,
     status: "ACTIVE",
@@ -109,7 +109,7 @@ export const ROUTES_CONFIG = [
   },
   {
     id: "blackmarket",
-    path: "/hidden-wiki-2/blackmarket",
+    path: "/hidden-wiki/blackmarket",
     label: "BLACKMARKET",
     accentColor: "#d5e78b",
     status: "LOCKED",
@@ -118,7 +118,7 @@ export const ROUTES_CONFIG = [
   },
   {
     id: "trace-node",
-    path: "/hidden-wiki-2/trace-node",
+    path: "/hidden-wiki/trace-node",
     label: "TRACE-NODE",
     accentColor: PALETTE.green,
     status: "FINAL",
@@ -134,11 +134,13 @@ export function routeColor(route: string): string {
   return PALETTE.green
 }
 
-// Clues store routes inconsistently ("/leaks/archive" vs "/hidden-wiki-2/blackmarket").
+// Clues store routes inconsistently ("/leaks/archive" vs "/hidden-wiki/blackmarket").
 // Normalize so navigation always lands on a real page.
 export function resolveClueRoute(route: string): string {
-  if (!route) return "/hidden-wiki-2"
-  return route.startsWith("/hidden-wiki-2") ? route : `/hidden-wiki-2${route}`
+  if (!route) return GAME_ROOT
+  const canonical = canonicalGameRoute(route)
+  if (canonical === GAME_ROOT || canonical.startsWith(`${GAME_ROOT}/`)) return canonical
+  return `${GAME_ROOT}${canonical.startsWith("/") ? canonical : `/${canonical}`}`
 }
 
 export const CANON_ANCHORS = [

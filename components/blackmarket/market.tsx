@@ -138,7 +138,7 @@ export function MarketView({ segments }: { segments: string[] }) {
       {section === "policy" && <Policy />}
       <footer className={s.footer}>
         <span>BM / НЯКОИ ВРАТИ СЕ ОТВАРЯТ С ИНФОРМАЦИЯ.</span>
-        <span>ИЗМИСЛЕНА МРЕЖА · HIDDEN WIKI 2</span>
+        <span>ИЗМИСЛЕНА МРЕЖА · HIDDEN WIKI</span>
       </footer>
     </div>
   );
@@ -352,7 +352,7 @@ function ServiceDetail({ id }: { id: string }) {
           {!order && coins < service.price && (
             <p>
               Не достигат {service.price - coins} HC.{" "}
-              <Link href="/hidden-wiki-2/moneytasks">Изпълни задача ↗</Link>
+              <Link href="/hidden-wiki/moneytasks">Изпълни задача ↗</Link>
             </p>
           )}
           <p>
@@ -405,7 +405,7 @@ function Workbench() {
       [
         JSON.stringify(
           {
-            game: "HIDDEN WIKI 2",
+            game: "HIDDEN WIKI",
             patch,
             command: `patch install ${patch}`,
             purpose: "Fictional terminal module; no executable code",
@@ -496,7 +496,7 @@ function Workbench() {
               </p>
             )}
             <Link
-              href="/hidden-wiki-2/trace-node/terminal"
+              href="/hidden-wiki/trace-node/terminal"
               className={s.secondary}
             >
               КЪМ ТЕРМИНАЛА ↗
@@ -876,7 +876,7 @@ function Policy() {
     ],
     [
       "Reset не изтрива миналото.",
-      "Reset деактивира терминалните модули. Купените услуги, получените patches, личните разговори и уликите остават в профила. Тази мрежа е част от HIDDEN WIKI 2; всички услуги и резултати са игрова симулация.",
+      "Reset деактивира терминалните модули. Купените услуги, получените patches, личните разговори и уликите остават в профила. Тази мрежа е част от HIDDEN WIKI; всички услуги и резултати са игрова симулация.",
     ],
   ];
   return (

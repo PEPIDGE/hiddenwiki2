@@ -216,7 +216,7 @@ export function EvidenceBoard() {
                               whiteSpace: "nowrap",
                             }}
                           >
-                            {resolveClueRoute(clue.sourceRoute).replace("/hidden-wiki-2", "")}
+                            {resolveClueRoute(clue.sourceRoute).replace("/hidden-wiki", "")}
                           </div>
                         </button>
 

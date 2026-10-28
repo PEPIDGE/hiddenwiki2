@@ -1,7 +1,7 @@
-export const MARKET_ROOT = "/hidden-wiki-2/blackmarket";
+export const MARKET_ROOT = "/hidden-wiki/blackmarket";
 export const MARKET_MISSION = "bm-dead-drop";
 export const MARKET_MISSION_PATH =
-  "/hidden-wiki-2/moneytasks/services#bm-dead-drop";
+  "/hidden-wiki/moneytasks/services#bm-dead-drop";
 
 export const SERVICES = [
   {
@@ -19,7 +19,7 @@ export const SERVICES = [
       "Работя с остатъците между две версии на една страница. Изпрати персоналния ѝ код. Ще върна запазеното копие с отбелязан произход — липсващият ред понякога казва повече от целия документ.",
     instructions:
       "Готов съм да изпълня задачата. Отвори страницата, копирай PAGE CODE от долната ѝ част и го изпрати тук. Започни с /events/guestbook или /forum/deadletters. За други страници проверявам дали е останало четимо копие. Няма допълнителна такса.",
-    placeholder: "HW2-… — персонален код на страница",
+    placeholder: "HW-… — персонален код на страница",
     reviews: [
       {
         user: "tape_09",
@@ -164,13 +164,13 @@ export const CONTRABAND = {
   weapons: [
     {
       id: "W-014",
-      name: "Сивият куфар",
+      name: "Куфарът на куриера",
       kind: "АРХИВ / КЪСО ОРЪЖИЕ",
       mark: "14",
       status: "ОБЯВАТА Е СВАЛЕНА",
       text: "Снимката показва затворен метален куфар с премахнат етикет. На дръжката е останала жълто-черна лента.",
-      clue: "W-014: куфарът е заснет върху същата маса като пропуска за служебния вход. Продавач: KnuckleWrap. Дата: 14.10.2025.",
-      route: "/hidden-wiki-2/cult/parviat-zakon",
+      clue: "W-014: куфарът е заснет върху същата маса като пропуска за служебния вход. Продавач: NightKiller. Дата: 14.10.2025.",
+      route: "/hidden-wiki/cult/bratstvoto-na-tretoto-probuzhdane",
     },
     {
       id: "W-031",
@@ -178,9 +178,9 @@ export const CONTRABAND = {
       kind: "АРХИВ / ЛИПСВАЩ ИНВЕНТАР",
       mark: "31",
       status: "ДОСТЪП САМО ДО КОПИЕ",
-      text: "Три празни транспортни каси. Номерата са заличени, но върху товарителницата личи знакът на Легиона на Първия закон.",
-      clue: "W-031: товарителницата носи отметка „вход Б / 21:56“. Същият час присъства в оператора LampPost.",
-      route: "/hidden-wiki-2/cult/parviat-zakon",
+      text: "Три празни транспортни каси. Номерата са заличени, но върху товарителницата личи знакът на Третото пробуждане.",
+      clue: "W-031: товарителницата носи отметка „вход Б / 21:56“. Същият маршрут присъства в архива на NightKiller.",
+      route: "/hidden-wiki/cult/bratstvoto-na-tretoto-probuzhdane",
     },
     {
       id: "W-008",
@@ -190,7 +190,7 @@ export const CONTRABAND = {
       status: "СЪМНИТЕЛЕН ПРОИЗХОД",
       text: "Една и съща снимка е използвана в четири различни обяви. Сянката на етикета не съвпада със светлината.",
       clue: "W-008: повторно използван кадър; няма доказуема връзка с основния случай. Маркирай като съмнително.",
-      route: "/hidden-wiki-2/leaks/archive",
+      route: "/hidden-wiki/leaks/archive",
       suspicious: true,
     },
   ],
@@ -203,7 +203,7 @@ export const CONTRABAND = {
       status: "ИЗЗЕТ ОБРАЗЕЦ",
       text: "Непрозрачна опаковка с изтрит състав. В обявата е останало само „за затворени сесии“. Самоличността на съдържанието е непотвърдена.",
       clue: "S-009: етикетът съдържа EV-OGL-02 и дата 15.10.2025. Връзката е със събитието; съставът не може да бъде установен по снимка.",
-      route: "/hidden-wiki-2/events/guestbook",
+      route: "/hidden-wiki/events/guestbook",
     },
     {
       id: "S-022",
@@ -213,7 +213,7 @@ export const CONTRABAND = {
       status: "ЗАЛИЧЕН ПРОДАВАЧ",
       text: "Обява без описание. Номерът на пратката е запазен в кеша, а получателят е заменен с три черти.",
       clue: "S-022: получателят е записан като „западно крило / 9“. Това е текст от архива, не потвърдена доставка.",
-      route: "/hidden-wiki-2/forum/deadletters",
+      route: "/hidden-wiki/forum/deadletters",
     },
     {
       id: "S-004",
@@ -223,7 +223,7 @@ export const CONTRABAND = {
       status: "НУЖНА Е ВТОРА СЛЕДА",
       text: "Празна ампула до членска карта. Снимката е изрязана така, че датата да не се вижда.",
       clue: "S-004: картата носи знака MIRROR. Изрязаната дата не позволява свързване с конкретно събитие.",
-      route: "/hidden-wiki-2/events/tickets",
+      route: "/hidden-wiki/events/tickets",
     },
   ],
 } as const;

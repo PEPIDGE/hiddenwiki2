@@ -21,7 +21,7 @@ export function pageCodes(playerCode: string): Record<string, string> {
   return Object.fromEntries(
     GAME_PAGES.map((route) => [
       route,
-      "HW2-" +
+      "HW-" +
         createHmac("sha256", playerCode)
           .update(`page-v1:${route}`)
           .digest("hex")
@@ -41,17 +41,17 @@ const ARCHIVES: Record<
   string,
   { title: string; columns: string[]; rows: string[][] }
 > = {
-  "/hidden-wiki-2/events/guestbook": {
+  "/hidden-wiki/events/guestbook": {
     title: "Възстановен регистър / EV-OGL-02",
     columns: ["Организация / събитие", "Изтрито поле", "Възстановен запис"],
     rows: [
       ["Огледален преход", "Дата / вход", "15.10.2025 / служебен вход Б"],
-      ["Легионът на Първия закон", "Отговорник", "Silverback — периметър след 22:30"],
+      ["Хорът на Второто небе", "Лектор", "GoldVeil — сесия „тишината“"],
       ["Палатата на Белия прилив", "Покани", "ShameBroker — посредник"],
       ["Братството", "Регистрация", "Лора Костова — поканена от GothGirl"],
     ],
   },
-  "/hidden-wiki-2/forum/deadletters": {
+  "/hidden-wiki/forum/deadletters": {
     title: "Mailbox / фрагмент 06",
     columns: ["Поле", "Възстановено съдържание"],
     rows: [
@@ -62,7 +62,7 @@ const ARCHIVES: Record<
       ["Подпис", "MIRROR / 7D2A-0917"],
     ],
   },
-  "/hidden-wiki-2/leaks/docs": {
+  "/hidden-wiki/leaks/docs": {
     title: "Редакция / транспортен опис",
     columns: ["Поле", "Преди редакцията"],
     rows: [
@@ -75,7 +75,7 @@ const ARCHIVES: Record<
       ],
     ],
   },
-  "/hidden-wiki-2/events/tickets": {
+  "/hidden-wiki/events/tickets": {
     title: "Служебна квота / MIRROR",
     columns: ["Пропуск", "Роля", "Вход"],
     rows: [
@@ -88,12 +88,12 @@ const ARCHIVES: Record<
 export function fingerprint(route: string) {
   if (
     [
-      "/hidden-wiki-2/events/guestbook",
-      "/hidden-wiki-2/forum/deadletters",
+      "/hidden-wiki/events/guestbook",
+      "/hidden-wiki/forum/deadletters",
     ].includes(route)
   )
     return "7D2A-0917-MIRROR";
-  return createHmac("sha256", "hw2-fictional-archive")
+  return createHmac("sha256", "hidden-wiki-fictional-archive")
     .update(route)
     .digest("hex")
     .slice(0, 12)
@@ -166,7 +166,7 @@ function applyAction(
     const expect = (path: string) => {
       if (route !== path)
         throw new MarketError(
-          `Изпрати PAGE CODE от ${path.replace("/hidden-wiki-2", "")}. Кодът е в долната част на страницата.`,
+          `Изпрати PAGE CODE от ${path.replace("/hidden-wiki", "")}. Кодът е в долната част на страницата.`,
         );
     };
     if (action.service === "pageghost") {
@@ -182,7 +182,7 @@ function applyAction(
           market.patches.push("mailbox-v1");
       }
     } else if (action.service === "cardforge") {
-      expect("/hidden-wiki-2/events/tickets");
+      expect("/hidden-wiki/events/tickets");
       market.membership = true;
       text = `Членската карта MIRROR е издадена на ${player.handle}. Отвори /events/tickets — служебният регистър вече те разпознава.`;
       artifact = {
@@ -217,10 +217,10 @@ function applyAction(
           ["15.10.2025", "22:12:06", "198.51.100.23", "повторна сесия"],
           ["15.10.2025", "22:17:31", "203.0.113.9", "mailbox / MIRROR"],
         ],
-        route: "/hidden-wiki-2/leaks/vehicles",
+        route: "/hidden-wiki/leaks/vehicles",
       };
     } else if (action.service === "live-eye") {
-      expect("/hidden-wiki-2/red-room/signal-log");
+      expect("/hidden-wiki/red-room/signal-log");
       text =
         "Сигналът е „локализиран“. Прилагам кадър LE-001. [Системна проверка: времето в кадъра е 14.10.2025, а заявката е за 15.10.2025. Същият fingerprint се среща в няколко пакета. Това е повторение, не livestream. Платените 100 HC не се възстановяват.]";
       artifact = {
@@ -235,7 +235,7 @@ function applyAction(
         suspicious: true,
       };
     } else if (action.service === "bruteforce") {
-      expect("/hidden-wiki-2/leaks/passwords");
+      expect("/hidden-wiki/leaks/passwords");
       if (!market.patches.includes("password-v1"))
         market.patches.push("password-v1");
       text =

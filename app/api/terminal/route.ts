@@ -3,7 +3,7 @@ import { getSessionCode } from "@/lib/hc/session"
 import { getPlayer } from "@/lib/hc/store"
 import { comparePages, hasMarketAccess, MarketError, mutateMarket } from "@/lib/blackmarket/server"
 
-// ─── HIDDEN WIKI 2 — TERMINAL API ───────────────────────────────────────────
+// ─── HIDDEN WIKI — TERMINAL API ───────────────────────────────────────────
 // Secret codes and puzzle answers are validated server-side here.
 // Frontend sends: { cmd: string, args: string[], sessionId?: string }
 // Server returns: { lines: string[], success?: boolean, token?: string }
@@ -42,7 +42,7 @@ const SECRET_CODES: Record<string, { answer: string; reward: string; lines: stri
 }
 
 const HELP_TEXT = [
-  "HIDDEN WIKI 2 — MASTER TERMINAL",
+  "HIDDEN WIKI — MASTER TERMINAL",
   "─────────────────────────────────────────────",
   "COMMANDS:",
   "  help                    — this list",
@@ -155,7 +155,7 @@ export async function POST(req: NextRequest) {
     if (command === "whoami") {
       return NextResponse.json({
         lines: [
-          "Analyst // HIDDEN WIKI 2",
+          "Analyst // HIDDEN WIKI",
           "Role: Investigator",
           "Clearance: Level 2 (Evidence Review)",
           "Authorization: Pending final verification",

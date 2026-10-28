@@ -4,7 +4,7 @@ import { MARKET_ROOT, SERVICES } from "./catalog";
 // Every real game page has a stable code; query strings do not change it.
 export const GAME_PAGES = [
   "/",
-  "/hidden-wiki-2",
+  "/hidden-wiki",
   ...[
     "moneytasks",
     "moneytasks/services",
@@ -44,8 +44,8 @@ export const GAME_PAGES = [
     "trace-node/trace",
     "trace-node/output",
     "trace-node/verification",
-  ].map((path) => `/hidden-wiki-2/${path}`),
-  ...CULTS.map((cult) => `/hidden-wiki-2/cult/${cult.slug}`),
+  ].map((path) => `/hidden-wiki/${path}`),
+  ...CULTS.map((cult) => `/hidden-wiki/cult/${cult.slug}`),
   ...["", "/services", "/inbox", "/policy", "/weapons", "/substances"].map(
     (path) => MARKET_ROOT + path,
   ),
